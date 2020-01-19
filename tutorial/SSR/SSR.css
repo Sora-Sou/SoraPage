@@ -1,0 +1,41 @@
+h1 {
+    font-size: x-large;
+}
+
+h2 {
+    font-size: large;
+}
+
+ul {
+    margin-inline-start: 1em;
+}
+
+.line {
+    margin: 1%;
+    border-bottom-style: solid;
+    border-bottom-color: #00BFFF;
+}
+
+#allContent {
+    margin: 1% 10% 0 10%;
+    padding: 20px;
+    background-color: rgb(240, 240, 240);
+    border-radius: 25px;
+}
+
+.centerImg {
+    margin: 1%;
+    text-align: center;
+}
+
+#passage {
+    line-height: 2;
+}
+
+#passage a:link, #passage a:visited {
+    color: #6495ED;
+}
+
+.lineThrough{
+    text-decoration: line-through;
+}
