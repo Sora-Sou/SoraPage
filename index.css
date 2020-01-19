@@ -10,13 +10,13 @@ a:link{
 a:visited{
     text-decoration: none;
 }
-#table-background{
+#tableBackground{
     height: 100%;
     width: 100%;
     display: table;
 }
 #background {
-    background-image: url(indexBackGround.jpg);
+    background-image: url(indexBackground.jpg);
     background-size: cover;
     display: table-cell;
     height: 100%;
