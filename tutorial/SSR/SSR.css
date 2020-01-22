@@ -39,3 +39,7 @@ ul {
 .lineThrough {
     text-decoration: line-through;
 }
+
+.iosImg {
+    margin-left: 10%;
+}
