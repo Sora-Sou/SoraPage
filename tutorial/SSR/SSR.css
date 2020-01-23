@@ -6,7 +6,7 @@ h2 {
     font-size: large;
 }
 
-ul {
+ul, ol {
     margin-inline-start: 1em;
 }
 
@@ -42,4 +42,8 @@ ul {
 
 .iosImg {
     margin-left: 10%;
+}
+
+.centralImg{
+    text-align: center;
 }
