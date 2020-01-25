@@ -10,6 +10,9 @@ a:link, a:visited {
 }
 
 header {
+    position: fixed;
+    top: 0;
+    width: 100%;
     background-color: rgb(40, 40, 40);
     font-size: xx-large;
     color: rgb(0, 191, 255);
@@ -47,4 +50,8 @@ header {
     border-radius: 25px;
     background-color: rgb(255, 255, 255);
     text-align: center;
+}
+
+#allContent {
+    margin: 5%;
 }
