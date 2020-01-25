@@ -17,19 +17,16 @@ ul, ol {
 }
 
 #allContent {
-    margin: 5% 10% 0 10%;
+    margin: 60px 10% 0 10%;
     padding: 20px;
     background-color: rgb(240, 240, 240);
     border-radius: 25px;
+    line-height: 2;
 }
 
 .centerImg {
     margin: 1%;
     text-align: center;
-}
-
-#allContent {
-    line-height: 2;
 }
 
 #passage a:link, #passage a:visited {
@@ -44,6 +41,6 @@ ul, ol {
     margin-left: 10%;
 }
 
-.centralImg{
+.centralImg {
     text-align: center;
 }
