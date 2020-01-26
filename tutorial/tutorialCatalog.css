@@ -20,6 +20,10 @@
     background-color: rgba(240, 240, 240, 0.7);
 }
 
+#allContent {
+    margin: 60px;
+}
+
 #background {
     position: fixed;
     z-index: -2;
