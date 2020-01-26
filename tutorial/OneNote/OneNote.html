@@ -17,9 +17,132 @@
     </header>
 
     <div id="allContent">
+
+        <div class="centralImg">
+            <img src="OneNoteIcon.jpg" width="40%" alt="OneNote的图标">
+            <h2>最后更新：2020年1月24日18:15</h2>
+            <h2>更新内容：接入评论系统</h2>
+        </div>
+
+        <div class="line"></div>
+
+        <section id="passage">
+
+            <article id="preface">
+                <h1>一.前言</h1>
+                <p>这篇文章就只讲两个OneNote插件的使用（基于OneNote2016）</p>
+                <ul>
+                    <li><strong>Onetastic</strong>：增加宏操作，用于解决OneNote中英文字体不统一的bug</li>
+                    <li><strong>NoteHighlight2016</strong>：代码高亮效果</li>
+                </ul>
+            </article>
+
+            <div class="line"></div>
+
+            <article id="comparison">
+                <h1>二.为什么选2016版</h1>
+                <p>因为2016版有很齐全的功能区</p>
+                <img src="comparison_1.png" width="100%">
+                <p>我是很不能理解为什么巨硬放弃了对OneNote桌面版的更新的（在office2019中是没有OneNote的），所以2016版是OneNote最后的桌面版。</p>
+                <p>现在仍在更新的OneNote是UMP版的，但是这版竟然阉割了功能区的很多功能，蜜汁操作。因此，在UMP版没完善之前，我觉得还是2016版比较香。</p>
+                <p>2016版的数据是无缝式同步的，就是说不同版本之间的OneNote都可以进行同步，但是由于服务器不在国内，同步时最好还是搭个梯子。</p>
+            </article>
+
+            <div class="line"></div>
+
+            <article id="Onetastic">
+                <h1>三.Onetastic</h1>
+
+                <h2>1.OneNote的世纪bug</h2>
+                <p>OneNote默认字体是Calibri，通常会被用户改成微软雅黑。但是这一改问题就来了，输入中文时是微软雅黑字体，你接着输入英文或者数字时就会莫名其妙地蹦回Calibri。
+                    更让人不可思议的是，这个小bug竟然十多年来没有得到修复？？
+                </p>
+
+                <h2><br>2.民间解决办法：Onetastic</h2>
+                <p><strong>Step-1 下载软件：</strong>官网上<a href="https://getonetastic.com/download"
+                        target="_blank">下载</a>并安装Onetastic插件（下载地址打不开请连SSR）。必须下载蓝色框框里的。</p>
+                <img src="onetastic_1.png" width="100%">
+                <p><br><strong>Step-2
+                        下载宏:</strong>在OneNote功能区的“开始”选项卡里找到下载宏，搜索微软雅黑，建议下载“Calibri2微软雅黑”这个宏。如果下载全页改为微软雅黑，后面要讲的那个插件插入代码的字体可能会受到影响。
+                </p>
+                <img src="onetastic_2.png" width="100%">
+                <img src="onetastic_3.png" width="70%">
+                <p><br><strong>Step-3 使用宏:</strong>在“宏”子选项卡里有个font，按一下里面就有刚刚下载好的宏。</p>
+                <img src="onetastic_4.png" width="50%">
+                <p><br><strong>Tips:</strong>可以将宏右键添加到快速访问工具栏，然后就能通过“Alt+数字”的快捷键运行对应的宏。</p>
+
+                <h2><br>3.另一个捆绑下载但是有用的工具：Onecalendar</h2>
+                <p>安装Onetastic后，在“开始”选项卡里也会多出个Onecalendar，这个小工具会记录你每天OneNote的<span class="lineThrough"> 摸鱼
+                    </span>学习日常，可以一看。</p>
+                <img src="onetastic_5.png" width="100%">
+
+                <h2><br>4.白嫖方法</h2>
+                <p>Onetastic的宏在使用一定次数后就必须给钱，想继续白嫖的话，打开OneNote，在断网的情况下运行一次宏，再联网时会发现运行宏不会再提醒你交钱了。</p>
+            </article>
+
+            <div class="line"></div>
+
+            <article id="NoteHighlight2016">
+                <h1>NoteHighlight2016</h1>
+                <p>NoteHighlight这个插件可以让你的代码在OneNote中更显眼，如下图。</p>
+                <img src="NH_1.png" width="70%">
+
+                <h2><br>使用方法</h2>
+                <p><strong>Step-1 下载插件:</strong>github上<a href="https://github.com/elvirbrk/NoteHighlight2016/releases"
+                        target="_blank">下载</a>并安装，64位OneNote下载NoteHighlight2016.msi，32位下载NoteHighlight2016x86.msi</p>
+                <p><strong>Step-2.1 设置插件:</strong>安装完成后，会在OneNote功能区选项卡中多出个NoteHighlight，在Settings把字体设为Consolas，字体大小设为16
+                </p>
+                <img src="NH_2.png" width="70%">
+                <p><strong>Step-2.2 设置插件:</strong>在language那栏点开你需要的语言，弹出的选项框里选择代码高亮的风格，建议去掉Line Number选项，Box
+                    Color自定义为浅灰色（灰色三个RGB值相等，越大越偏向白色），然后就可以输入代码进行尝试了。</p>
+                <img src="NH_3.png" width="50%">
+
+                <p><strong>当前版本存在的bug：在文本后方进行代码插入时，代码块会自动移到最上方</strong></p>
+                <p><strong>解决办法：在右边空白区域运行插件后再剪切到所需位置</strong></p>
+
+                <p><br><strong>Step-3 添加语言:</strong></p>
+                <p>选项卡里可能没有列出你需要的语言，这时候你得去你安装NoteHighlight的目录下找到ribbon.xml这个文件，把里面你想要的语言后的visible的false改为true。</p>
+                <p>默认安装路径为C:\Program Files (x86)\CodingRoad\NoteHighlight2016\ 或者
+                    C:\ProgramFiles\CodingRoad\NoteHighlight2016\</p>
+                <img src="NH_4.png" width="100%">
+                <img src="NH_5.png" width="100%">
+            </article>
+
+            <div class="line"></div>
+
+            <article id="postscript">
+                <h1>后记</h1>
+                <p>OneNote说实话用来干一些码字笔记的活确实还是挺合适的，只不过各种bug和功能缺失加持下实在是劝退，奈何都是同行衬托的好，只好一边骂一边用。</p>
+                <p>对于2016版还有一些其他好用的插件，如OneNote Gem，但一般都是要收费的，价格也不是很便宜，所以也就没去尝试。</p>
+                <p>这边教程基本上是靠着记忆写出来的，可能会有错误，而且步骤之间也有可能跳跃性比较大，大家凑合着看。</p>
+                <p>完结撒花~</p>
+            </article>
+        </section>
+
+        <div class="line"></div>
+
+        <div id="comments">
+            <h1>评论区</h1>
+            <p>由于自己过于辣鸡，写不出评论系统，只好接入第三方评论板块。非网站原生代码，所以可能加载起来会有点慢，请各位耐心等待一下下。</p>
+
+            <div id="lv-container" data-id="city" data-uid="MTAyMC80ODM4Mi8yNDg3Ng==">
+                <script type="text/javascript">
+                    (function (d, s) {
+                        var j, e = d.getElementsByTagName(s)[0];
+
+                        if (typeof LivereTower === 'function') { return; }
+
+                        j = d.createElement(s);
+                        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                        j.async = true;
+
+                        e.parentNode.insertBefore(j, e);
+                    })(document, 'script');
+                </script>
+            </div>
+        </div>
         
     </div>
-
 </body>
 
 </html>
