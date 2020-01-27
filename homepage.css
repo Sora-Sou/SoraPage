@@ -13,6 +13,15 @@ a:link, a:visited {
     text-decoration: none;
 }
 
+a:hover{
+    color: rgb(140,140,140);
+}
+
+ul, ol {
+    margin-inline-start: 1em;
+    line-height: 2em;
+}
+
 #wholePage {
     display: flex;
     flex-direction: column;
@@ -52,15 +61,13 @@ header {
 .sortInfo {
     display: flex;
     flex-direction: column;
-    /*子元素*/
     flex-basis: 0;
     flex-grow: 1;
-    font-size: large;
+    font-size: x-large;
 }
 
 .updateInfo {
     display: flex;
-    /*子元素*/
     flex-basis: 0;
     flex-grow: 1;
 }
@@ -68,7 +75,6 @@ header {
 .lastUpdate, .updateContent {
     display: flex;
     justify-content: center;
-    /*flex-start*/
     align-items: center;
     flex-basis: 0;
     flex-grow: 1;
@@ -78,14 +84,15 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /*子元素*/
     flex-basis: 0;
     flex-grow: 3;
 }
 
-ul, ol {
-    margin-inline-start: 1em;
-    line-height: 2em;
+#ACGNInfo{
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 3em;
 }
 
 #tutorial {
