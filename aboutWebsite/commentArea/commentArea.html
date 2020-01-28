@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoraPage-吐槽区</title>
+    <link rel="icon" href="../../icon.png" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" href="../../tutorial/tutorialHeader.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        @media screen and (min-device-width: 701px) {
+            #background img {
+                position: fixed;
+                z-index: -2;
+                top: 42px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0.9;
+            }
+
+            #backgroundM {
+                display: none;
+            }
+        }
+
+        @media screen and (max-device-width: 700px) {
+            #background {
+                display: none;
+            }
+
+            #backgroundM img {
+                position: fixed;
+                z-index: -2;
+                top: 42px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0.9;
+            }
+        }
+
+        #allContent {
+            margin: 60px 10% 0 10%;
+            padding: 1% 20px 0 20px;
+            background-color: rgba(240, 240, 240, 0.7);
+            border-radius: 25px;
+            line-height: 2;
+            font-size: large;
+            color: rgb(25, 25, 25);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="headerWebname"><a href="../../homepage.html">SoraPage</a></div>
+        <div id="headerTitle">吐槽区</div>
+    </header>
+
+    <div id="background"><img src="CAbackground.png"></div>
+    <div id="backgroundM"><img src="CAbackgroundM.png"></div>
+
+    <div id="allContent">
+        <div id="comments">
+            <p>欢迎大噶来到吐槽区，目前由于处于内测阶段，估计也没啥不认识的小伙伴会戳进来...</p>
+            <p>本来是想搞个匿名评论的，但是奈何自己太菜了不会写评论系统，只好借用第三方的一个韩国的系统，然而这个系统要求必须用社交账号登录后才能发表评论...所以就是很担心大家因为这就不想评论的说，更何况这个评论区又破又难看...</p>
+            <p>真的很希望大家不要在意这些细节的！（我也会很努力地改进这个评论区的）</p>
+            <p>反正啥都能说，不管是不是关于这个小破站的事。评论的各位我都会收到邮件的，会第一时间回复的！</p>
+            <p>总而言之，非常欢迎民那桑多多交流，想说啥就说啥。（一脸真诚）</p>
+            <strong>PS:评论系统中那个用邮箱就能评论的，其实是注册这个评论系统网站的账号，大家慎点。（要输密码的就没什么好东西）</strong>
+            <div id="lv-container" data-id="city" data-uid="MTAyMC80ODM4Mi8yNDg3Ng==">
+                <script type="text/javascript">
+                    (function (d, s) {
+                        var j, e = d.getElementsByTagName(s)[0];
+
+                        if (typeof LivereTower === 'function') { return; }
+
+                        j = d.createElement(s);
+                        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                        j.async = true;
+
+                        e.parentNode.insertBefore(j, e);
+                    })(document, 'script');
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
