@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+a:link, a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+#wholePage {
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+header {
+    display: flex;
+    flex: 0 1 0;
+    background-color: rgb(40, 40, 40);
+    color: rgb(0, 191, 255);
+    font-size: xx-large;
+    text-align: center;
+}
+
+#headerTitle {
+    width: 100%;
+}
+
+@media screen and (min-width: 801px) {
+    #headerWebname {
+        position: absolute;
+        margin-left: 20%;
+        margin-top: 3px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #headerWebname {
+        display: none;
+    }
+}
+
+#content {
+    display: flex;
+    flex: 1 1 0;
+    color: #00bfff;
+}
+
+#contentLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 2 1 0;
+    background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+}
+
+#contentLeft ul {
+    margin-left: 10%;
+    padding-left: 18px;
+    font-size: xx-large;
+    border-left-style: solid;
+    line-height: 1.5;
+}
+
+#contentLeft h1, #contentLeft p {
+    font-size: large;
+}
+
+#timelineTitle {
+    font-size: x-large;
+}
+
+#timeline {
+    margin: 5% 0 5% 0;
+}
+
+#seeMore{
+    text-align: center;
+    font-size: x-large;
+}
+#seeMore img, #seeMore a {
+    vertical-align: middle;
+}
+
+#seeMore a:hover{
+    color: #1E90FF;
+}
+
+#contentRight {
+    display: flex;
+    justify-content: center;
+    flex: 3 1 0;
+    background: linear-gradient(to bottom, #141e30, #243b55);
+}
+
+#allLogs {
+    margin: 7%;
+    width: 100%;
+    line-height: 2;
+}
+
+#dividingLine {
+    border-bottom-style: solid;
+    border-color: white;
+    width: 100%;
+}
