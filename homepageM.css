@@ -13,8 +13,8 @@ a:link, a:visited {
     text-decoration: none;
 }
 
-a:hover{
-    color: rgb(140,140,140);
+a:hover {
+    color: rgb(140, 140, 140);
 }
 
 ul, ol {
@@ -62,38 +62,30 @@ header {
 .sortInfo {
     display: flex;
     flex-direction: column;
-    flex-basis: 0;
-    flex-grow: 1;
+    flex: 1 0 0;
     font-size: x-large;
 }
 
 .updateInfo {
     display: flex;
     flex-direction: column;
-    flex-basis: 0;
-    flex-grow: 1;
-    margin-top: 3%;
-    font-size: large;
+    justify-content: flex-end;
+    flex: 1 0 0;
 }
 
-.lastUpdate, .updateContent {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-basis: 0;
-    flex-grow: 1;
-    
+.updateContent {
+    margin: 5% 0 5% 0;
 }
 
 .sortCatalog {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex-basis: 0;
-    flex-grow: 3;
+    flex: 2 0 0;
 }
 
-#ACGNInfo{
+.sortCatalog ul{
+    margin-top: 5%;
+}
+
+#ACGNInfo {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
