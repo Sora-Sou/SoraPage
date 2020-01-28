@@ -111,3 +111,12 @@ header {
 #aboutWebsite {
     background-image: linear-gradient(to left, #ff9569, #e92758);
 }
+
+#commentArea {
+    margin-inline-start: -1.5rem;
+    list-style: none;
+}
+
+#commentArea a, #commentArea img {
+    vertical-align: middle;
+}
