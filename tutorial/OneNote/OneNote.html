@@ -133,24 +133,19 @@
 
         <div id="comments">
             <h1>评论区</h1>
-            <p>由于自己过于辣鸡，写不出评论系统，只好接入第三方评论板块。非网站原生代码，所以可能加载起来会有点慢，请各位耐心等待一下下。</p>
 
-            <!--来必力评论系统-->
-            <div id="lv-container" data-id="city" data-uid="MTAyMC80ODM4Mi8yNDg3Ng==">
-                <script type="text/javascript">
-                    (function (d, s) {
-                        var j, e = d.getElementsByTagName(s)[0];
-
-                        if (typeof LivereTower === 'function') { return; }
-
-                        j = d.createElement(s);
-                        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-                        j.async = true;
-
-                        e.parentNode.insertBefore(j, e);
-                    })(document, 'script');
-                </script>
-            </div>
+            <!--评论系统-->
+            <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+            <div id="vcomments"></div>
+            <script>
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
+                    appKey: 'mgKE70GqsKmROxG4KalTmgVF',
+                    visitor: true,
+                    meta: ['nick', 'mail']
+                })
+            </script>
 
         </div>
 </body>
