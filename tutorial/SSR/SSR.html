@@ -270,7 +270,6 @@
 
         <div id="comments">
             <h1>评论区</h1>
-            <p>由于自己过于辣鸡，写不出评论系统，只好接入第三方评论板块。非网站原生代码，所以可能加载起来会有点慢，请各位耐心等待一下下。</p>
             <!--评论系统-->
             <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
             <div id="vcomments"></div>
@@ -283,7 +282,18 @@
                     meta: ['nick', 'mail']
                 })
             </script>
-            
+            <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+            <script>
+                if (window.location.hash) {
+                    var checkExist = setInterval(function () {
+                        if ($(window.location.hash).length) {
+                            $('html, body').animate({ scrollTop: $(window.location.hash).offset().top - 90 }, 1000);
+                            clearInterval(checkExist);
+                        }
+                    }, 100);
+                }
+            </script>
+            <!--评论系统完-->
         </div>
     </div>
 </body>
