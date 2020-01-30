@@ -1,0 +1,21 @@
+#allContents {
+    margin-top: 36px;
+}
+
+#passage {
+    line-height: 2;
+    color: rgb(50, 50, 50);
+}
+
+.backgroundColor_gray {
+    padding: 0 15% 0 15%;
+    background-color: rgb(240, 240, 240);
+}
+
+.backgroundColor_white {
+    padding: 0 15% 0 15%;
+}
+
+#comments {
+    padding: 3% 15% 0 15%;
+}
