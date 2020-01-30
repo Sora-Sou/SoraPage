@@ -7,6 +7,7 @@
 
 .content {
     margin: 14px;
+    padding: 1%;
     border-radius: 25px;
     background-color: rgba(245, 245, 245, 0.4);
     text-align: center;
@@ -22,4 +23,19 @@
 
 #allContent {
     margin: 60px;
+    color: rgb(30, 30, 30);
+    line-height: 1.7rem;
+}
+
+.dividingLine {
+    height: 1px;
+    margin: 1% 5% 1% 5%;
+    border-bottom-style: dashed;
+    border-color: white;
+}
+
+.introduction {
+    margin: 1% 5% 1% 5%;
+    font-size: 1.1rem;
+    text-align: start;
 }
