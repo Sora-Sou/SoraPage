@@ -18,8 +18,12 @@ a:hover{
 }
 
 ul, ol {
-    margin-inline-start: 1em;
+    list-style-type: none;
     line-height: 2em;
+}
+
+ul img, ul a{
+    vertical-align: middle;
 }
 
 #wholePage {
@@ -74,6 +78,7 @@ header {
     flex-grow: 1;
     margin-top: 3%;
     font-size: large;
+    line-height: 2rem;
 }
 
 .lastUpdate, .updateContent {
@@ -110,13 +115,4 @@ header {
 
 #aboutWebsite {
     background-image: linear-gradient(to left, #ff9569, #e92758);
-}
-
-#commentArea {
-    margin-inline-start: -1.5rem;
-    list-style: none;
-}
-
-#commentArea a, #commentArea img {
-    vertical-align: middle;
 }
