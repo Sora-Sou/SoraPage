@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../../wholeSite/icon.png" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" href="../../../wholeSite/fixedHeader.css">
+    <link type="text/css" rel="stylesheet" href="../../../wholeSite/stripesLayout.css">
+    <title>SoraPage-Subnautica</title>
+    <style>
+        #passage a {
+            color: #6495ED;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-156500969-1');
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="headerWebname" style="margin-top: 0;">
+            <a href="../../../homepage/homepage.html">SoraPage</a>
+        </span>
+        <div id="headerTitle">Subnautica</div>
+    </header>
+
+    <div id="allContents">
+        <div id="passage">
+            <article class="backgroundColor_white">
+                <div style="text-align: center;"><img src="gameIcon.jpg" width="40%" style="margin-top: 1%;"
+                        alt="Game Icon"></div>
+                <h3 style="text-align: center;">最后更新：</h3>
+                <p>Subnautica这个游戏将科幻、探索、剧情、惊悚这四个元素完美地融为一体，即使顶着80块一份的价格，我也要吹爆！</p>
+            </article>
+            <article class="backgroundColor_gray">
+                <h3>科幻</h3>
+                <p>除了一堆未来世界和外星人的高科技产品，这游戏里的载具是最让我激动的。尤其是潜水艇独眼巨人号，从外观到内部的细节都是诚意满满，展现了极高的制作水准，驾驶舱的设计也是很有新意，未来风满分！</p>
+                <img src="cyclops.jpg" width="100%" alt="Cyclops">
+            </article>
+            <article class="backgroundColor_white">
+                <h3>探索</h3>
+                <p>地图大就不说了，关键是这个地图还有好几层，从岛屿陆地到海底1700米，每一层都有不同的景观。还有各种遗迹等待探索，在探索过程中解锁新的黑科技和了解新的剧情。</p>
+                <img src="map_1.JPG" width="50%">
+            </article>
+            <article class="backgroundColor_gray">
+                <h3>剧情</h3>
+                <p>灾难电影的标准剧情，主线支线交叉并行。大致剧情（不涉及剧透）就是主人公的飞船在这颗星球上坠毁并且感染了一种致命的病毒，为了求生，主人公必须去探索星球上的最早殖民者外星人留下的遗迹（主线剧情），以及追寻之前在这颗星球上居住过的人类先驱们留下的线索（支线），去寻找病毒的治疗方法，并且找到逃出这颗星球的办法。
+                </p>
+                <p>整个故事写得还是挺感人的，情节也有波澜，配合整个游戏的探索进度和风格，体验是很不错的。如果我在通关前能忍住不看别人写的剧情梳理和B站视频的话，估计游戏体验还会再上升一个档次。</p>
+                <p>关于详细的剧情解析，可以参照<a href="http://tieba.baidu.com/p/5886899972?share=9105&fr=share&unique=BD04C95C086D3156457863312E81F85B&st=1581068519&client_type=1&client_version=11.1.1&sfc=copy
+                    " target="_blank">这个贴子</a>（内含严重剧透）</p>
+            </article>
+            <article class="backgroundColor_white">
+                <h3>惊悚</h3>
+                <p>这游戏不仅是个灾难片，还是个恐怖片.jpg</p>
+                <video src="subnauticaVideo.flv"></video>
+            </article>
+        </div>
+
+        <div id="comments">
+            <!--评论系统-->
+            <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+            <div id="vcomments"></div>
+            <script>
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
+                    appKey: 'mgKE70GqsKmROxG4KalTmgVF',
+                    visitor: true,
+                    meta: ['nick', 'mail']
+                })
+            </script>
+            <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+            <script>
+                if (window.location.hash) {
+                    var checkExist = setInterval(function () {
+                        if ($(window.location.hash).length) {
+                            $('html, body').animate({ scrollTop: $(window.location.hash).offset().top - 90 }, 1000);
+                            clearInterval(checkExist);
+                        }
+                    }, 100);
+                }
+            </script>
+            <!--评论系统完-->
+        </div>
+    </div>
+</body>
+
+</html>
