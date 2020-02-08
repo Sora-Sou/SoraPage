@@ -1,19 +1,10 @@
-#allContents {
-    margin-top: 36px;
-}
-
 #passage {
     line-height: 2;
     color: rgb(50, 50, 50);
 }
 
-.backgroundColor_gray {
-    padding: 0 15% 0 15%;
+.background_gray {
     background-color: rgb(240, 240, 240);
-}
-
-.backgroundColor_white {
-    padding: 0 15% 0 15%;
 }
 
 #comments {
@@ -22,4 +13,41 @@
 
 ul, ol {
     margin-inline-start: 1rem;
+}
+
+@media screen and (min-width: 801px) {
+    #allContent, #allContents {
+        margin-top: 36px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
+    .background_gray {
+        padding: 0 15% 0 15%;
+    }
+    .background_white {
+        padding: 0 15% 0 15%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #allContent, #allContents {
+        margin-top: 28px;
+        font-size: 0.85rem;
+    }
+    h1 {
+        font-size: 1.3rem;
+    }
+    h2 {
+        font-size: 1.1rem;
+    }
+    .background_gray {
+        padding: 0 5% 0 5%;
+    }
+    .background_white {
+        padding: 0 5% 0 5%;
+    }
 }

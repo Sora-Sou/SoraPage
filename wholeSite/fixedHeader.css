@@ -15,8 +15,11 @@ header {
     top: 0;
     width: 100%;
     background-color: rgb(40, 40, 40);
-    font-size: xx-large;
     color: rgb(0, 191, 255);
+}
+
+#headerTitle {
+    text-align: center;
 }
 
 @media screen and (min-width: 801px) {
@@ -25,8 +28,8 @@ header {
         margin-left: 20%;
         margin-top: 3px;
     }
-    #headerTitle {
-        text-align: center;
+    header{
+        font-size: 2rem;
     }
 }
 
@@ -34,7 +37,7 @@ header {
     #headerWebname {
         display: none;
     }
-    #headerTitle {
-        text-align: center;
+    header{
+        font-size: 1.5rem;
     }
 }
