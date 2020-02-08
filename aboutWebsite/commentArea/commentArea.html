@@ -63,6 +63,11 @@
             line-height: 2;
             color: rgb(25, 25, 25);
         }
+
+        .vtime,
+        ::placeholder {
+            color: rgb(90, 90, 90) !important;
+        }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
@@ -88,7 +93,7 @@
         <div id="comments">
             <p>欢迎大噶来到SoraPage御用留言板，目前由于处于内测阶段，估计也没啥不认识的小伙伴会戳进来...</p>
             <p>由于自己菜鸡的本质，写不出原生的评论系统，只能接入第三方，第三方的评论系统是真的难找哇，要么就是国内被墙，要么就是非要评论者注册。历经千辛万苦，终于找到了这家符合要求的（落泪）。</p>
-            <p>反正啥都能说，不管是不是关于这个小破站的事。评论的各位我都会收到邮件的，会第一时间回复的！我的回复你们也能收到邮件的呢。所以大家在评论的时候记得把邮箱也填上呀（￣ω￣）</p>
+            <p>反正啥都能说，不管是不是关于这个小破站的事。评论的各位我都会收到邮件的，会第一时间回复的！我的回复你们也能收到邮件的呢（给你们发的邮件模板可好看了）。所以大家在评论的时候记得把邮箱也填上呀（￣ω￣）</p>
             <p><strong>总而言之，非常欢迎民那桑多多交流，想说啥就说啥。（一脸真诚）</strong></p>
             <p><strong>PS：大家在评论的时候就不要带上任何个人信息啦~（包括绰号）</strong></p>
             <!--评论系统-->
@@ -100,7 +105,8 @@
                     appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
                     appKey: 'mgKE70GqsKmROxG4KalTmgVF',
                     visitor: true,
-                    meta: ['nick', 'mail']
+                    meta: ['nick', 'mail'],
+                    placeholder: "你就忍心啥都不说就溜？"
                 })
             </script>
             <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
