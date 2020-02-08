@@ -26,10 +26,14 @@ header {
     #headerWebname {
         position: absolute;
         margin-left: 20%;
-        margin-top: 3px;
+        line-height: 43px;
     }
     header{
+        height: 43px;
         font-size: 2rem;
+    }
+    #headerTitle{
+        line-height: 43px;
     }
 }
 
@@ -38,6 +42,10 @@ header {
         display: none;
     }
     header{
+        height: 32px;
         font-size: 1.5rem;
+    }
+    #headerTitle{
+        line-height: 32px;
     }
 }

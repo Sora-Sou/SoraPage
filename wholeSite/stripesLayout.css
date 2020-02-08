@@ -17,7 +17,7 @@ ul, ol {
 
 @media screen and (min-width: 801px) {
     #allContent, #allContents {
-        margin-top: 36px;
+        margin-top: 43px;
     }
     h1 {
         font-size: 1.5rem;
@@ -35,7 +35,7 @@ ul, ol {
 
 @media screen and (max-width: 800px) {
     #allContent, #allContents {
-        margin-top: 28px;
+        margin-top: 31px;
         font-size: 0.85rem;
     }
     h1 {

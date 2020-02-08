@@ -6,8 +6,28 @@
     <title>SoraPage-SSR教程</title>
     <link rel="icon" href="../../wholeSite/icon.png" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="../../wholeSite/fixedHeader.css" />
-    <link type="text/css" rel="stylesheet" href="../tutorial.css" />
-    <link type="text/css" rel="stylesheet" href="SSR.css" />
+    <link type="text/css" rel="stylesheet" href="../../wholeSite/tutorialLayout.css" />
+    <style>
+        @media screen and (max-width: 800px) {
+            #windowsClient img {
+                width: 100%;
+            }
+
+            #iosClient img {
+                width: 100%;
+            }
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        td img {
+            max-height: 600px;
+            max-width: 300px;
+        }
+    </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
     <script>
@@ -28,7 +48,7 @@
     <div id="allContent">
 
         <div class="centralImg">
-            <img src="SSRimg.png" width="50%" alt="SSR的图标">
+            <img src="SSRimg.png" width="50%" alt="SSR的图标" id="icon">
             <h2>最后更新：2020年1月24日18:15</h2>
             <h2>更新内容：接入评论系统</h2>
         </div>
