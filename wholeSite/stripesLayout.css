@@ -3,6 +3,10 @@
     color: rgb(50, 50, 50);
 }
 
+#passage a:link, #passage a:visited {
+    color: #6495ED;
+}
+
 .background_gray {
     background-color: rgb(240, 240, 240);
 }

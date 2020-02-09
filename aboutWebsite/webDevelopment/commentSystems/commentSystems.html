@@ -7,6 +7,41 @@
     <title>SoraPage-评论系统</title>
     <link type="text/css" rel="stylesheet" href="../../../wholeSite/fixedHeader.css" />
     <link type="text/css" rel="stylesheet" href="../../../wholeSite/stripesLayout.css" />
+    <style>
+        #comparison table {
+            margin-bottom: 1%;
+            text-align: center;
+            border: black solid thin;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #comparison td,
+        #comparison th {
+            border: black dotted thin;
+            padding: 1%;
+        }
+
+        .mark {
+            font-size: 1.3rem;
+        }
+
+
+        @media screen and (max-width: 800px) {
+            img {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156500969-1');
+    </script>
 </head>
 
 <body>
@@ -20,15 +55,167 @@
     <div id="allContents">
         <div id="passage">
 
-            <div class="backgroundColor_gray">
-                <h1 style="text-align: center;">第三方评论系统踩坑录</h1>
-                <h4 style="text-align: center;">最后更新：2020年1月30日16:13</h4>
-                <p>网站毫无疑问是需要评论系统的，但对于我这种只会一点点HTML和CSS的家伙来说，自己写是不可能的事情。于是就得借助第三方，前前后后试了4家，Disqus、来必力、畅言、Valine。最后决定先用着Valine。这里简单谈谈各个评论系统的优劣以及重点说说Valine的设置方法。
+            <article class="background_gray" id="preface">
+                <h1 style="text-align: center;">第三方评论系统血泪史</h1>
+                <h3 style="text-align: center;">最后更新：2020年2月9日17:46</h3>
+                <p>网站毫无疑问是需要评论系统的，但对于我这种只会一点点HTML和CSS的家伙来说，自己写是不可能的事情。于是就得借助第三方，前前后后试了5家，Gitment、Disqus、来必力、畅言、Valine。最后决定先用着Valine。这里简单谈谈各个评论系统的优劣以及重点说说Valine的设置方法。
                 </p>
-            </div>
+            </article>
 
-            <div class="background_white">
-                <h4></h4>
+            <article class="background_white" id="comparison">
+                <h2>前四家</h2>
+                <table>
+                    <tr>
+                        <th>评论系统</th>
+                        <th>匿名评论</th>
+                        <th>国内SNS</th>
+                        <th>科学上网</th>
+                        <th>域名备案</th>
+                        <th>备注</th>
+                    </tr>
+                    <tr>
+                        <td>Gitment</td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td>仅支持Github登录评论</td>
+                    </tr>
+                    <tr>
+                        <td>Disqus</td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td>匿名评论藏得很深</td>
+                    </tr>
+                    <tr>
+                        <td>来必力</td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td>不科学上网情况下极小概率能使用</td>
+                    </tr>
+                    <tr>
+                        <td>畅言</td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td><span class="mark">&#215</span></td>
+                        <td><span class="mark">&#8730</span></td>
+                        <td>用户必须使用SNS注册畅言账号后才能评论</td>
+                    </tr>
+                </table>
+            </article>
+
+            <article class="background_gray">
+                <h1 style="text-align: center;">Valine使用方法</h1>
+                <h2>官方地址</h2>
+                <ul>
+                    <li><a href="https://valine.js.org/" target="_blank">基本版</a></li>
+                    <li><a href="https://github.com/DesertsP/Valine-Admin" target="_blank">功能增强插件</a></li>
+                    <p>这两个都是官方版的，基本的设置方法在官方文档中说的还是比较清楚的，<strong>请先把官方给的说明完全看完看懂后再参照我下面所说的</strong>。</p>
+                </ul>
+            </article>
+
+            <article class="background_white" id="SMTP">
+                <h2>SMTP</h2>
+                <p>SMTP的作用我也不是太清楚，大致上就是代发邮件的作用。（有进一步研究的必要）</p>
+                <p>涉及到SMTP的有三个环境变量</p>
+                <img src="SMTP_1.png" width="100%">
+                <p>我先后使用了三家邮件平台，分别是QQ、outlook和腾讯企业版邮箱，一个个来说怎么配置。</p>
+            </article>
+
+            <article class="background_gray" id="STMP_QQ">
+                <h2>QQ邮箱SMTP设置方法</h2>
+                <ol>
+                    <li>
+                        <p>进入QQ邮箱的设置，在帐户一栏找到IMAP/SMTP服务，开启</p>
+                        <img src="SMTPQQ_1.png" width="100%">
+                        <img src="SMTPQQ_2.png" width="100%">
+                    </li>
+                    <li>
+                        <p>获得的密码填入SMTP_PASS中，SMTP_SERVICE填QQ，SMTP_USER填这个QQ邮箱的地址</p>
+                    </li>
+                </ol>
+            </article>
+
+            <article class="background_white" id="STMP_Outlook">
+                <h2>Outlook邮箱SMTP设置方法</h2>
+                <p>Outlook限制了SMTP方法一次性最大发送邮件数。当网站有评论被回复时，超出了这个限制，所以会造成被回复的用户无法收到邮件，但是站主是会收到有新评论的邮件的，LeanCloud报错信息如下。</p>
+                <img src="SMTPOutlook_1.png" width="100%">
+                <p>目前我还没找到解决办法，所以请慎用Outlook邮箱提供SMTP服务。（我还是说下怎么设置）</p>
+                <ul>
+                    <li>SMTP_SERVICE：Outlook365</li>
+                    <li>SMTP_USER：你的Outlook邮箱</li>
+                    <li>SMTP_PASS：邮箱密码</li>
+                </ul>
+            </article>
+
+            <article class="background_gray">
+                <h2>腾讯企业邮箱SMTP设置方法</h2>
+                <p>换到企业邮箱的原因是支持域名邮箱，就是说我现在可以使用@sorapage.com后缀的邮箱来回复评论，虽然变化不大，但起码逼格还是高了那么一丢丢。</p>
+                <p>所以前提是你得有一个域名，还要有腾讯的企业邮箱，这个不是这篇文章的重点，可以自行Google。</p>
+                <p>根据腾讯和Valine指南，需要对上面三个参数进行下修改。</p>
+                <table>
+                    <tr>
+                        <td style="width: 50%;"><img src="SMTPQE_1.png" width="100%"></td>
+                        <td><img src="SMTPQE_2.png" width="100%"></td>
+                    </tr>
+                </table>
+                <p>因此需要将SMTP_SERVICE拆成3个，也就说一共需要5个SMTP环境变量</p>
+                <ul>
+                    <li>SMTP_HOST：smtp.exmail.qq.com</li>
+                    <li>SMTP_PORT：465</li>
+                    <li>SMTP_SECURE：SSL</li>
+                    <br>
+                    <li>SMTP_USER：你的域名邮箱</li>
+                    <li>SMTP_PASS：邮箱密码</li>
+                </ul>
+            </article>
+
+            <article class="background_white" id="css">
+                <h2>CSS改动</h2>
+                <p>有时候Valine的样式不适合页面的风格，改动起来其实也很简单。</p>
+                <p>先来复习一个CSS知识点，<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity"
+                        target="_blank">链接</a></p>
+                <img src="css_1.png" width="70%">
+                <p>所以解决办法就很清楚了，按F12调出控制台，找到你要改动的元素对应的class或id，在CSS加一句!important就完事。</p>
+            </article>
+
+            <article class="background_gray" id="jQuery">
+                <h2>jQuery</h2>
+                <p>还记得插件里说的这一段吗？</p>
+                <img src="jQuery_1.png" width="100%">
+                <p>我相信肯定不止我一个在加上这段代码后发现还是行不通。</p>
+                <p>其实这段代码是需要jQuery的，在这段代码前再加一个script标签引入jQuery就行了。（不会JS的下场）</p>
+            </article>
+
+            <div class="background_white" id="comments">
+                <!--评论系统-->
+                <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+                <div id="vcomments"></div>
+                <script>
+                    new Valine({
+                        el: '#vcomments',
+                        appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
+                        appKey: 'mgKE70GqsKmROxG4KalTmgVF',
+                        visitor: true,
+                        meta: ['nick', 'mail']
+                    })
+                </script>
+                <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+                <script>
+                    if (window.location.hash) {
+                        var checkExist = setInterval(function () {
+                            if ($(window.location.hash).length) {
+                                $('html, body').animate({ scrollTop: $(window.location.hash).offset().top - 90 }, 1000);
+                                clearInterval(checkExist);
+                            }
+                        }, 100);
+                    }
+                </script>
+                <!--评论系统完-->
             </div>
         </div>
     </div>
