@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../wholeSite/icon.png" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" href="../../wholeSite/fixedHeader.css">
+    <title>SoraPage-技能树</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            background-color: rgb(235, 239, 242);
+            color: #505458;
+            line-height: 2rem;
+        }
+
+        section h1 {
+            padding: 0 0 0 5%;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            color: white;
+            line-height: 3rem;
+        }
+
+        section:nth-child(3n+1) h1 {
+            background-color: rgb(93, 156, 236);
+        }
+
+        section:nth-child(3n+2) h1 {
+            background-color: rgb(114, 102, 186);
+        }
+
+        .introduction {
+            padding: 1% 5% 2% 5%;
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            background-color: white;
+        }
+
+        section p a {
+            width: 100%;
+            text-align: end;
+        }
+
+        .href {
+            text-align: end;
+            color: #6495ED;
+            ;
+        }
+
+        @media screen and (min-width: 801px) {
+            #allContents {
+                margin-top: 43px;
+                padding: 30px 15% 0 15%;
+            }
+            .introduction{
+                margin-bottom: 30px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            #allContents {
+                margin-top: 31px;
+                padding: 3% 5% 0 5%;
+                font-size: 0.875rem;
+            }
+            .introduction{
+                margin-bottom: 7%;
+            }
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-156500969-1');
+    </script>
+</head>
+
+<body>
+    <header>
+        <div id="headerWebname"><a href="../../homepage/homepage.html">SoraPage</a></div>
+        <div id="headerTitle">技能树</div>
+    </header>
+
+    <div id="allContents">
+
+        <section>
+            <h1>第三方评论系统血泪史</h1>
+            <div class="introduction">
+                <p>网站毫无疑问是需要评论系统的，但对于我这种只会一点点HTML和CSS的家伙来说，自己写是不可能的事情。于是就得借助第三方，前前后后试了5家，Gitment、Disqus、来必力、畅言、Valine。最后决定先用着Valine。这里简单谈谈各个评论系统的优劣以及重点说说Valine的设置方法。
+                </p>
+                <div class="href"><a href="./commentSystems/commentSystems.html">查看更多</a></div>
+            </div>
+        </section>
+
+        <section>
+            <h1>宝塔面板WebHook设置</h1>
+            <div class="introduction">
+                <p>通过webhook可以实现往github进行push操作时，在设置了webhook的服务器上就能自动拉取最新的代码，省去了再次部署的麻烦。webhook的原理大同小异，不仅仅局限于宝塔面板。
+                </p>
+                <div class="href"><a href="./webhook/webhook.html">查看更多</a></div>
+            </div>
+        </section>
+
+    </div>
+</body>
+
+</html>
