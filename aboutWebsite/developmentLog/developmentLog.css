@@ -13,10 +13,14 @@ ul {
     margin-inline-start: 1rem;
 }
 
+html, body {
+    height: 100%;
+}
+
 #wholePage {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
 }
 
 header {
