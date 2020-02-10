@@ -19,6 +19,12 @@ ul, ol {
     margin-inline-start: 1rem;
 }
 
+code{
+    background-color: #f3f3f3;
+    color: #1c887e;
+    padding: 3px;
+}
+
 @media screen and (min-width: 801px) {
     #allContent, #allContents {
         margin-top: 43px;
@@ -30,10 +36,10 @@ ul, ol {
         font-size: 1.3rem;
     }
     .background_gray {
-        padding: 0 15% 0 15%;
+        padding: 2% 15% 2% 15%;
     }
     .background_white {
-        padding: 0 15% 0 15%;
+        padding: 2% 15% 2% 15%;
     }
 }
 
@@ -49,9 +55,9 @@ ul, ol {
         font-size: 1.1rem;
     }
     .background_gray {
-        padding: 0 5% 0 5%;
+        padding: 3% 5%;
     }
     .background_white {
-        padding: 0 5% 0 5%;
+        padding: 3% 5%;
     }
 }
