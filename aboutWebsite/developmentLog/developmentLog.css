@@ -4,19 +4,19 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-html, body {
-    height: 100%;
-}
-
 a:link, a:visited {
     color: inherit;
     text-decoration: none;
 }
 
+ul {
+    margin-inline-start: 1rem;
+}
+
 #wholePage {
     display: flex;
     flex-direction: column;
-    height: 100%
+    height: 100vh;
 }
 
 header {
@@ -50,6 +50,7 @@ header {
     display: flex;
     flex: 1 1 0;
     color: #00bfff;
+    overflow: auto;
 }
 
 #contentLeft {
@@ -59,6 +60,7 @@ header {
     align-items: center;
     flex: 2 1 0;
     background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+    overflow: auto;
 }
 
 #contentLeft ul {
@@ -81,15 +83,16 @@ header {
     margin: 5% 0 5% 0;
 }
 
-#seeMore{
+#seeMore {
     text-align: center;
     font-size: x-large;
 }
+
 #seeMore img, #seeMore a {
     vertical-align: middle;
 }
 
-#seeMore a:hover{
+#seeMore a:hover {
     color: #1E90FF;
 }
 
@@ -98,16 +101,31 @@ header {
     justify-content: center;
     flex: 3 1 0;
     background: linear-gradient(to bottom, #141e30, #243b55);
+    overflow: auto;
 }
 
 #allLogs {
     margin: 7%;
-    width: 100%;
     line-height: 2;
 }
 
+#logEnd {
+    margin-bottom: 7%;
+}
+
 #dividingLine {
+    margin-top: 1%;
     border-bottom-style: solid;
     border-color: white;
     width: 100%;
+}
+
+::-webkit-scrollbar {
+    background: rgb(25, 39, 60);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(100, 100, 100);
+    border-radius: 10px;
 }
