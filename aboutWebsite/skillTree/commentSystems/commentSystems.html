@@ -8,6 +8,7 @@
     <link type="text/css" rel="stylesheet" href="../../../wholeSite/fixedHeader.css" />
     <link type="text/css" rel="stylesheet" href="../../../wholeSite/stripesLayout.css" />
     <link type="text/css" rel="stylesheet" href="../../../wholeSite/prism.css" />
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="../../../wholeSite/prism.js"></script>
     <style>
         #comparison table {
@@ -216,6 +217,7 @@
 
             <div class="background_white" id="comments">
                 <!--评论系统-->
+                <!-- Valine -->
                 <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
                 <div id="vcomments"></div>
                 <script>
@@ -224,10 +226,11 @@
                         appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
                         appKey: 'mgKE70GqsKmROxG4KalTmgVF',
                         visitor: true,
-                        meta: ['nick', 'mail']
+                        meta: ['nick', 'mail'],
+                        placeholder: "Comment Here~"
                     })
                 </script>
-                <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+                <!-- 邮件链接跳转 -->
                 <script>
                     if (window.location.hash) {
                         var checkExist = setInterval(function () {
@@ -238,6 +241,22 @@
                         }, 100);
                     }
                 </script>
+                <!-- 魔改 -->
+                <script src='/wholeSite/valineModify.js'></script>
+                <style>
+                    .vtime,
+                    ::placeholder {
+                        color: rgb(90, 90, 90) !important;
+                    }
+
+                    .vsubmit:disabled {
+                        color: rgb(170, 170, 170);
+                    }
+
+                    .vquote {
+                        border-left: none !important;
+                    }
+                </style>
                 <!--评论系统完-->
             </div>
         </div>
