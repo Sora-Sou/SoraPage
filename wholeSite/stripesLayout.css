@@ -25,7 +25,7 @@ code{
     padding: 3px;
 }
 
-@media screen and (min-width: 801px) {
+@media screen and (min-device-width: 801px) {
     #allContent, #allContents {
         margin-top: 43px;
     }
@@ -43,9 +43,9 @@ code{
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-device-width: 800px) {
     #allContent, #allContents {
-        margin-top: 31px;
+        margin-top: 32px;
         font-size: 0.85rem;
     }
     h1 {

@@ -22,30 +22,35 @@ header {
     text-align: center;
 }
 
-@media screen and (min-width: 801px) {
+@media screen and (min-device-width: 801px) {
     #headerWebname {
         position: absolute;
         margin-left: 20%;
         line-height: 43px;
     }
-    header{
+    header {
         height: 43px;
         font-size: 2rem;
     }
-    #headerTitle{
+    #headerTitle {
         line-height: 43px;
+    }
+    @media screen and (max-width: 800px) {
+        #headerWebname {
+            display: none;
+        }
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-device-width: 800px) {
     #headerWebname {
         display: none;
     }
-    header{
-        height: 32px;
+    header {
+        height: 33px;
         font-size: 1.5rem;
     }
-    #headerTitle{
-        line-height: 32px;
+    #headerTitle {
+        line-height: 33px;
     }
 }

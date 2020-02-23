@@ -21,7 +21,7 @@ ul, ol {
     line-height: 2;
 }
 
-@media screen and (min-width: 801px) {
+@media screen and (min-device-width: 801px) {
     #allContent, #allContents {
         margin: 60px 10% 0 10%;
     }
@@ -33,7 +33,7 @@ ul, ol {
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-device-width: 800px) {
     #allContent, #allContents {
         margin: 40px 5% 0 5%;
         font-size: 0.85rem;
