@@ -10,12 +10,17 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <style>
         @media screen and (max-width: 800px) {
-            #windowsClient img {
-                width: 100%;
-            }
 
+            #windowsClient img,
+            #iosClient img,
             #iosClient img {
                 width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 550px) {
+            #postscriptText {
+                display: inline;
             }
         }
 
@@ -33,6 +38,46 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            line-height: 2.5rem;
+            font-size: 1.3rem;
+        }
+
+        #postscript button {
+            padding: 3px 0 3px 5px;
+            border: 1px #3079ED solid;
+            border-radius: 5px;
+            color: white;
+            background: #4C8FFB;
+        }
+
+        #postscript button:hover {
+            border: 1px #2F5BB7 solid;
+            box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
+            background: #3F83F1;
+        }
+
+        #postscript button:active {
+            box-shadow: inset 0 2px 5px #2370FE;
+        }
+
+        #postscript input {
+            padding: 3px 10px;
+            border: 1px solid #00bfff;
+            border-radius: 25px;
+            outline-style: none;
+        }
+
+        #postscript input:focus {
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+
+        #display {
+            margin-bottom: 1%;
+        }
+
+        #hidden {
+            display: none;
         }
     </style>
     <script>
@@ -42,6 +87,20 @@
                 var anchor = $(this).attr("href");
                 var top = $(anchor).offset().top - 60;
                 $("html,body").animate({ scrollTop: top + 'px' }, 1000);
+            })
+        })
+        // 返回顶部
+        $(document).ready(function () {
+            $("#goTop").click(function () {
+                $("html,body").animate({ scrollTop: '0px' }, 1000);
+            })
+        })
+        // 判断真名输入
+        $(document).ready(function () {
+            $("#nameSubmit").click(function () {
+                if ($("#nameInput").val() == "宋昊浙") {
+                    $("#hidden").slideDown("slow");
+                } else { alert("你不记得我是谁了吗？哭唧唧...\n请输入中文名呐~"); }
             })
         })
     </script>
@@ -59,17 +118,17 @@
 <body>
     <header>
         <div id="headerWebname"> <a href="../../homepage/homepage.html">SoraPage</a> </div>
+        <img src="/wholeSite/upArrow.svg" id="goTop" title="返回顶部">
         <div id="headerTitle">SSR教程</div>
     </header>
 
     <div id="allContent">
 
         <section id="passage">
-
             <div class="centralImg" id="title">
                 <img src="SSRimg.png" width="50%" alt="SSR的图标" id="icon">
-                <h2>最后更新：2020年1月24日18:15</h2>
-                <h2>更新内容：接入评论系统</h2>
+                <h2>最后更新：2020年2月24日23:30</h2>
+                <h2>更新内容：太多了 Ver-3.1</h2>
             </div>
 
             <div class="line"></div>
@@ -83,17 +142,31 @@
                     <li><a href="#sever" class="innerpageHref">机场</a></li>
                     <li><a href="#windowsClient" class="innerpageHref">Windows客户端</a></li>
                     <li><a href="#iosClient" class="innerpageHref">iOS客户端</a></li>
-                    <li><a href="#comments" class="innerpageHref">评论区</a></li>
+                    <li><a href="#androidClient" class="innerpageHref">安卓客户端</a></li>
+                    <li><a href="#postscript" class="innerpageHref">福利</a></li>
                 </ul>
             </div>
 
+            <div class="line"></div>
+
+            <article id="preface">
+                <h1>前言</h1>
+                <p>第一次听说SSR还是在高二的时候，班上一位IT巨佬向我安利了这种科学上网的技术，可直到一年前自己才算是对这门技术入了门。可能这就是为什么IT巨佬现在在UCSD研究计算机，而我在微软认为是大专的HUST里搬砖的原因吧。
+                </p>
+                <p>前阵子哥大的招生官来学校宣讲，在回应哥大某网站被墙而无法访问时，说了这么一句话"You are students in a university named science and
+                    technology.You should konw how to use VPN!"</p>
+                <p>但是呢，我的一位某上海知名985的CS专业的同学跟我说他不会用VPN，再加上最近有一些小伙伴问我咋科学上网。</p>
+                <p>emmmmmm...那好吧，看来科学上网目前而言并没有我想象中那么普及。</p>
+                <p>所以冒着网站被封的风险，在法律的边缘疯狂试探，整了这么一篇说不定明天就没了的文章。</p>
+                <p>既然我这个菜鸡都能搞明白SSR，相信各位在看完这篇比较白话文的文章后，也能夺回自己的信息自由获取权。</p>
+            </article>
             <div class="line"></div>
 
             <article id="introduction">
                 <h1>SSR简介</h1>
                 <p>SSR是一种科学上网的手段，有了SSR，你可以：</p>
                 <ul>
-                    <li>访问被墙的网站，如Google和Twitter</li>
+                    <li>访问本不存在的网站，如Google和Twitter</li>
                     <li>提高不稳定访问状态的外网网站的访问速度和稳定性，如GitHub和Microsoft</li>
                     <li>改变IP地址，可用于观看B站仅限港澳台的番剧，也可用于突破部分网站或游戏锁IP的限制，如P站锁日本IP（据说）</li>
                     <li>改善origin和steam的连接，解决各种乱七八糟的报错问题（如创意工坊无法访问，好友系统离线等等）</li>
@@ -155,6 +228,7 @@
                     这两个里面我更推荐机场A，并且下面都是以机场A为例讲的，机场B是我最近才找到的，而机场A我自己用了一年多了。相比之下，机场A提供的节点更多，价格会更低一点。
                     机场B我很欣赏他们的网页设计，并且他们给的教程对萌新更为友好，大家也可以去参观参观。
                 </p>
+                <p>但是机场A因为最近的局势原因不敢顶风作案，所以暂时关闭了新用户注册，大家可以等一阵子再用机场A。或者直接选择机场B。</p>
             </article>
 
             <div class="line"></div>
@@ -264,7 +338,65 @@
                         </ul>
                     </li>
                 </ol>
-            </article>
+
+                <div class="line"></div>
+
+                <article id="androidClient">
+                    <h1>安卓客户端</h1>
+
+                    <h2>Step-1 下载客户端</h2>
+                    <p>和Windows一样，给出GitHub上的下载链接:<a href="https://github.com/HMBSbige/ShadowsocksR-Android/releases"
+                            target="_blank">点击此处</a></p>
+                    <p>安卓的APP安装包是以apk为后缀名的，所以挑最新的版本下载就OK</p>
+                    <img src="android_1.png" width="90%">
+                    <p>但是貌似没翻墙的情况下直接从GitHub下载时，速度实在是感人，这里也可以直接从我的服务器上下载3.6.0版本的：<a href="SSRAndroid.apk">点此下载</a></p>
+
+                    <br>
+                    <h2>Step-2 设置客户端</h2>
+                    <p>安装完成后，打开客户端</p>
+                    <table>
+                        <tr>
+                            <td><img src="android_2.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                            <td><img src="android_3.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                            <td><img src="android_4.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                        </tr>
+                    </table>
+                    <ol>
+                        <li>左上角点shadowsocksR</li>
+                        <li>添加订阅的步骤和其他平台客户端是一样的，从机场copy下来的链接填进去</li>
+                        <li>添加订阅后，选择一个节点，会返回到首页，点飞机图标即可开启SSR</li>
+                    </ol>
+
+                    <br>
+                    <h3>Step-3 其他设置</h3>
+                    <p>在APP首页往下翻，可以设置代理方式和分应用代理。</p>
+                    <img src="android_5.png" width="40%">
+                    <ul>
+                        <li><strong>路由</strong>：这个设置菜单里，和Windows客户端的设置是一样的，参看Windows部分的<a href="#step5"
+                                class="innerpageHref">Step-5</a>和<a href="#step6" class="innerpageHref">Step-6</a></li>
+                        <li><strong>分应用代理</strong>：这个应该是安卓客户端特色功能了，可以指定哪些APP经过SSR代理，非常实用的一个功能。</li>
+                    </ul>
+                </article>
+
+                <div class="line"></div>
+
+                <article id="postscript">
+                    <h1>福利</h1>
+                    <div id="display">
+                        <p id="postscriptText">さぁ、会是什么呢？</p>
+                        <input type="text" placeholder="请输入Sora的真名" id="nameInput" style="width: 9em;">
+                        <button id="nameSubmit">警察叔叔就是他！</button>
+                    </div>
+                    <div id="hidden">
+                        <p>分享一个自己搭建的节点，梯子架在亚马逊的美国服务器上，速度肯定比不上机场，大家可以白嫖凑合着用。</p>
+                        <p style="word-break: break-all; color: #6495ED;">
+                            ssr://My44NC4yMjEuMTE0OjcyNzI6YXV0aF9zaGExX3Y0OmFlcy0yNTYtY2ZiOnBsYWluOmMyOXlZWEJoWjJVLz9vYmZzcGFyYW09JnJlbWFya3M9UVZkVExlZS1qdVdidlEmZ3JvdXA9VTI5eVlWQmhaMlU
+                        </p>
+                        <p>PS:复制，在SSR客户端中选择从剪切板导入节点。</p>
+                        <p>目前在考虑搭建第二个节点，应该是架在日本，等另一位CUHK的大佬有空后再说。</p>
+                        <p>希望各位理性使用，如果超出了使用额度，服务器会被收回。</p>
+                    </div>
+                </article>
         </section>
 
         <div class="line"></div>

@@ -22,6 +22,10 @@ header {
     text-align: center;
 }
 
+#goTop:hover{
+    cursor: pointer;
+}
+
 @media screen and (min-device-width: 801px) {
     #headerWebname {
         position: absolute;
@@ -34,6 +38,11 @@ header {
     }
     #headerTitle {
         line-height: 43px;
+    }
+    #goTop {
+        position: absolute;
+        margin-left: 80%;
+        height: 43px;
     }
     @media screen and (max-width: 800px) {
         #headerWebname {
@@ -52,5 +61,10 @@ header {
     }
     #headerTitle {
         line-height: 33px;
+    }
+    #goTop {
+        position: absolute;
+        margin-left: 80%;
+        height: 33px;
     }
 }
