@@ -13,13 +13,14 @@
 
             #windowsClient img,
             #iosClient img,
-            #iosClient img {
+            #androidClient img,
+            #postscript img {
                 width: 100%;
             }
         }
 
         @media screen and (min-width: 550px) {
-            #postscriptText {
+            #welfareText {
                 display: inline;
             }
         }
@@ -42,7 +43,7 @@
             font-size: 1.3rem;
         }
 
-        #postscript button {
+        #welfare button {
             padding: 3px 0 3px 5px;
             border: 1px #3079ED solid;
             border-radius: 5px;
@@ -50,24 +51,24 @@
             background: #4C8FFB;
         }
 
-        #postscript button:hover {
+        #welfare button:hover {
             border: 1px #2F5BB7 solid;
             box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
             background: #3F83F1;
         }
 
-        #postscript button:active {
+        #welfare button:active {
             box-shadow: inset 0 2px 5px #2370FE;
         }
 
-        #postscript input {
+        #welfare input {
             padding: 3px 10px;
             border: 1px solid #00bfff;
             border-radius: 25px;
             outline-style: none;
         }
 
-        #postscript input:focus {
+        #welfare input:focus {
             -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
         }
@@ -127,8 +128,8 @@
         <section id="passage">
             <div class="centralImg" id="title">
                 <img src="SSRimg.png" width="50%" alt="SSR的图标" id="icon">
-                <h2>最后更新：2020年2月24日23:30</h2>
-                <h2>更新内容：太多了 Ver-3.1</h2>
+                <h2>最后更新：2020年2月25日10:23</h2>
+                <h2>更新内容：太多了 Ver-3.2</h2>
             </div>
 
             <div class="line"></div>
@@ -143,7 +144,7 @@
                     <li><a href="#windowsClient" class="innerpageHref">Windows客户端</a></li>
                     <li><a href="#iosClient" class="innerpageHref">iOS客户端</a></li>
                     <li><a href="#androidClient" class="innerpageHref">安卓客户端</a></li>
-                    <li><a href="#postscript" class="innerpageHref">福利</a></li>
+                    <li><a href="#welfare" class="innerpageHref">福利</a></li>
                 </ul>
             </div>
 
@@ -218,9 +219,8 @@
                 <p>所谓机场，就是手里有一大批墙外服务器的人，每一个服务器称为一个节点，可以同时为多人服务。</p>
                 <p>
                     这里给出两个我用着觉得还不错的机场网址
-                    <a href="https://saocaozuo.me/auth/register?code=ORNcSD8qGt8tZdfJlUhY9z1POEiI5URT"
-                        target="_blank">机场A</a> 和
-                    <a href="https://airhead.abyss.moe?aff=13036" target="_blank">机场B</a>，
+                    <a href="https://saocaozuo.me/auth/register?code=tJKt" target="_blank">机场A</a> 和
+                    <a href="https://today.abyss.moe?aff=13036" target="_blank">机场B</a>，
                     很希望大家通过这两个链接去注册，因为这些机场会将你们氪金的一部分返利给邀请者（疯狂暗示）。
                     机场的网站是很不稳定的（重点关照对象），裸连时可能会很慢甚至会出错（通过SSR连接的话会快很多），需要大家多尝试几次。
                 </p>
@@ -228,7 +228,6 @@
                     这两个里面我更推荐机场A，并且下面都是以机场A为例讲的，机场B是我最近才找到的，而机场A我自己用了一年多了。相比之下，机场A提供的节点更多，价格会更低一点。
                     机场B我很欣赏他们的网页设计，并且他们给的教程对萌新更为友好，大家也可以去参观参观。
                 </p>
-                <p>但是机场A因为最近的局势原因不敢顶风作案，所以暂时关闭了新用户注册，大家可以等一阵子再用机场A。或者直接选择机场B。</p>
             </article>
 
             <div class="line"></div>
@@ -380,10 +379,10 @@
 
                 <div class="line"></div>
 
-                <article id="postscript">
+                <article id="welfare">
                     <h1>福利</h1>
                     <div id="display">
-                        <p id="postscriptText">さぁ、会是什么呢？</p>
+                        <p id="welfareText">さぁ、会是什么呢？</p>
                         <input type="text" placeholder="请输入Sora的真名" id="nameInput" style="width: 9em;">
                         <button id="nameSubmit">警察叔叔就是他！</button>
                     </div>
@@ -396,6 +395,18 @@
                         <p>目前在考虑搭建第二个节点，应该是架在日本，等另一位CUHK的大佬有空后再说。</p>
                         <p>希望各位理性使用，如果超出了使用额度，服务器会被收回。</p>
                     </div>
+                </article>
+                <div class="line"></div>
+
+                <article id="postscript">
+                    <h1>写在最后的碎碎念</h1>
+                    <p>这篇教程最初写于2020.1.24日，由于是Project的第一篇正式教程，写的时候难免有些激动，在3.0的版本中已经删除了大部分意义不明的话，并增加了安卓系统的教程，同时利用jQuery解决页面内href的跳转问题，增强了交互性（只不过代码量从1.0版本的250行涨到3.2版本的450行）
+                    </p>
+                    <p>预计会更新的部分：macOS系统SSR客户端教程、SSR进阶自建节点教程。目前还在码代码中...</p>
+                    <img src="/wholeSite/emoji/1.png" width="15%">
+                    <p>整个Project如果进展顺利，可能会在今年暑假阶段进行全面公布，有兴趣的小伙伴可以到<a href="https://github.com/Sora-Sou/SoraPage/commits/master">这里</a>来监工。</p>
+                    <p>由于自己对SSR的了解也很肤浅，一些术语的解释可能存在偏差，如果大佬发现错误或者任何BUG，欢迎通过评论区、QQ或者邮箱sora@sorapage.com指教。</p>
+                    <p>では、みんな、ありがとうございます。</p>
                 </article>
         </section>
 
