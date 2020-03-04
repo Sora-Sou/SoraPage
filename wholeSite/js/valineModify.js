@@ -24,9 +24,9 @@ window.onload = function () {
         $(".vnick").text(function (index, name) {
             if(name=="Sora"){
                 $(this).css("color","red");
-                $(this).closest(".vcard").children(".vimg").attr("src","/wholeSite/icon.png").css("border","none");
+                $(this).closest(".vcard").children(".vimg").attr("src","/wholeSite/img/icon.png").css("border","none");
             }else{
-                $(this).closest(".vcard").children(".vimg").attr("src","/wholeSite/avatar.png").css("border","none");
+                $(this).closest(".vcard").children(".vimg").attr("src","/wholeSite/img/avatar.png").css("border","none");
             }
         })
     }
