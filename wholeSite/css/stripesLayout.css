@@ -36,10 +36,10 @@ code{
         font-size: 1.3rem;
     }
     .background_gray {
-        padding: 2% 15% 2% 15%;
+        padding: 1% 15% 2% 15%;
     }
     .background_white {
-        padding: 2% 15% 2% 15%;
+        padding: 1% 15% 2% 15%;
     }
 }
 
@@ -55,9 +55,9 @@ code{
         font-size: 1.1rem;
     }
     .background_gray {
-        padding: 3% 5%;
+        padding: 1.5% 5%;
     }
     .background_white {
-        padding: 3% 5%;
+        padding: 1.5% 5%;
     }
 }
