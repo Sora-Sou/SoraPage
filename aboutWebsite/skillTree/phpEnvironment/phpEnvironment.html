@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/wholeSite/img/icon.png" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" href="/wholeSite/css/fixedHeader.css" />
+    <link type="text/css" rel="stylesheet" href="/wholeSite/css/H5StripeLayout.css" />
+    <title>SoraPage</title>
+    <style>
+
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-156500969-1');
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="headerWebname" style="margin-top: 0;">
+            <a href="/homepage/homepage.html">SoraPage</a>
+        </span>
+        <div id="headerTitle">本地PHP+SQL</div>
+    </header>
+
+    <main>
+        <article>
+
+            <section id="title" class="background_gray">
+                <h1>RE:从零开始的PHP+SQL本地开发</h1>
+                <p id="lastUpdate"><strong>最后更新：<time>2020年3月13日</time></strong></p>
+                <p>PHP是运行在服务器端的语言，在服务器端一般是采用LAMP的系统环境，在Windows系统下需要搭建本地LAMP环境才能开发。</p>
+                <p>Windows常用的搭建本地服务器的软件是WampServer，以及日常使用VSCode充当编译器，再加上一个实时预览的VSCode插件LiveServer，基本上就能从零搭建起一个顺手的PHP开发环境。
+                </p>
+                <p>简而言之，PHP+SQL本地开发环境 = WampServer + VSCode + LiveServer</p>
+            </section>
+
+            <section id="wampServer" class="background_white">
+                <h2>WampServer</h2>
+                <p>开始之前，简单介绍下WAMP的概念，Windows Apache MySQL
+                    PHP，各取首字母就是WAMP。其实完全可以一个个地安装这几样再组装起来搭建本地环境，但中间的配置步骤貌似很麻烦，因此会诞生出WampServer这样的一键组装应用。</p>
+                <h3>Step-1：下载和安装</h3>
+                <p>在<a href="http://www.wampserver.com/en/"
+                        target="_blank">官网</a>下载，在安装时只需要记得勾选安装MySQL（默认安装MariaDB）就可以一路确认。</p>
+                <h3>Step-2：启动</h3>
+                <p>安装完成后，打开这个软件，如果成功运行的话，任务栏的图标是会呈现绿色的。</p>
+                <p>看到那抹绿色后，在浏览器地址栏中输入localhost就能打开WampServer的配置界面（也可以左键点击任务栏图标，第一个就是localhost）</p>
+                <h3>Step-3：添加项目文件夹</h3>
+                <p>要想把自己的项目文件夹添加到WampServer的启动目录中的话，需要左键点击任务栏图标，在Your VirtualHosts菜单中选择VirtualHost Management</p>
+                <img src="wamp_1.png" width="50%">
+                <p>然后把弹出网页中的两个红框框填了就行了，第一个框填的是项目名称，就是显示在主配置界面的项目名称，和文件夹不同名也没问题，第二个框填的就是文件夹的绝对路径，格式参考示例。</p>
+                <img src="wamp_2.png" width="100%">
+                <h3>Step-4：重启DNS</h3>
+                <p>创建VirtualHost之后，还需要<strong>重启DNS</strong>，右键任务栏图标,Tools菜单中点击Restart DNS</p>
+                <img src="wamp_3.png" width="50%">
+                <h3>Step-5：打开项目文件夹</h3>
+                <p>在localhost的主配置页面，点击相应的项目文件夹即可访问</p>
+                <img src="wamp_4.png" width="100%">
+            </section>
+
+            <section id="SQL" class="background_gray">
+                <h2>访问数据库</h2>
+                <strong>默认账户是root，没有密码</strong>
+                <h3>MySQL终端</h3>
+                <p>左键任务栏图标，在MySQL子菜单中点击console</p>
+                <img src="sql_1.png" width="80%">
+                <h3>phpMyAdmin</h3>
+                <p>localhost的主配置页面中，Tools一栏中就能找到</p>
+                <img src="sql_2.png" width="90%">
+            </section>
+
+            <section id="liveServer" class="background_white">
+                <h2>LiveServer插件</h2>
+                <p>VSCode上的LiveServer拓展可以实时刷新html和php页面，直线提升码代码的体验。 </p>
+                <p>原生的LiveServer拓展只支持html的动态刷新，要想实现PHP的刷新功能，需要在Chrome或Firefox上下载配套的插件</p>
+                <p>PS：在看插件作者的YouTube教程时，地道的印度口音英语真是让人欲罢不能。</p>
+                <h3 style="display: inline;">Step-1：安装插件</h3>
+                <p style="display: inline; margin-left: 1%;"><a
+                        href="https://chrome.google.com/webstore/detail/live-server-web-extension/fiegdmejfepffgpnejdinekhfieaogmj/"
+                        target="_blank">传送门</a></p>
+                <h3>Step-2：配置插件</h3>
+                <ul>
+                    <li>
+                        <p>在WampServer的localhost中点击你的项目文件夹，将页面的URL（地址栏中的地址）复制备用</p>
+                        <img src="liveServer_1.png" width="90%">
+                    </li>
+                    <li>
+                        <p>在VsCode中随便用LiveSever原版拓展打开一个html文件，将前面的数字复制备用</p>
+                        <img src="liveServer_2.png" width="90%">
+                    </li>
+                </ul>
+                <p>然后把复制的两个URL，填入chrome插件的框框内,Apply后Live Reload</p>
+                <img src="liveServer_3.png" width="40%">
+                <h3>Step-3：使用插件</h3>
+                <p>用VsCode打开要码代码的PHP文件，按F1搜索liveserver,点击Open with live server</p>
+                <img src="liveServer_4.png" width="90%">
+                <p>在localhost界面打开项目文件夹，然后在地址栏里输入你PHP文件的路径即可</p>
+                <img src="liveServer_5.png" width="50%">
+                <p>完</p>
+            </section>
+
+            <article id="comment" class="background_gray">
+                <!--评论系统-->
+                <!-- Valine -->
+                <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+                <div id="vcomments"></div>
+                <script>
+                    new Valine({
+                        el: '#vcomments',
+                        appId: 'cCE8pXKvbUCFj5JuT7hic3q6-gzGzoHsz',
+                        appKey: 'mgKE70GqsKmROxG4KalTmgVF',
+                        visitor: true,
+                        meta: ['nick', 'mail'],
+                        placeholder: "Comment Here~"
+                    })
+                </script>
+                <!-- 邮件链接跳转 -->
+                <script>
+                    if (window.location.hash) {
+                        var checkExist = setInterval(function () {
+                            if ($(window.location.hash).length) {
+                                $('html, body').animate({ scrollTop: $(window.location.hash).offset().top - 90 }, 1000);
+                                clearInterval(checkExist);
+                            }
+                        }, 100);
+                    }
+                </script>
+                <!-- 魔改 -->
+                <script src='/wholeSite/js/valineModify.js'></script>
+                <style>
+                    .vtime,
+                    ::placeholder {
+                        color: rgb(90, 90, 90) !important;
+                    }
+
+                    .vsubmit:disabled {
+                        color: rgb(170, 170, 170);
+                    }
+
+                    .vquote {
+                        border-left: none !important;
+                    }
+                </style>
+                <!--评论系统完-->
+            </article>
+
+        </article>
+    </main>
+</body>
+
+</html>
