@@ -1,0 +1,64 @@
+main {
+    padding: 20px;
+    background-color: rgb(240, 240, 240);
+    border-radius: 25px;
+    line-height: 2;
+}
+
+ul, ol {
+    margin-inline-start: 1em;
+}
+
+hr {
+    margin: 1% 1% 1% 0;
+    border: #00BFFF solid 1px;
+}
+
+hr.half {
+    margin: 1% 50% 1% 0;
+    border: #ffdead solid 1px;
+}
+
+#passage a:link, #passage a:visited {
+    color: #6495ED;
+}
+
+.centralImg {
+    margin: 1%;
+    text-align: center;
+}
+
+#lastUpadte {
+    text-align: center;
+}
+
+@media screen and (min-device-width: 801px) {
+    main {
+        margin: 60px 10% 0 10%;
+    }
+    h1 {
+        font-size: 1.7rem;
+    }
+    h2, #lastUpdate {
+        font-size: 1.5rem;
+    }
+    h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-device-width: 800px) {
+    main {
+        margin: 40px 5% 0 5%;
+        font-size: 0.9rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2, #lastUpdate {
+        font-size: 1.3rem;
+    }
+    h3 {
+        font-size: 1.1rem;
+    }
+}

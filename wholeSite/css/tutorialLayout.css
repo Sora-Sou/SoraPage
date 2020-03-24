@@ -2,7 +2,7 @@ ul, ol {
     margin-inline-start: 1em;
 }
 
-.line, .dividingLine {
+.line, .dividingLine, hr {
     margin: 1%;
     border-bottom-style: solid;
     border-bottom-color: #00BFFF;
@@ -14,7 +14,7 @@ ul, ol {
     border-bottom-color: #ffdead;
 }
 
-#allContent, #allContents {
+#allContent, #allContents, main {
     padding: 20px;
     background-color: rgb(240, 240, 240);
     border-radius: 25px;
@@ -22,7 +22,7 @@ ul, ol {
 }
 
 @media screen and (min-device-width: 801px) {
-    #allContent, #allContents {
+    #allContent, #allContents, main {
         margin: 60px 10% 0 10%;
     }
     h1 {
@@ -34,7 +34,7 @@ ul, ol {
 }
 
 @media screen and (max-device-width: 800px) {
-    #allContent, #allContents {
+    #allContent, #allContents, main {
         margin: 40px 5% 0 5%;
         font-size: 0.85rem;
     }

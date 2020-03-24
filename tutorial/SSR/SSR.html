@@ -6,7 +6,7 @@
     <title>SoraPage-SSR教程</title>
     <link rel="icon" href="/wholeSite/img/icon.png" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="/wholeSite/css/fixedHeader.css" />
-    <link type="text/css" rel="stylesheet" href="/wholeSite/css/tutorialLayout.css" />
+    <link type="text/css" rel="stylesheet" href="/wholeSite/css/H5_tutorialLayout.css" />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <style>
         @media screen and (max-width: 800px) {
@@ -16,12 +16,6 @@
             #androidClient img,
             #postscript img {
                 width: 100%;
-            }
-        }
-
-        @media screen and (min-width: 550px) {
-            #welfareText {
-                display: inline;
             }
         }
 
@@ -43,42 +37,21 @@
             font-size: 1.3rem;
         }
 
-        #welfare button {
-            padding: 3px 0 3px 5px;
-            border: 1px #3079ED solid;
-            border-radius: 5px;
-            color: white;
-            background: #4C8FFB;
+        #windowsClient h3 {
+            margin-top: 1rem;
         }
 
-        #welfare button:hover {
-            border: 1px #2F5BB7 solid;
-            box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
-            background: #3F83F1;
+        .red {
+            margin: 1rem 40% 1rem 0;
+            padding: 1rem 2rem;
+            border-left: #FF4642 5px solid;
+            border-radius: 3px;
+            background: rgba(255, 145, 143, 0.25);
         }
-
-        #welfare button:active {
-            box-shadow: inset 0 2px 5px #2370FE;
-        }
-
-        #welfare input {
-            padding: 3px 10px;
-            border: 1px solid #00bfff;
-            border-radius: 25px;
-            outline-style: none;
-        }
-
-        #welfare input:focus {
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-        }
-
-        #display {
-            margin-bottom: 1%;
-        }
-
-        #hidden {
-            display: none;
+        @media screen and (max-width: 1000px){
+            .red{
+                margin: 1rem 0;
+            }
         }
     </style>
     <script>
@@ -94,14 +67,6 @@
         $(document).ready(function () {
             $("#goTop").click(function () {
                 $("html,body").animate({ scrollTop: '0px' }, 1000);
-            })
-        })
-        // 判断真名输入
-        $(document).ready(function () {
-            $("#nameSubmit").click(function () {
-                if ($("#nameInput").val() == "宋昊浙") {
-                    $("#hidden").slideDown("slow");
-                } else { alert("你不记得我是谁了吗？哭唧唧...\n请输入中文名呐~"); }
             })
         })
     </script>
@@ -123,48 +88,28 @@
         <div id="headerTitle">SSR教程</div>
     </header>
 
-    <div id="allContent">
-
-        <section id="passage">
-            <div class="centralImg" id="title">
-                <img src="SSRimg.png" width="50%" alt="SSR的图标" id="icon">
-                <h2>最后更新：2020年3月4日18:07</h2>
-            </div>
-
-            <div class="line"></div>
-
-            <div id="catalog">
-                <h1>目录</h1>
+    <main>
+        <div class="centralImg" id="title">
+            <img src="SSRimg.png" width="50%" alt="SSR的图标" id="icon">
+            <p id="lastUpdate"><strong>最后更新：<time>2020年3月24日22:31</time></strong></p>
+        </div>
+        <hr>
+        <article id="passage">
+            <section id="catalog">
+                <h2>目录</h2>
                 <ul>
                     <li><a href="#introduction" class="innerpageHref">SSR简介</a></li>
-                    <li><a href="#price" class="innerpageHref">SSR价格</a></li>
                     <li><a href="#acess" class="innerpageHref">SSR使用方法</a></li>
                     <li><a href="#sever" class="innerpageHref">机场</a></li>
                     <li><a href="#windowsClient" class="innerpageHref">Windows客户端</a></li>
                     <li><a href="#iosClient" class="innerpageHref">iOS客户端</a></li>
                     <li><a href="#androidClient" class="innerpageHref">安卓客户端</a></li>
-                    <li><a href="#welfare" class="innerpageHref">福利</a></li>
                 </ul>
-            </div>
-
-            <div class="line"></div>
-
-            <article id="preface">
-                <h1>前言</h1>
-                <p>第一次听说SSR还是在高二的时候，班上一位IT巨佬向我安利了这种科学上网的技术，可直到一年前自己才算是对这门技术入了门。可能这就是为什么IT巨佬现在在UCSD研究计算机，而我在微软认为是大专的HUST里搬砖的原因吧。
-                </p>
-                <p>前阵子哥大的招生官来学校宣讲，在回应哥大某网站被墙而无法访问时，说了这么一句话"You are students in a university named science and
-                    technology.You should konw how to use VPN!"</p>
-                <p>但是呢，我的一位某上海知名985的CS专业的同学跟我说他不会用VPN，再加上最近有一些小伙伴问我咋科学上网。</p>
-                <p>emmmmmm...那好吧，看来科学上网目前而言并没有我想象中那么普及。</p>
-                <p>所以冒着网站被封的风险，在法律的边缘疯狂试探，整了这么一篇说不定明天就没了的文章。</p>
-                <p>既然我这个菜鸡都能搞明白SSR，相信各位在看完这篇比较白话文的文章后，也能夺回自己的信息自由获取权。</p>
-            </article>
-            <div class="line"></div>
-
-            <article id="introduction">
-                <h1>SSR简介</h1>
-                <p>SSR是一种科学上网的手段，有了SSR，你可以：</p>
+            </section>
+            <hr>
+            <section id="introduction">
+                <h2>SSR简介</h2>
+                <h3>SSR的作用</h3>
                 <ul>
                     <li>访问本不存在的网站，如Google和Twitter</li>
                     <li>提高不稳定访问状态的外网网站的访问速度和稳定性，如GitHub和Microsoft</li>
@@ -172,83 +117,69 @@
                     <li>改善origin和steam的连接，解决各种乱七八糟的报错问题（如创意工坊无法访问，好友系统离线等等）</li>
                     <li>替代游戏加速器，不过一般加速效果很有限</li>
                 </ul>
-                <p>SSR的显著优点：</p>
+                <h3>SSR的显著优点：</h3>
                 <ul>
                     <li>跨平台，从Windows、macOS、Linux再到移动端的iOS和Andriod都可以使用</li>
                     <li>稳定，SSR的开发目的就是为了科学上网，在穿透能力上一般是比其他工具更为隐蔽和强大</li>
                     <li>价格较低，综合考虑科学上网的速度和成本，SSR不仅便宜，对于需求不大和动手能力强的用户甚至可以白嫖</li>
                     <li>自定义性强：不仅可以人为规定哪些网站需要科学上网（进一步提高速度和降低成本），还可以方便地搭建SSR自用服务器</li>
                 </ul>
-            </article>
-
-            <div class="line"></div>
-
-            <article id="price">
-                <h1>SSR价格</h1>
-                <p>
-                    下面给出两个SSR服务提供商的套餐表（分别对应下文中的<a href="#sever" class="innerpageHref">机场A和机场B</a>，截图日期：2020.1.24）。
-                </p>
-                <img src="price_1.png" width="100%" alt="机场A的价格表">
-                <img src="price_2.png" width="100%" alt="机场B的价格表">
-                <p>
-                    根据我之前的安利经验，很多小伙伴估计看到了SSR要掏钱还要限流量，就感觉很不划算。<strong>但实际上</strong>，从我一年来的使用经历来看，中度的视频和下载需求下，
-                    一年也就花了200G+的流量，而且这两个SSR提供商都允许用户每天签到获得400M左右的流量，对于某些翻墙需求不是很大的小伙伴，是可以白嫖使用的。
-                </p>
-                <p>还有一个省钱技巧就是，部分SSR服务提供商在特定的日子会大力度打折，比如2020年的元旦，我一直用的那家（对应下文中的机场A），直接全场5折，微氪后大概就是80块1年加上2000G流量，还是非常划算的。
-                </p>
-                <p>动手和钻研能力较强的小伙伴，可以考虑自己搭建SSR服务器，从而再次降低使用SSR的成本。</p>
-            </article>
-
-
-            <div class="line"></div>
-
-            <article id="acess">
-                <h1>SSR使用方法</h1>
+            </section>
+            <hr>
+            <section id="acess">
+                <h2>SSR使用方法</h2>
                 <p><strong>科学上网 = 客户端 + 飞机场（SSR服务提供商）</strong>因为SSR图标是一架纸飞机，所以称SSR服务提供商为飞机场。</p>
                 <p></p>
                 <p>在详细介绍SSR的使用方法前，简单说说SSR的工作原理。</p>
                 <p>SSR的原理做个类比就是代购，在国内买不到的东西，托个人出国买了再给你捎回来，SSR充当的就是代购的角色。在国内被墙的网站，在国外访问是没有问题的。你访问Google的请求，通过客户端，发送给墙外的服务器，服务器把Google的页面下载下来，再发给你，这样你就在墙内也能看到墙外的世界了。
                 </p>
-            </article>
-
-            <div class="line"></div>
-
-            <article id="sever">
+            </section>
+            <hr>
+            <section id="sever">
                 <h1>机场</h1>
                 <p>所谓机场，就是手里有一大批墙外服务器的人，每一个服务器称为一个节点，可以同时为多人服务。</p>
-                <p>
-                    这里给出两个我用着觉得还不错的机场网址
-                    <a href="https://saocaozuo.me/auth/register?code=tJKt" target="_blank">机场A</a> 和
-                    <a href="https://today.abyss.moe?aff=13036" target="_blank">机场B</a>，
-                    很希望大家通过这两个链接去注册，因为这些机场会将你们氪金的一部分返利给邀请者（疯狂暗示）。
-                    机场的网站是很不稳定的（重点关照对象），裸连时可能会很慢甚至会出错（通过SSR连接的话会快很多），需要大家多尝试几次。
+                <p>在此打一波广告，自己搭建的<strong><a href="http://sorapage.digital/"
+                            target="_blank">机场</a></strong>，价格每个月不到2瓶快乐水，绝对良心，而且因为人少所以速度很快，欢迎大家来捧场~</p>
+                <p style="margin-top: 0.7rem;">另外略微科普一下如何选择节点。影响节点体验的无非两个因素：<strong>延迟</strong>和<strong>带宽</strong>。</p>
+                <p><strong>延迟</strong>是指你从发出数据到接受数据的时间差，一般单位为毫秒ms。这个在打游戏尤其是FPS时是至关重要的，延迟在游戏中经常称作ping，如果不想成为高ping战士的话，还是选择延迟较低的节点吧。
                 </p>
-                <p>
-                    这两个里面我更推荐机场A，并且下面都是以机场A为例讲的，机场B是我最近才找到的，而机场A我自己用了一年多了。相比之下，机场A提供的节点更多，价格会更低一点。
-                    机场B我很欣赏他们的网页设计，并且他们给的教程对萌新更为友好，大家也可以去参观参观。
+                <p><strong>带宽</strong>一般而言是更为看重的，带宽用白话文讲就是下载速度，这个决定着你在看浏览网页和看视频时的体验，我们更关心能不能快速加载出图片，能不能无压力4K油管，而相对那永远都不会超过1秒的延迟而言，带宽应该是更为重要的参数。
                 </p>
-            </article>
-
-            <div class="line"></div>
-
-            <article id="windowsClient">
-                <h1>Windows客户端 <a href="https://github.com/HMBSbige/ShadowsocksR-Windows/releases"
-                        target="_blank">下载链接</a></h1>
+                <p>SSR客户端上显示的都是延迟，所以不建议仅仅根据延迟的几个数字来作为选择和评判节点的标准。</p>
+            </section>
+            <hr>
+            <section id="windowsClient">
+                <h2>Windows客户端 <a href="https://github.com/HMBSbige/ShadowsocksR-Windows/releases"
+                        target="_blank">下载链接</a></h2>
                 <p>SSR功能很强大，不同平台上的客户端大同小异，这里主要以Windows的SSR客户端来讲。</p>
-                <p><br><strong>Step-1:</strong>点下载链接后，在最新的那个release里下载图中的这个文件。如果你的电脑是32位的就下载Win32版本的，不知道自己电脑是多少位的话，可以去百度搜“区分32位和64位系统”，
-                    一般不是特别老的电脑都是64位系统（直接下载红框内的那个）。</p>
+                <div class="red">
+                    <p>这部分的Step-5和Step-6非常重要，请确保完全理解</p>
+                </div>
+                <!-- 1 -->
+                <h3>Step-1</h3>
+                <p>
+                    点下载链接后，在最新的那个release里下载图中的这个文件。如果你的电脑是32位的就下载Win32版本的，不知道自己电脑是多少位的话，可以去百度搜“区分32位和64位系统”，
+                    一般不是特别老的电脑都是64位系统（直接下载红框内的那个）。
+                </p>
                 <img src="win_1.png" width="70%" alt="github中SSR客户端下载界面">
-                <p>有小伙伴跟我抱怨说GitHub下载速度感人，这是因为没有科学上网，为了方便各位下载，我把5.1.8.3版本64位的SSR放在自己的服务器上供大家下载，但是我的服务器带宽只有5M，一个人下载时跑满速度也就800K每秒左右，但比GitHub应该还是要快一些的。
+                <p>有小伙伴跟我抱怨说GitHub下载速度感人，这是因为没有科学上网，为了方便各位下载，我把5.1.8.5版本64位的SSR放在自己的服务器上供大家下载，但是我的服务器带宽只有5M，一个人下载时跑满速度也就800K每秒左右，但比GitHub应该还是要快一些的。
                     <a href="SSRWin.zip">点此下载</a>
                 </p>
-                <p><br><strong>Step-2:</strong>下载后解压，打开exe文件，弹出来的提示框选否，会打开订阅设置</p>
+                <!-- 2 -->
+                <h3>Step-2</h3>
+                <p>下载后解压，打开exe文件，弹出来的提示框选否，会打开订阅设置</p>
                 <img src="win_2.png" width="30%" alt="提示框处理">
-                <p><br><strong>Step-3:</strong>登录机场，在机场首页找到SSR节点订阅地址，把地址复制下来（这是机场A页面的一部分）</p>
+                <!-- 3 -->
+                <h3>Step-3</h3>
+                <p>登录机场，在机场首页找到SSR节点订阅地址，把地址复制下来</p>
                 <img src="win_3.png" width="70%" alt="机场页面获取订阅链接">
-                <p><br><strong>Step-4:</strong>回到SSR的订阅设置，在订设置里点添加，右边栏里订阅地址粘贴刚刚复制过的地址，订阅备注可以随意填，其他的地方建议不要动（等你看完这篇教程就可以瞎动了），最后按“确定并更新”
-                </p>
+                <!-- 4 -->
+                <h3>Step-4</h3>
+                <p>回到SSR的订阅设置，在订设置里点添加，右边栏里订阅地址粘贴刚刚复制过的地址，订阅备注可以随意填，其他的地方建议不要动（等你看完这篇教程就可以瞎动了），最后按“确定并更新”</p>
                 <img src="win_4.png" width="70%" alt="客户端添加订阅">
-                <p><br><strong id="step5">Step-5 系统代理:</strong>在任务栏右侧找到SSR的纸飞机图标，右键弹出菜单，打开系统代理子菜单</p>
+                <!-- 5 -->
+                <h3>Step-5 系统代理</h3>
+                <p>在任务栏右侧找到SSR的纸飞机图标，右键弹出菜单，打开系统代理子菜单</p>
                 <img src="win_5.png" width="40%" alt="系统代理子菜单">
                 <ul>
                     <li><strong>直连（较为常用）</strong>：所有流量（准确来说是HTTP协议下的流量）都不会经过SSR，相当于没开SSR</li>
@@ -260,8 +191,9 @@
                     </li>
                     <li><strong>不修改（更不常用）</strong>：对于像我一样的萌新而言，跟直连模式没啥区别。</li>
                 </ul>
-                <p><br><strong
-                        id="step6">Step-6规则设置</strong>：规则设置主要是针对PAC模式和全局模式下的流量代理规则，第一个子菜单“更新PAC”就是PAC模式下的规则，第二个子菜单“代理规则”适用于上一步的全局模式，由于这两个子菜单里的选项都差不多，拿更为常用的“代理规则”里的选项来讲讲
+                <!-- 6 -->
+                <h3>Step-6 规则设置</h3>
+                <p>规则设置主要是针对PAC模式和全局模式下的流量代理规则，第一个子菜单“更新PAC”就是PAC模式下的规则，第二个子菜单“代理规则”适用于上一步的全局模式，由于这两个子菜单里的选项都差不多，拿更为常用的“代理规则”里的选项来讲讲
                 </p>
                 <img src="win_6.png" width="40%" alt="规则设置子菜单">
                 <ul>
@@ -275,35 +207,27 @@
                     <li><strong>全局（常用）</strong>：所有的流量经过SSR，用处就是访问国内网站时改变IP地址，比如访问百度和B站时也会让墙外服务器帮你一把，从而让你能看到B站的港澳台限定的番。
                     </li>
                 </ul>
-                <p><br><strong>Step-7
-                        切换节点</strong>：日常使用时，上面两个一般设置为“全局系统代理”和“绕过局域网和大陆”。设置完成后，可能还是上不了Google，原因是SSR默认连接机场返回的节点列表中的第一个节点，而这个节点可能是不可用的，这时需要切换到可用节点。
+                <!-- 7 -->
+                <h3>Step-7 切换节点</h3>
+                <p>日常使用时，上面两个一般设置为“全局系统代理”和“绕过局域网和大陆”。设置完成后，可能还是上不了Google，原因是SSR默认连接机场返回的节点列表中的第一个节点，而这个节点可能是不可用的，这时需要切换到可用节点。
                 </p>
                 <p>打开连接统计，有两种方法，第一种是中键SSR任务栏图标，第二种是右键任务栏图标，在菜单中找服务器——连接统计。</p>
                 <img src="win_7.png" width="100%" alt="连接统计页面">
                 <p>连接统计里会有很详细的节点信息。平均下载速度其实就是当前通过SSR的流量速度，总下载是这个节点所有时间的下载量，实下载是本次使用SSR这个节点的下载量。要切换节点的话，在服务器那一列点你想挂的节点就行了（注意不是点序号那一列），切换成功的话，服务器那里是会变成绿色的。
                 </p>
-                <br>
-                <p>关于查看节点可用性，可以切换节点后，打开Google或一个需要翻墙的网页进行检测，如果表中右侧没有出现红色报错信息的话，那就说明节点可用。另外，SSR只有在有流量经过后才会显示延迟，所以切换节点后是不会实时显示延迟的，需要打开一个需要翻墙的网页。</p>
+                <p style="margin-top: 0.7rem;">
+                    关于查看节点可用性，可以切换节点后，打开Google或一个需要翻墙的网页进行检测，如果表中右侧没有出现红色报错信息的话，那就说明节点可用。另外，SSR只有在有流量经过后才会显示延迟，所以切换节点后是不会实时显示延迟的，需要打开一个需要翻墙的网页。
+                </p>
                 <img src="win_9.png" width="100%" alt="连接报错页面">
-                <p><br>在这着重强调下<strong>节点名字的含义</strong>，也就是服务器那一栏。虽然每个机场可能给节点的命名规则不一样，但大同小异，具体的可以参考机场的公告。</p>
-                <ul>
-                    <li>名字前面的地区一般决定了你的IP地址段，这个针对部分锁IP的网站和游戏，比如YouTube部分日本视频会限制特定日本IP区间的流量才能访问，一般挂日本地区的节点就没什么大问题，但是你挂香港节点有可能就连不上。
-                    </li>
-                    <li>名字后面的数字加乘号，表示机场的流量统计方式。拿图中我挂着的这个节点为例，后面写着20x，那么你实下载1M的流量，在机场那统计的流量使用量是1M x 20
-                        =20M，因为深港专线服务器租赁费用比较高，能提供更快的连接速度和防止被墙。平时使用时要格外注意，防止发生我朋友一天烧了80G流量的类似悲剧。</li>
-                </ul>
-                <p>如果大家对节点感兴趣的话，这里给出一张图（图来自机场B）和一个<a href="https://www.duyaoss.com/archives/1086/"
-                        target="_blank">链接</a>，讲的是比我强多了。</p>
-                <img src="win_8.png" width="100%" alt="机场B的节点说明">
-                <p><strong>Step-8 OVER!</strong>：Windows上的SSR客户端的萌新科普就完结了，欢迎来到（回到）新世界！</p>
-            </article>
-
-            <div class="line"></div>
-
-            <article id="iosClient">
-                <h1>iOS客户端 Shadowrocket</h1>
+                <!-- 8 -->
+                <h3>Step-8 OVER!</h3>
+                <p>Windows上的SSR客户端的萌新科普就完结了，欢迎来到（回到）新世界！</p>
+            </section>
+            <hr>
+            <section id="iosClient">
+                <h2>iOS客户端 Shadowrocket</h2>
                 <p>iOS上的SSR客户端Shadowrocket反正我是觉得比Windows上的好使，而且Shadowrocket不仅支持SSR，还支持其他很多协议，虽然我除了SSR也不知道其他的咋用。</p>
-                <h2>Step-1 下载APP</h2>
+                <h3>Step-1 下载APP</h3>
                 <p>
                     iOS上用SSR的难点在于下载客户端Shadowrocket，这个APP在国区的App Store里是搜不到的（显而易见的原因），只能到非国区的App
                     Store去下载，香港、日本、美国的App
@@ -322,7 +246,7 @@
                 </p>
                 <p>实在两个都不想买的，可以找我py一下，诚恳地拿你们的女装照片来求我个几次，说不定我会勉为其难地答应。</p>
 
-                <h2><br>Step-2 Shadowrocket登机指南</h2>
+                <h3>Step-2 Shadowrocket登机指南</h3>
                 <ol>
                     <li><strong>添加订阅</strong>：进入APP后点击右上角的+号，在类型里选subscribe，URL就是机场给的订阅链接，备注也是可以随意填，填完后右上角完成即可。</li>
                     <div class="centralImg"><img src="ios_3.PNG" width="40%" alt="Shadowrocket首页"></div>
@@ -342,78 +266,43 @@
                         </ul>
                     </li>
                 </ol>
-
-                <div class="line"></div>
-
-                <article id="androidClient">
-                    <h1>安卓客户端</h1>
-
-                    <h2>Step-1 下载客户端</h2>
-                    <p>和Windows一样，给出GitHub上的下载链接:<a href="https://github.com/HMBSbige/ShadowsocksR-Android/releases"
-                            target="_blank">点击此处</a></p>
-                    <p>安卓的APP安装包是以apk为后缀名的，所以挑最新的版本下载就OK</p>
-                    <img src="android_1.png" width="90%">
-                    <p>同样，考虑到GitHub下载速度的问题，这里也可以直接从我的服务器上下载3.6.0版本的：<a href="SSRAndroid.apk">点此下载</a></p>
-
-                    <br>
-                    <h2>Step-2 设置客户端</h2>
-                    <p>安装完成后，打开客户端</p>
-                    <table>
-                        <tr>
-                            <td><img src="android_2.png" width="100%" class="iosImg" alt="安卓SSR"></td>
-                            <td><img src="android_3.png" width="100%" class="iosImg" alt="安卓SSR"></td>
-                            <td><img src="android_4.png" width="100%" class="iosImg" alt="安卓SSR"></td>
-                        </tr>
-                    </table>
-                    <ol>
-                        <li>左上角点shadowsocksR</li>
-                        <li>添加订阅的步骤和其他平台客户端是一样的，从机场copy下来的链接填进去</li>
-                        <li>添加订阅后，选择一个节点，会返回到首页，点飞机图标即可开启SSR</li>
-                    </ol>
-
-                    <br>
-                    <h3>Step-3 其他设置</h3>
-                    <p>在APP首页往下翻，可以设置代理方式和分应用代理。</p>
-                    <img src="android_5.png" width="40%">
-                    <ul>
-                        <li><strong>路由</strong>：这个设置菜单里，和Windows客户端的设置是一样的，参看Windows部分的<a href="#step5"
-                                class="innerpageHref">Step-5</a>和<a href="#step6" class="innerpageHref">Step-6</a></li>
-                        <li><strong>分应用代理</strong>：这个应该是安卓客户端特色功能了，可以指定哪些APP经过SSR代理，非常实用的一个功能。</li>
-                    </ul>
-                </article>
-
-                <div class="line"></div>
-
-                <article id="welfare">
-                    <h1>福利</h1>
-                    <div id="display">
-                        <p id="welfareText">さぁ、会是什么呢？</p>
-                        <input type="text" placeholder="请输入Sora的真名" id="nameInput" style="width: 9em;">
-                        <button id="nameSubmit">警察叔叔就是他！</button>
-                    </div>
-                    <div id="hidden">
-                        <p>分享一个自己搭建的节点，梯子架在亚马逊的美国服务器上，速度肯定比不上机场，大家可以白嫖凑合着用。</p>
-                        <p style="word-break: break-all; color: #6495ED;">
-                            ssr://My44NC4yMjEuMTE0OjcyNzI6YXV0aF9zaGExX3Y0OmFlcy0yNTYtY2ZiOnBsYWluOmMyOXlZWEJoWjJVLz9vYmZzcGFyYW09JnJlbWFya3M9UVZkVExlZS1qdVdidlEmZ3JvdXA9VTI5eVlWQmhaMlU
-                        </p>
-                        <p>PS:复制，打开SSR的APP会有提示，或在SSR客户端中选择从剪切板导入节点。</p>
-                        <p>希望各位理性使用，如果超出了使用额度，服务器会被收回。</p>
-                    </div>
-                </article>
-                <div class="line"></div>
-
-                <article id="postscript">
-                    <h1>写在最后的碎碎念</h1>
-                    <p>这篇教程最初写于2020.1.24日，由于是Project的第一篇正式教程，写的时候难免有些激动，在3.0的版本中已经删除了大部分意义不明的话。</p>
-                    <p>由于自己对SSR的了解也很肤浅，一些术语的解释可能存在偏差，如果大佬发现错误或者任何BUG，欢迎通过评论区、QQ或者邮箱sora@sorapage.com指教。</p>
-                    <p>では、みんな、ありがとうございます。</p>
-                </article>
-        </section>
-
-        <div class="line"></div>
-
-        <div id="comments">
-            <h1>评论区</h1>
+            </section>
+            <hr>
+            <section id="androidClient">
+                <h2>安卓客户端</h2>
+                <h3>Step-1 下载客户端</h3>
+                <p>和Windows一样，给出GitHub上的下载链接:<a href="https://github.com/HMBSbige/ShadowsocksR-Android/releases"
+                        target="_blank">点击此处</a></p>
+                <p>安卓的APP安装包是以apk为后缀名的，所以挑最新的版本下载就OK</p>
+                <img src="android_1.png" width="90%">
+                <p>同样，考虑到GitHub下载速度的问题，这里也可以直接从我的服务器上下载3.6.0版本的：<a href="SSRAndroid.apk">点此下载</a></p>
+                <h3>Step-2 设置客户端</h3>
+                <p>安装完成后，打开客户端</p>
+                <table>
+                    <tr>
+                        <td><img src="android_2.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                        <td><img src="android_3.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                        <td><img src="android_4.png" width="100%" class="iosImg" alt="安卓SSR"></td>
+                    </tr>
+                </table>
+                <ol>
+                    <li>左上角点shadowsocksR</li>
+                    <li>添加订阅的步骤和其他平台客户端是一样的，从机场copy下来的链接填进去</li>
+                    <li>添加订阅后，选择一个节点，会返回到首页，点飞机图标即可开启SSR</li>
+                </ol>
+                <h3>Step-3 其他设置</h3>
+                <p>在APP首页往下翻，可以设置代理方式和分应用代理。</p>
+                <img src="android_5.png" width="40%">
+                <ul>
+                    <li><strong>路由</strong>：这个设置菜单里，和Windows客户端的设置是一样的，参看Windows部分的<a href="#step5"
+                            class="innerpageHref">Step-5</a>和<a href="#step6" class="innerpageHref">Step-6</a></li>
+                    <li><strong>分应用代理</strong>：这个应该是安卓客户端特色功能了，可以指定哪些APP经过SSR代理，非常实用的一个功能。</li>
+                </ul>
+            </section>
+            <hr>
+        </article>
+        <article id="comments">
+            <h2>评论区</h2>
             <!--评论系统-->
             <!-- Valine -->
             <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
@@ -456,8 +345,7 @@
                 }
             </style>
             <!--评论系统完-->
-        </div>
-    </div>
+        </article>
 </body>
 
 </html>
