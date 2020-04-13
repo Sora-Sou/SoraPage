@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/wholeSite/img/icon.png" type="image/x-icon">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>8051单片机汇编指令</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+            height: 100%;
+        }
+
+        #background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #2A2A2A;
+            z-index: -1;
+        }
+
+        main {
+            color: white;
+        }
+
+        pre {
+            margin: 0;
+            font-family: inherit; 
+            margin-inline-start: 3rem;
+        }
+
+        #table {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border: 1.5px white solid;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table .code{
+            text-align: start;
+        }
+
+        caption {
+            font-size: 1.7rem;
+        }
+
+        .sort_1 {
+            background-color: #2F4859;
+        }
+
+        .sort_2 {
+            background-color: #316660;
+        }
+
+        tr {
+            line-height: 2rem;
+        }
+
+        td,
+        th {
+            border: 1.5px white solid;
+        }
+
+        .clickable:hover {
+            cursor: pointer;
+        }
+
+        .explanation {
+            background-color: #2A2A2A;
+            display: none;
+        }
+
+        @media screen and (max-width: 700px) {
+            .explanation>td {
+                padding: 1rem;
+                text-align: start;
+            }
+        }
+
+        @media screen and (min-width: 701px) {
+            .explanation>td {
+                padding: 1rem 10%;
+                text-align: start;
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(".clickable").click(function () {
+                $($(this).closest("tr").nextAll(".explanation")).fadeToggle("fast");
+            });
+        })
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-156500969-1');
+    </script>
+</head>
+
+<body>
+    <div id="background"></div>
+    <main>
+        <div id="table">
+            <table id="commandTable">
+                <caption>8051单片机汇编指令集</caption>
+                <tr>
+                    <th>指令</th>
+                    <th>指令长度</th>
+                    <th>执行时间</th>
+                    <th>原理</th>
+                </tr>
+                <tbody class="sort_1">
+                    <tr>
+                        <td class="clickable">MOV A, #data</td>
+                        <td></td>
+                        <td></td>
+                        <td>A←data</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV A, direct</td>
+                        <td></td>
+                        <td></td>
+                        <td>A←(direct)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV A, Rn</td>
+                        <td></td>
+                        <td></td>
+                        <td>A←(Rn)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV A, @Ri</td>
+                        <td></td>
+                        <td></td>
+                        <td>A←((Ri))</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <ul>
+                                <li>MOV A, #data 将8位二进制数（或2位十六进制数）送入累加器A</li>
+                                <li>MOV A, direct 将RAM指定地址中的值送入累加器A</li>
+                                <li>MOV A, Rn 将R0-R7某一工作寄存器的值送入累加器A</li>
+                                <li>MOV A, @Ri 将R0或R1的值作为地址，把RAM该地址的值送入累加器A</li>
+                            </ul>
+                            <p>例：已知各单元的内容为</p>
+                            <table>
+                                <tr>
+                                    <td>累加器A</td>
+                                    <td>寄存器R0</td>
+                                    <td>内部RAM 40H</td>
+                                    <td>内部RAM 50H</td>
+                                </tr>
+                                <tr>
+                                    <td>40H</td>
+                                    <td>50H</td>
+                                    <td>30H</td>
+                                    <td>10H</td>
+                                </tr>
+                            </table>
+                            <p>执行如下操作后有</p>
+                            <table class="code">
+                                <tr>
+                                    <th>指令</td>
+                                    <th>结果</th>
+                                </tr>
+                                <tr>
+                                    <td>MOV A, #20H ;A←20H</td>
+                                    <td>A=20H</td>
+                                </tr>
+                                <tr>
+                                    <td>MOV A, 40H ;A←(40H)</td>
+                                    <td>A=30H</td>
+                                </tr>
+                                <tr>
+                                    <td>MOV A, R0 ;A←R0</td>
+                                    <td>A=50H</td>
+                                </tr>
+                                <tr>
+                                    <td>MOV A, @R0 ;A←((R0)), A←(50H)</td>
+                                    <td>A=10H</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--  -->
+                <tbody class="sort_2">
+                    <tr>
+                        <td class="clickable">MOV Rn, A</td>
+                        <td></td>
+                        <td></td>
+                        <td>Rn←(A)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV Rn, #data</td>
+                        <td></td>
+                        <td></td>
+                        <td>Rn← data</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV Rn, direct</td>
+                        <td></td>
+                        <td></td>
+                        <td>Rn←(direct)</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>待补充...</p>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--  -->
+                <tbody class="sort_1">
+                    <tr>
+                        <td class="clickable">MOV direct, A</td>
+                        <td></td>
+                        <td></td>
+                        <td>(direct)←(A)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV direct, Rn</td>
+                        <td></td>
+                        <td></td>
+                        <td>(direct)←(Rn)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV direct, @Ri</td>
+                        <td></td>
+                        <td></td>
+                        <td>(direct)←(Ri)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV direct, #data</td>
+                        <td></td>
+                        <td></td>
+                        <td>(direct)←data</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV direct2,direct1</td>
+                        <td></td>
+                        <td></td>
+                        <td>(direct2)←(direct1)</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>待补充...</p>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--  -->
+                <tbody class="sort_2">
+                    <tr>
+                        <td class="clickable">MOV @Ri, A</td>
+                        <td></td>
+                        <td></td>
+                        <td>((Ri))←(A)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV @Ri, direct</td>
+                        <td></td>
+                        <td></td>
+                        <td>((Ri))←(direct)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOV @Ri, #data</td>
+                        <td></td>
+                        <td></td>
+                        <td>((Ri))←data</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>将累加器A、片内RAM单元内容或立即数传送至R0、R1指向的内部RAM存储单元中</p>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--  -->
+                <tbody class="sort_1">
+                    <tr>
+                        <td class="clickable">MOV DPTR, #data</td>
+                        <td></td>
+                        <td></td>
+                        <td>DPTR←data16</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>将16位立即数送入数据指针DPTR，其中高位字节送DPH，低位字节送DPL</p>
+                            <p>例：</p>
+                            <pre class="language- line-numbers"><code>MOV DPTR, #2068H      ;指令执行后DPTR=2068H，其中DPH=20H,DPL=68H</code></pre>
+                    </tr>
+                </tbody>
+                <!--  -->
+                <tbody class="sort_2">
+                    <tr>
+                        <td class="clickable">MOVX @Ri, A</td>
+                        <td></td>
+                        <td></td>
+                        <td>((Ri))←(A)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOVX @DPTR, A</td>
+                        <td></td>
+                        <td></td>
+                        <td>((DPTR))←(A)</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOVX A, @Ri</td>
+                        <td></td>
+                        <td></td>
+                        <td>(A)←((Ri))</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOVX A, @DPTR</td>
+                        <td></td>
+                        <td></td>
+                        <td>(A)←((DPTR))</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>与片外RAM进行数据交换的4条指令，均以MOVX为开头</p>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="sort_1">
+                    <tr>
+                        <td class="clickable">MOVC A, @A+PC</td>
+                        <td></td>
+                        <td></td>
+                        <td>(A)←((A)+(PC))</td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">MOVC A, @A+DPTR</td>
+                        <td></td>
+                        <td></td>
+                        <td>(A)←((A)+(DPTR))</td>
+                    </tr>
+                    <tr class="explanation">
+                        <td colspan="4">
+                            <p>访问ROM</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</body>
+
+</html>

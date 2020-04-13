@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample</title>
+    <style>
+        html,body{
+            margin: 0;
+        }
+        #background {
+            position: absolute;
+            overflow: hidden;
+            background: #2A2A2A;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 更改div和canvas的id，只需要修改modify.js的对应名称 -->
+    <div id="background">
+        <canvas id="bgCanvas" width="1920" height="1440"></canvas>
+    </div>
+    <!-- script顺序不可改变，必须放在#background的div后 -->
+    <script src="/wholeSite/js/blackParticleBG/EasePack.min.js"></script>
+    <script src="/wholeSite/js/blackParticleBG/TweenLite.min.js"></script>
+    <script src="/wholeSite/js/blackParticleBG/modify.js"></script>
+</body>
+
+</html>
