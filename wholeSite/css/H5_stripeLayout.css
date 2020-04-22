@@ -7,16 +7,12 @@ article a:link, article a:visited {
     color: #6495ED;
 }
 
-#title h1{
+#title h1 {
     text-align: center;
 }
 
-#lastUpadte{
+#lastUpdate {
     text-align: center;
-}
-
-.background_gray {
-    background-color: rgb(240, 240, 240);
 }
 
 #comments {
@@ -27,13 +23,13 @@ ul, ol {
     margin-inline-start: 1rem;
 }
 
-code{
+code {
     background-color: #f3f3f3;
     color: #1c887e;
     padding: 3px;
 }
 
-img{
+img {
     display: block;
     margin: 1% auto;
 }
@@ -42,19 +38,16 @@ img{
     main {
         margin-top: 43px;
     }
-    h1{
+    h1 {
         font-size: 1.7rem;
     }
     h2 {
         font-size: 1.5rem;
     }
-    #lastUpdate{
+    #lastUpdate {
         font-size: 1.2rem;
     }
-    .background_gray {
-        padding: 1% 15% 2% 15%;
-    }
-    .background_white {
+    main article>section, #comment {
         padding: 1% 15% 2% 15%;
     }
 }
@@ -70,13 +63,10 @@ img{
     h2 {
         font-size: 1.3rem;
     }
-    #lastUpdate{
+    #lastUpdate {
         font-size: 1.3rem;
     }
-    .background_gray {
-        padding: 1.5% 5%;
-    }
-    .background_white {
+    main article>section, #comment {
         padding: 1.5% 5%;
     }
 }

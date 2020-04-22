@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="icon" href="/wholeSite/img/icon.png" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="/wholeSite/css/fixedHeader.css" />
     <link type="text/css" rel="stylesheet" href="/wholeSite/css/H5_stripeLayout.css" />
-    <title>SoraPage</title>
-    <style>
-
-    </style>
+    <script src="/wholeSite/js/stripeLayout.js"></script>
+    <title>RE:从零开始的PHP+SQL本地开发</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
     <script>
@@ -29,9 +28,9 @@
     </header>
 
     <main>
-        <article>
+        <article id="passage">
 
-            <section id="title" class="background_gray">
+            <section id="title">
                 <h1>RE:从零开始的PHP+SQL本地开发</h1>
                 <p id="lastUpdate"><strong>最后更新：<time>2020年3月13日</time></strong></p>
                 <p>PHP是运行在服务器端的语言，在服务器端一般是采用LAMP的系统环境，在Windows系统下需要搭建本地LAMP环境才能开发。</p>
@@ -40,7 +39,7 @@
                 <p>简而言之，PHP+SQL本地开发环境 = WampServer + VSCode + LiveServer</p>
             </section>
 
-            <section id="wampServer" class="background_white">
+            <section id="wampServer">
                 <h2>WampServer</h2>
                 <p>开始之前，简单介绍下WAMP的概念，Windows Apache MySQL
                     PHP，各取首字母就是WAMP。其实完全可以一个个地安装这几样再组装起来搭建本地环境，但中间的配置步骤貌似很麻烦，因此会诞生出WampServer这样的一键组装应用。</p>
@@ -63,7 +62,7 @@
                 <img src="wamp_4.png" width="100%">
             </section>
 
-            <section id="SQL" class="background_gray">
+            <section id="SQL">
                 <h2>访问数据库</h2>
                 <strong>默认账户是root，没有密码</strong>
                 <h3>MySQL终端</h3>
@@ -74,7 +73,7 @@
                 <img src="sql_2.png" width="90%">
             </section>
 
-            <section id="liveServer" class="background_white">
+            <section id="liveServer">
                 <h2>LiveServer插件</h2>
                 <p>VSCode上的LiveServer拓展可以实时刷新html和php页面，直线提升码代码的体验。 </p>
                 <p>原生的LiveServer拓展只支持html的动态刷新，要想实现PHP的刷新功能，需要在Chrome或Firefox上下载配套的插件</p>
@@ -104,7 +103,7 @@
                 <p>完</p>
             </section>
 
-            <article id="comment" class="background_gray">
+            <article id="comment">
                 <!--评论系统-->
                 <!-- Valine -->
                 <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
