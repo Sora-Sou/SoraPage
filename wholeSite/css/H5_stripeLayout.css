@@ -31,7 +31,7 @@ code {
 
 img {
     display: block;
-    margin: 1% auto;
+    margin: 1%;
 }
 
 @media screen and (min-device-width: 801px) {

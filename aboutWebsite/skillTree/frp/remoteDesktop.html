@@ -14,19 +14,26 @@
             margin: 1rem 0 1rem 1rem;
             padding-left: 1rem;
             border-left: gray solid 4px;
-            font-style: oblique;
+        }
+
+        @media screen and (max-width: 800px) {
+            img {
+                width: 100%;
+            }
         }
     </style>
     <script src="/wholeSite/js/prism.js"></script>
     <link type="text/css" rel="stylesheet" href="/wholeSite/css/prism.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https: //www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156500969-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
+
         gtag('config', 'UA-156500969-1');
     </script>
+
 </head>
 
 <body>
@@ -52,14 +59,10 @@
                     <li>半夜在床上拿iPad推Galgame（这才是最香的用处，手动滑稽）</li>
                     <li>笔记本连接台式机，两个桌面同时耍，笔记本上指使台式干一些脏重活后实时传回处理结果</li>
                 </ul>
-            </section>
-
-            <section id="mechanism">
-                <h2>原理：端口映射</h2>
-                <p>总的来说，就是把内网下的某一端口映射到公网下的某一端口。在远程桌面这一功能下，是将家里电脑的3389端口（windows默认远程桌面端口）映射至公网上的任意端口。然后通过公网上的这一端口访问家里电脑的远程桌面服务。
+                <br>
+                <p>先简单介绍下frp的原理。一句话说就是把内网下的某一端口映射到公网下的某一端口。在远程桌面这一功能下，是将家里电脑的3389端口（windows默认远程桌面端口）映射至公网上的任意端口。然后通过公网上的这一端口访问家里电脑的远程桌面服务。
                 </p>
                 <img src="rd_1.png" width="60%" style="margin: 1%;">
-                <p>具体的原理会在下面的设置中一步步地讲解，但是上面这张图是通讯原理的核心。</p>
             </section>
 
             <section id="serverSetting">
@@ -145,6 +148,40 @@ remote_port = 随意填（建议1000-65535中的某一个）</code></pre>
                 <p>注意电脑名称那一栏，正确的格式是ip:port的形式，这里的port就是在客户端配置文件frpc.ini里设置的remote_port</p>
                 <br>
                 <p>到这里就应该可以愉快地使用了，基础部分到此为止，下面开始讲一些进阶的用法</p>
+            </section>
+
+            <section id="mechanism">
+                <h2>原理详解：端口映射</h2>
+                <img src="rd_8.png" width="70%">
+                <p>整个启动顺序是服务端——客户端——远程端</p>
+                <p>服务端启动时，根据frps.ini中设置的bind_port来监听指定的端口，如7000端口</p>
+                <p>客户端启动时，本地的远程桌面专用端口3389与服务端的7000端口建立联系，同时告诉服务端fprc.ini中设置的remote_port。一旦客户端与服务端的通讯建立后，服务端收到remote_port的值，同时开始监听remote_port中设定的端口，如5200端口
+                </p>
+                <p>远程端随机挑选一个端口与服务端的remote_port端口建立通讯，服务端内部启动中转服务，整个通讯过程建立完毕。</p>
+                <p>所以整个过程就相当于把<b>内网的客户端的3389端口</b>映射到<b>服务器的5200端口</b>，成功达到内网穿透的目的。</p>
+            </section>
+
+            <section>
+                <h2>一个服务端对应多个客户端</h2>
+                <p>如何在一台云服务器上同时映射多台客户端？也就是说不仅我自己要在自己手机上远程控制自己的电脑，还要求小伙伴能通过我的服务器在他的手机上远程控制他的电脑。</p>
+                <p>这个很简单，在服务器上同时运行两个frp进程即可。</p>
+                <p>首先创造两份映射规则，即两份frps.ini文件。比如一份frps.ini配置文件中bind_port=7000，告诉服务器监听7000端口。另一份frps.ini配置文件中bind_port=7001，告诉服务器监听7001端口。当然这两份文件的文件名需要不一样（或者放在不同文件夹下）
+                </p>
+                <p>然后就根据这两份配置文件启动两个frp进程，如：</p>
+                <pre class="language-shell line-numbers"><code>nohup ./frps -c ./frps1.ini &
+nohup ./frps -c ./frps2.ini &</code></pre>
+                <p>然后在两台客户端PC上也分别设置两份映射规则，即两份frpc.ini文件。比如电脑A的frpc.ini中remote_port=5200并与服务端7000端口通讯。电脑B的frpc.ini中remote_port=5201并与服务端7001端口通讯。
+                </p>
+                <p>那么连接到服务器5200端口就能控制电脑A，连接5201端口就能控制电脑B。</p>
+                <p>整个原理如下：</p>
+                <img src="rd_9.png" width="30%">
+                <p>那么同理，一个客户端也是可以对应多个服务端的，只要同时根据不同的fprc.ini启动多个frp进程即可。</p>
+            </section>
+
+            <section id="NAT">
+                <h2>服务器为NAT的frp映射</h2>
+                <p>看图说话即可</p>
+                <img src="rd_10.png" width="50%">
             </section>
 
             <article id="comment">
