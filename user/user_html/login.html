@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/libs/bootstrap-4.5.0/bootstrap.min.css">
+    <script src="../../static/libs/jquery-3.5.1.min.js"></script>
+    <script src="../../static/libs/bootstrap-4.5.0/bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+    <style>
+        #function {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #login_container {
+            margin-top: 10%;
+            max-width: 25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="login_container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="email">邮箱:</label>
+                                {% if fail=='no_email' %}
+                                    <input type="text" name="email" class="form-control is-invalid" value="{{ email }}">
+                                {% elif fail=='wrong_password' %}
+                                    <input type="text" name="email" class="form-control is-valid" value="{{ email }}">
+                                {% else %}
+                                    <input type="text" name="email" class="form-control">
+                                {% endif %}
+                                <div class="valid-feedback">邮箱填对咯</div>
+                                <div class="invalid-feedback">邮箱不对呢</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密码:</label>
+                                {% if fail=='wrong_password' %}
+                                    <input type="password" name="password" class="form-control is-invalid">
+                                {% else %}
+                                    <input type="password" name="password" class="form-control">
+                                {% endif %}
+                                <div class="invalid-feedback">密码不对呢</div>
+                            </div>
+                            <div class="form-group" id="function">
+                                <div class="custom-control custom-switch" id="keep_login">
+                                    <input type="checkbox" class="custom-control-input" id="keep_login_switch"
+                                           name="keep_login_switch">
+                                    <label class="custom-control-label" for="keep_login_switch">7天内自动登录</label>
+                                </div>
+                                <div id="register">
+                                    <a href="register">注册</a>
+                                </div>
+                            </div>
+                            <input type="submit" value="登录" class="form-control btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

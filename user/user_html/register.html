@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/libs/bootstrap-4.5.0/bootstrap.min.css">
+    <script src="../../static/libs/jquery-3.5.1.min.js"></script>
+    <script src="../../static/libs/bootstrap-4.5.0/bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+    <style>
+        #register_container {
+            margin-top: 10%;
+            max-width: 25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="register_container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="name">用户名称:</label>
+                                {% if 'blank' in fail and 'name' in blank %}
+                                    <input type="text" name="name" id="name" class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个框框是必填项呢</div>
+                                {% elif 'used_name' in fail %}
+                                    <input type="text" name="name" value="{{ form['name'] }}"
+                                           id="name" class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个名称已经被别人使用啦</div>
+                                {% elif fail %}
+                                    <input type="text" name="name" value="{{ form['name'] }}"
+                                           id="name" class="form-control is-valid">
+                                    <div class="valid-feedback">该用户名称可用</div>
+                                {% elif not fail %}
+                                    <input type="text" name="name" id="name" class="form-control">
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="email">登录邮箱:</label>
+                                {% if 'blank' in fail and 'email' in blank %}
+                                    <input type="email" name="email" id="email" class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个框框是必填项呢</div>
+                                {% elif 'used_email' in fail %}
+                                    <input type="email" name="email" value="{{ form['email'] }}"
+                                           id="email" class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个邮箱已经被别人使用啦</div>
+                                {% elif fail %}
+                                    <input type="email" name="email" value="{{ form['email'] }}"
+                                           id="email" class="form-control is-valid">
+                                {% else %}
+                                    <input type="email" name="email" id="email" class="form-control">
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密码:</label>
+                                {% if 'blank' in fail and 'password' in blank %}
+                                    <input type="password" name="password" id="password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个框框是必填项呢</div>
+                                {% elif 'blank' in 'fail' and 'confirm_password' in blank %}
+                                    <input type="password" name="password" id="password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">请重新填写这一栏</div>
+                                {% elif 'different_password' in fail %}
+                                    <input type="password" name="password" id="password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">两次密码不一致呢</div>
+                                {% elif fail %}
+                                    <input type="password" name="password" value="{{ form['password'] }}"
+                                           id="password" class="form-control is-valid">
+                                {% else %}
+                                    <input type="password" name="password" id="password" class="form-control">
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password">确认密码:</label>
+                                {% if 'blank' in fail and 'confirm_password' in blank %}
+                                    <input type="password" name="confirm_password" id="confirm_password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">这个框框是必填项呢</div>
+                                {% elif 'blank' in fail and 'password' in blank %}
+                                    <input type="password" name="confirm_password" id="confirm_password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">请重新填写这一栏</div>
+                                {% elif 'different_password' in fail %}
+                                    <input type="password" name="confirm_password" id="confirm_password"
+                                           class="form-control is-invalid">
+                                    <div class="invalid-feedback">两次密码不一致呢</div>
+                                {% elif fail %}
+                                    <input type="password" name="confirm_password"
+                                           value="{{ form['confirm_password'] }}"
+                                           id="confirm_password" class="form-control is-valid">
+                                {% else %}
+                                    <input type="password" name="confirm_password"
+                                           id="confirm_password" class="form-control">
+                                {% endif %}
+                            </div>
+                            <input type="submit" value="注册" class="form-control btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
