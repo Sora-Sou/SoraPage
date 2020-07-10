@@ -7,5 +7,7 @@ __pycache__/
 instance/
 .webassets-cache
 
+config.py
+
 #pycharm
 .idea

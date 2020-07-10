@@ -1,10 +1,12 @@
 from flask import Flask, redirect, url_for
 from ACGN.ACGN import ACGN
 from user.user import user
+from comment import comment
 
 app = Flask(__name__)
 app.register_blueprint(ACGN)
 app.register_blueprint(user)
+app.register_blueprint(comment)
 
 app.config.from_pyfile('config.py')
 app.secret_key = app.config['SECRET_KEY']
