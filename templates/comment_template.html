@@ -1,168 +1,261 @@
 <style>
-    #comment_container {
-        padding: 1px;
+
+</style>
+<div class="container">
+    <hr>
+    <div class="bg-primary p-4 text-light rounded" id="reply_inform">
+        <p>你即将回复 <span id="comment_order"></span> 的 <span id="comment_author"></span> 的评论：</p>
+        <p id="comment_content"></p>
+        <div id="cancel_reply_bar">
+            <button class="btn btn-light" id="btn_cancel_reply">取消回复</button>
+        </div>
+    </div>
+    <div id="form_container" class="border border-primary rounded px-4 py-2 my-3">
+        <form id="comment_form">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <input type="text" name="name" placeholder="昵称" class="comment_input">
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="email" name="email" placeholder="邮箱" class="comment_input">
+                </div>
+            </div>
+            <textarea name="comment" placeholder="Comment Here~" id="comment_textarea"></textarea>
+            <div id="comment_bar">
+                <button type="button" class="btn btn-primary" id="submit_comment" data-comment-type="parent">评论
+                </button>
+            </div>
+            <input type="hidden" name="parent" id="comment_parent">
+            <input type="hidden" name="replyTo" id="comment_replyTo">
+            <input type="hidden" name="time" id="comment_time">
+            <input type="hidden" name="replyToSeq" id="comment_replyToSeq">
+        </form>
+    </div>
+    <div id="comment_container" class="border border-primary rounded p-4 my-2"></div>
+</div>
+
+<div class="modal fade" id="fail_comment" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">评论失败</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="fail_comment_cause"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function media(comment_obj) {
+        var media = $('<div></div>').addClass('media');
+        var avatar = $('<img>').attr({src: '{{ url_for('static',filename='/img/avatar.png') }}', width: '64px'})
+        var media_body = $('<div></div>').addClass('media-body').attr('data-comment-id', comment_obj['id'])
+
+
+        var media_bar_1 = $('<div></div>').addClass('media_bar')
+        media_bar_1.append($('<h5></h5>').text(comment_obj['name']).addClass('mb-0'))
+        media_bar_1.append($('<p></p>').text('#' + comment_obj['sequence']).addClass(['text-muted', 'comment_sequence']))
+
+        var media_bar_2 = $('<div></div>').addClass('media_bar')
+        media_bar_2.append($('<small></small>').addClass('text-muted').text(comment_obj['time']))
+        media_bar_2.append($('<button></button>').addClass(['btn', 'btn-link', 'btn_reply']).text('回复'))
+
+        media_body.append(media_bar_1, media_bar_2)
+        if (comment_obj['replyTo']) {
+            media_body.append($('<span></span>').text('回复#' + comment_obj['replyToSeq'] + ": ").addClass('text-success'))
+        }
+        media_body.append($('<span></span>').text(comment_obj['comment']).addClass('comment_content'))
+
+        media.append(avatar, media_body)
+        return media
     }
 
-    #comment_hr {
-        margin: 1.5rem 0 0.5rem 0;
+    function render(comment_json) {
+        if (comment_json['parent'].length == 0) {
+            const no_comment = $('<p></p>').text('≧﹏≦ 当前页面没有评论呢').addClass('text-muted').attr('id', 'no_comment')
+            $('#comment_container').append(no_comment)
+            $('#comment_container').css({
+                'display': 'flex',
+                'justify-content': 'center'
+            })
+        } else {
+            for (var i = 0; i < comment_json['parent'].length; i++) {
+                $('#comment_container').removeAttr('css')
+                $('#comment_container').append(media(comment_json['parent'][i]))
+
+                if (i != comment_json['parent'].length - 1) {
+                    $('#comment_container').append($('<hr>'))
+                }
+            }
+
+            for (var i = 0; i < comment_json['child'].length; i++) {
+                var judge = "[data-comment-id='" + comment_json['child'][i]['parent'] + "']"
+                $(judge).append($('<hr>'), media(comment_json['child'][i]))
+            }
+        }
     }
 
-    textarea {
-        padding: 14px;
-        height: 5rem;
-        width: 100%;
-        resize: none;
-        border: none;
+    function load() {
+        $.ajax({
+            url: 'comment',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                render(data)
+            }
+        })
     }
 
-    textarea:focus {
-        outline: none;
+
+    function reload(comment_json) {
+        $('#comment_container').empty()
+        render(comment_json)
+    }
+
+    function now() {
+        var time = new Date();
+        var now = new String();
+        now += time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate() + " ";
+        now += time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+        return now
+    }
+
+    window.onload = function () {
+        load()
+        $('#comment_container').on('click', '.btn_reply', function () {
+            const comment_order = $(this).parent().prev().find('.comment_order').text()
+            const comment_author = $(this).parent().prev().find('h5').text()
+            const comment_content = $(this).parent().nextAll('.comment_content').text()
+            $('#comment_order').text(comment_order)
+            $('#comment_author').text(comment_author)
+            $('#comment_content').text(comment_content)
+            $('#reply_inform').fadeIn()
+            const replyTo = $(this).parents('.media-body').first().attr('data-comment-id')
+            const replyToSeq = $(this).parent().prev().find('.comment_sequence').text().slice(1)
+            parent = $(this).parents('.media-body').last().attr('data-comment-id')
+            $('#comment_parent').val(parent)
+            $('#comment_replyTo').val(replyTo)
+            $('#comment_replyToSeq').val(replyToSeq)
+        })
+
+        $('#btn_cancel_reply').click(function () {
+            $('#reply_inform').fadeOut()
+            $('#comment_parent').val('')
+            $('#comment_replyTo').val('')
+            $('#comment_replyToSeq').val('')
+        })
+        //评论验证与AJAX
+        $('#submit_comment').click(function () {
+            var validation = true
+            $('.comment_input').each(function () {
+                if ($(this).val() == '') {
+                    validation = false
+                    $(this).removeClass('valid_input').addClass('invalid_input')
+                } else {
+                    $(this).removeClass('invalid_input').addClass('valid_input')
+                }
+                if (!validation) {
+                    $('#fail_comment_cause').text('昵称和邮箱是不是忘填了？')
+                    $('#fail_comment').modal('show')
+                }
+            })
+            if ($('#comment_textarea').val() == '') {
+                validation = false
+                $('#fail_comment_cause').text('空空的评论区，认真的嘛？')
+                $('#fail_comment').modal('show')
+            }
+            //AJAX
+            if (validation) {
+                $('.comment_input').each(function () {
+                    $(this).removeClass('valid_input invalid_input')
+                })
+                $('#comment_time').val(now())
+                $.ajax({
+                    url: 'comment',
+                    data: $('#comment_form').serialize(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        reload(data)
+                    }
+                })
+            }
+        })
+    }
+</script>
+
+<style>
+    body {
+        margin: 0;
     }
 
     .comment_input {
+        margin: 0.5rem 0;
         width: 100%;
-        padding: 0.5rem 14px;
         border: none;
-        border-bottom: #6c757d 1px dashed;
+        border-bottom: 1px dashed #6c757d;
     }
 
     .comment_input:focus {
         outline: none;
-        border-bottom: #007bff 1px dashed;
+        border-bottom: 1px dashed #007bff;
     }
 
-    #submit_flex {
-        padding: 1rem;
+    #comment_textarea {
+        margin: 0.5rem 0;
+        width: 100%;
+        height: 7rem;
+        border: none;
+        resize: none;
+    }
+
+    #comment_textarea:focus {
+        outline: none;
+    }
+
+    #comment_bar, #cancel_reply_bar {
         display: flex;
         justify-content: flex-end;
     }
 
-    .comment_row {
+    .media_bar {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
-    .media {
-        margin-top: 1.5rem;
+    .comment_sequence {
+        margin: 0;
+        padding-right: 12px;
     }
 
-    #reply_info {
+    #reply_inform {
         display: none;
     }
 
-    .reply_cancel {
-        display: flex;
-        justify-content: flex-end;
+    .invalid_input {
+        border-bottom: 1px dashed #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' fill=\'none\' stroke=\'%23dc3545\' viewBox=\'0 0 12 12\'%3e%3ccircle cx=\'6\' cy=\'6\' r=\'4.5\'/%3e%3cpath stroke-linejoin=\'round\' d=\'M5.8 3.6h.4L6 6.5z\'/%3e%3ccircle cx=\'6\' cy=\'8.2\' r=\'.6\' fill=\'%23dc3545\' stroke=\'none\'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 1rem 1rem;
+    }
+
+    .valid_input {
+        border-bottom: 1px dashed #28a745;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 1rem 1rem;
+    }
+
+    #no_comment {
+        margin: 0;
+        font-size: 1.5rem;
     }
 </style>
 
-<script>
-    $(document).ready(function () {
-        $('.reply_btn').click(function () {
-            var reply_name = $(this).parent().siblings("h5").text()
-            var reply_comment = $(this).parent().siblings("p").text()
-            $('#reply_name').text(reply_name)
-            $('#reply_comment').text(reply_comment)
-            $('#reply_info').fadeIn()
-            $('#replyTo').val('name=' + reply_name + '&comment=' + reply_comment)
-        })
-        $('.reply_cancel_btn').click(function () {
-            $('#reply_info').fadeOut()
-            $('#replyTo').val('')
-        })
-    })
-</script>
 
-<div class="container">
-    <hr id="comment_hr">
-    <div class="p-3 my-2 bg-primary text-white rounded" id="reply_info">
-        <p>你将回复<span id="reply_name"></span>的评论</p>
-        <p id="reply_comment"></p>
-        <div class="reply_cancel">
-            <button class="btn btn-light reply_cancel_btn">取消回复</button>
-        </div>
-    </div>
-    <div id="comment_container" class="border border-primary rounded">
-        <form method="post" action="comment">
-            <div class="row">
-                <div class="col-12 col-md-6 pr-md-1">
-                    <input type="text" name="name" placeholder="昵称" class="comment_input">
-                </div>
-                <div class="col-12 col-md-6 pl-md-0">
-                    <input type="email" name="email" placeholder="邮箱" class="comment_input">
-                </div>
-            </div>
-            <textarea name="comment" placeholder="Comment Here~"></textarea>
-            <div id="submit_flex">
-                <input type="submit" value="评论" class="btn btn-outline-primary">
-            </div>
-            <input type="hidden" id="replyTo">
-        </form>
-    </div>
-</div>
-<div class="container mt-3">
-    <div class="border border-primary rounded px-2">
-        <ul class="list-unstyled">
-            {% for i in range(root|length) %}
-                <li class="media">
-                    <img src="{{ url_for('static', filename = 'img/avatar.png') }}" height="64px">
-                    <div class="media-body">
-                        <h5>{{ root[i]['name'] }}</h5>
-                        <div class="comment_row">
-                            <div class="comment_time text-muted">{{ root[i]['time'] }}</div>
-                            <button class="btn btn-link reply_btn">回复</button>
-                        </div>
-                        <p>{{ root[i]['comment'] }}</p>
-                        {% for k in range(reply|length) %}
-                            {% if reply[k]['root']==root[i]['id'] %}
-                                <div class="media">
-                                    <img src="{{ url_for('static', filename = 'img/avatar.png') }}" height="64px">
-                                    <div class="media-body">
-                                        <h5>{{ reply[k]['name'] }}</h5>
-                                        <div class="comment_row">
-                                            <div class="comment_time text-muted">{{ reply[k]['time'] }}</div>
-                                            <button class="btn btn-link reply_btn">回复</button>
-                                        </div>
-                                        <p>{{ reply[k]['comment'] }}</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </li>
-            {% endfor %}
-            {#                <li class="media">#}
-            {#                    <img src="avatar.png" height="64px">#}
-            {#                    <div class="media-body">#}
-            {#                        <h5>Sora</h5>#}
-            {#                        <div class="comment_row">#}
-            {#                            <div class="comment_time text-muted">2020-7-10</div>#}
-            {#                            <button class="btn btn-link reply_btn">回复</button>#}
-            {#                        </div>#}
-            {#                        <p>SoraPage Project</p>#}
-            {#                        <div class="media">#}
-            {#                            <img src="avatar.png" height="64px">#}
-            {#                            <div class="media-body">#}
-            {#                                <h5>Media heading</h5>#}
-            {#                                <p>Media Content</p>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                        <div class="media">#}
-            {#                            <img src="avatar.png" height="64px">#}
-            {#                            <div class="media-body">#}
-            {#                                <h5>Media heading</h5>#}
-            {#                                <p>Media Content</p>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                    </div>#}
-            {#                </li>#}
-            {#                <li class="media">#}
-            {#                    <img src="avatar.png" height="64px">#}
-            {#                    <div class="media-body">#}
-            {#                        <h5>media header</h5>#}
-            {#                        <p>media content</p>#}
-            {#                    </div>#}
-            {#                </li>#}
-        </ul>
-    </div>
-</div>

@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-from comment import load_comment
 
 ACGN = Blueprint('ACGN', __name__, template_folder='ACGN_html', static_folder='ACGN_static')
 
@@ -26,5 +25,4 @@ def acgn():
         'A-': [3, 60],
         'B': [2.5, 50]
     }
-    root, reply = load_comment()
-    return render_template('ACGN.html', cardDict_py=myDict, rank_visualize=rank_visualize, root=root, reply=reply)
+    return render_template('ACGN.html', cardDict_py=myDict, rank_visualize=rank_visualize)
