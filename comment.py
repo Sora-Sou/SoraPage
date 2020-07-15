@@ -1,8 +1,8 @@
-from flask import Blueprint, make_response, redirect, request, url_for
+from flask import Blueprint, request, session
 import json
 from urllib.parse import urlparse
 from config import SQL
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 def format_time(datetime_obj):
@@ -50,6 +50,10 @@ def load(url):
         'parent': comment_parent,
         'child': comment_child
     }
+    try:
+        comment_obj['login_user'] = {'name': session['name'], 'email': session['email']}
+    except KeyError:
+        pass
     comment_json = json.dumps(comment_obj)
     sql_cursor.close()
     sql_connect.close()

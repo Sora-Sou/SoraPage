@@ -12,8 +12,7 @@ def login():
         response.set_cookie('referrer', request.referrer)
         return response
     elif request.method == 'POST':
-        sql_connect = SQL().connect()
-        sql_cursor = sql_connect.cursor()
+        sql_connect, sql_cursor = SQL().connect_Dict()
         sql_cursor.execute(f'''SELECT * FROM users WHERE email='{request.form['email']}' ''')
         sql_fetch = sql_cursor.fetchone()
         sql_cursor.close()
@@ -21,11 +20,12 @@ def login():
         if sql_fetch is None:
             return render_template('login.html', fail='no_email', email=request.form['email'])
         else:
-            if check_password_hash(sql_fetch[3], request.form['password']):
+            if check_password_hash(sql_fetch['password'], request.form['password']):
                 response = make_response(redirect(request.cookies.get('referrer')))
                 response.delete_cookie('referrer')
-                session['uid'] = str(sql_fetch[0])
-                session['user_name'] = str(sql_fetch[1])
+                session['uid'] = str(sql_fetch['id'])
+                session['name'] = sql_fetch['name']
+                session['email'] = sql_fetch['email']
                 if request.form.get('keep_login_switch'):
                     current_app.permanent_session_lifetime = current_app.config['SESSION_LIFETIME']
                     session.permanent = True

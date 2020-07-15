@@ -14,10 +14,10 @@
         <form id="comment_form">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <input type="text" name="name" placeholder="昵称" class="comment_input">
+                    <input type="text" name="name" placeholder="昵称" class="comment_input" id="comment_name">
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="email" name="email" placeholder="邮箱" class="comment_input">
+                    <input type="email" name="email" placeholder="邮箱" class="comment_input" id="comment_email">
                 </div>
             </div>
             <textarea name="comment" placeholder="Comment Here~" id="comment_textarea"></textarea>
@@ -83,7 +83,6 @@
             })
         } else {
             for (var i = 0; i < comment_json['parent'].length; i++) {
-                $('#comment_container').removeAttr('css')
                 $('#comment_container').append(media(comment_json['parent'][i]))
 
                 if (i != comment_json['parent'].length - 1) {
@@ -95,6 +94,11 @@
                 var judge = "[data-comment-id='" + comment_json['child'][i]['parent'] + "']"
                 $(judge).append($('<hr>'), media(comment_json['child'][i]))
             }
+        }
+        {# 判断登录状态 #}
+        if (comment_json['login_user']) {
+            $('#comment_name').val(comment_json['login_user']['name'])
+            $('#comment_email').val(comment_json['login_user']['email'])
         }
     }
 
@@ -111,7 +115,7 @@
 
 
     function reload(comment_json) {
-        $('#comment_container').empty()
+        $('#comment_container').empty().removeAttr('style')
         render(comment_json)
     }
 

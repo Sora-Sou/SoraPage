@@ -27,32 +27,18 @@
         color: rgb(0, 191, 255);
     }
 
-    .navbar_header_toggler {
-        transform: rotate(-90deg);
-        transition: transform 0.5s;
-    }
-
-    #nav_header_login {
-        width: 16rem;
-        position: absolute;
-    }
-
     #nav_header_user {
         position: absolute;
     }
 
-    #nav_header_login_function {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .navbar_header_toggler_showing {
+        transform: rotate(-90deg);
+        transition: transform 0.5s;
     }
 
-    #function_keeplogin {
-        flex: none;
-    }
-
-    #function_register {
-        flex: none;
+    .navbar_header_toggler_hiding {
+        transform: rotate(0deg);
+        transition: transform 0.5s;
     }
 </style>
 <script>
@@ -66,24 +52,21 @@
             $(this).children(".nav_header_svg").css('fill', 'rgb(0, 191, 255)');
         })
 
-        $("#navbar_header_toggler").click(function () {
-            $(this).toggleClass("navbar_header_toggler")
+        $('#navbar_header_collapse').on('show.bs.collapse', function () {
+            $('#navbar_header_toggler').addClass('navbar_header_toggler_showing').removeClass('navbar_header_toggler_hiding')
         })
-
-        {% if request.cookies.get('fail_register') %}
-            $("#nav_modal_register").modal('show')
-        {% endif %}
-        {% if request.cookies.get('fail_login') %}
-            $("#nav_header_login").dropdown('show')
-        {% endif %}
+        $('#navbar_header_collapse').on('hide.bs.collapse', function () {
+            $('#navbar_header_toggler').addClass('navbar_header_toggler_hiding').removeClass('navbar_header_toggler_showing')
+        })
     })
 </script>
 
 <nav class="navbar navbar-expand-md" id="navbar_header">
     <a class="navbar-brand" href="#" id="navbar_header_name">SoraPage</a>
 
-    <div class="navbar-toggler" data-toggle="collapse" data-target="#navbar_header_collapse">
-        <svg id="navbar_header_toggler" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    <div class="navbar-toggler">
+        <svg id="navbar_header_toggler" data-toggle="collapse" data-target="#navbar_header_collapse"
+             viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              width='2rem' height='2rem'>
             <path
                     d="M1021.739773 461.265276A509.901399 509.901399 0 0 0 512.303825 0.003491c-16.988956 0-34.443362 0-51.432318 2.55998A511.995927 511.995927 0 0 0 512.303825 1023.995345a471.501704 471.501704 0 0 0 51.199593-2.559979 511.995927 511.995927 0 0 0 458.236355-560.17009z m-465.450843 490.817914c-14.894427 1.396353-29.556129 2.094529-44.21783 2.094529a442.178301 442.178301 0 0 1-43.519654-882.262073C483.445873 69.821117 498.3403 69.821117 512.303825 69.821117a442.178301 442.178301 0 0 1 43.054203 882.262073z">
