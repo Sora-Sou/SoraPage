@@ -1,7 +1,7 @@
 from flask import Blueprint, request, session
 import json
 from urllib.parse import urlparse
-from config import SQL
+from sql import connect_dictCursor
 from datetime import datetime
 
 
@@ -30,7 +30,7 @@ def format_time(datetime_obj):
 
 
 def load(url):
-    sql_connect, sql_cursor = SQL().connect_Dict()
+    sql_connect, sql_cursor = connect_dictCursor()
     sql_cursor.execute(f"SELECT * FROM comment WHERE url='{url}'")
     sql_fetch = sql_cursor.fetchall()
     comment_parent = []
@@ -69,7 +69,7 @@ def comment_ajax():
     if request.method == 'GET':
         return load(url)
     elif request.method == 'POST':
-        sql_connect, sql_cursor = SQL().connect_Dict()
+        sql_connect, sql_cursor = connect_dictCursor()
         form = {}
         for value, key in request.form.items():
             if key == '':

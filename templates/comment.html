@@ -1,0 +1,47 @@
+<script src="{{ url_for('static',filename='js/comment.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/comment.css') }}">
+<div class="container">
+    <hr>
+    <div class="bg-primary p-4 text-light rounded" id="reply_inform">
+        <p>你即将回复 <span id="comment_sequence"></span> 的 <span id="comment_author"></span> 的评论：</p>
+        <p id="comment_content"></p>
+        <div id="cancel_reply_bar">
+            <button class="btn btn-light" id="btn_cancel_reply">取消回复</button>
+        </div>
+    </div>
+    <div id="form_container" class="border border-primary rounded px-4 py-2 my-3">
+        <form id="comment_form">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <input type="text" name="name" placeholder="昵称" class="comment_input" id="comment_name">
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="email" name="email" placeholder="邮箱" class="comment_input" id="comment_email">
+                </div>
+            </div>
+            <textarea name="comment" placeholder="Comment Here~" id="comment_textarea"></textarea>
+            <div id="comment_bar">
+                <button type="button" class="btn btn-primary" id="submit_comment" data-comment-type="parent">评论
+                </button>
+            </div>
+            <input type="hidden" name="parent" id="comment_parent">
+            <input type="hidden" name="replyTo" id="comment_replyTo">
+            <input type="hidden" name="time" id="comment_time">
+            <input type="hidden" name="replyToSeq" id="comment_replyToSeq">
+        </form>
+    </div>
+    <div id="comment_container" class="border border-primary rounded p-4 my-2"></div>
+</div>
+
+<div class="modal fade" id="fail_comment" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" id="fail_comment_cause"></div>
+            <div id="fail_comment_close" class="p-2">
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#fail_comment">
+                    明白
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

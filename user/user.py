@@ -1,6 +1,6 @@
 from flask import Blueprint, make_response, redirect, request, session, current_app, render_template, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
-from config import SQL
+from sql import connect_dictCursor
 
 user = Blueprint('user', __name__, template_folder='user_html', static_folder='user_static')
 
@@ -12,7 +12,7 @@ def login():
         response.set_cookie('referrer', request.referrer)
         return response
     elif request.method == 'POST':
-        sql_connect, sql_cursor = SQL().connect_Dict()
+        sql_connect, sql_cursor = connect_dictCursor()
         sql_cursor.execute(f'''SELECT * FROM users WHERE email='{request.form['email']}' ''')
         sql_fetch = sql_cursor.fetchone()
         sql_cursor.close()
@@ -53,8 +53,7 @@ def register():
                 blank.append(element)
                 fail.append('blank')
         # 用户名和邮箱是否重复
-        sql_connect = SQL().connect()
-        sql_cursor = sql_connect.cursor()
+        sql_connect, sql_cursor = connect_dictCursor()
         sql_cursor.execute(f'''SELECT * FROM users WHERE name='{request.form['name']}' ''')
         sql_fetch_name = sql_cursor.fetchone()
         sql_cursor.execute(f'''SELECT * FROM users WHERE email='{request.form['email']}' ''')

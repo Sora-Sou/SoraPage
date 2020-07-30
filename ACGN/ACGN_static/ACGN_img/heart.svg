@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox='0,0,40,40' preserveAspectRatio='xMinYMin meet' >
-    <circle cx='15' cy='15' r='7.071067812' fill='#FF4949' />
-    <circle cx='25' cy='15' r='7.071067812' fill='#FF4949' />
-    <path d="M 20 10 L 10 20 L 20 30 L 30 20 Z" fill='#FF4949'/>
-</svg>

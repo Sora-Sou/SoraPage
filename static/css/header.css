@@ -1,0 +1,41 @@
+#navbar_header {
+    background-color: rgba(40, 40, 40, 0.95);
+    color: rgb(0, 191, 255);
+}
+
+#navbar_header_name {
+    font-size: 1.5rem;
+    color: rgb(0, 191, 255);
+}
+
+#navbar_header_toggler {
+    fill: rgb(0, 191, 255);
+}
+
+#navbar_header_collapse {
+    justify-content: flex-end;
+}
+
+.nav_header_svg {
+    width: 1rem;
+    height: 1rem;
+    fill: rgb(0, 191, 255);
+}
+
+.nav_header_link {
+    color: rgb(0, 191, 255);
+}
+
+#nav_header_user {
+    position: absolute;
+}
+
+.navbar_header_toggler_showing {
+    transform: rotate(-90deg);
+    transition: transform 0.5s;
+}
+
+.navbar_header_toggler_hiding {
+    transform: rotate(0deg);
+    transition: transform 0.5s;
+}
