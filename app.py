@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, make_response, render_template
+from flask import Flask, redirect, url_for, abort
 from acgn.acgn import acgn
 from user.user import user
 from comment import comment
@@ -18,8 +18,8 @@ app.secret_key = app.config['SECRET_KEY']
 
 @app.route('/')
 def index():
-    return redirect(url_for('acgn.galgame'))
+    return abort(404)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)

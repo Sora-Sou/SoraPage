@@ -11,51 +11,65 @@
 <body>
     <div class="container">
         <div class="my-4 border border-primary rounded p-4">
-            <form method="post">
+            <form method="post" onsubmit="return validation()">
                 <div class="row">
                     <div class="col-5 col-md-4">
                         <div class="form-group">
                             <label for="sort">类别</label>
                             <select class="form-control" id="sort" name="sort">
-                                <option>支出</option>
-                                <option>收入</option>
+                                {% if not fetch %}
+                                    {% set fetch=None %}
+                                {% endif %}
+                                <option {% if fetch['sort']=='支出' %}selected{% endif %}>支出</option>
+                                <option {% if fetch['sort']=='收入' %}selected{% endif %}>收入</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-7 col-md-8">
                         <div class="form-group">
                             <label for="amount">金额</label>
-                            <input type="text" name="amount" id="amount" class="form-control">
+                            <input type="text" name="amount" id="amount" class="form-control"
+                                   value="{{ fetch['amount'] }}">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="item">项目</label>
-                    <input type="text" name="item" id="item" class="form-control">
+                    <input type="text" name="item" id="item" class="form-control" value="{{ fetch['item'] }}">
                 </div>
                 <p>时间</p>
                 <div class="form-row mb-4">
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="年" name="year">
+                        <input type="text" class="form-control" placeholder="年" name="year" value="{{ fetch['year'] }}">
+                        <div class="invalid-feedback" id="year_invalid"></div>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="月" name="month">
+                        <input type="text" class="form-control" placeholder="月" name="month"
+                               value="{{ fetch['month'] }}">
+                        <div class="invalid-feedback" id="month_invalid"></div>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" placeholder="日" name="date">
+                        <input type="text" class="form-control" placeholder="日" name="day" value="{{ fetch['day'] }}">
+                        <div class="invalid-feedback" id="day_invalid"></div>
                     </div>
                 </div>
+                {% macro select_options(name) %}
+                    <option {% if fetch[name]=='伍岳斌' %}selected{% endif %}>伍岳斌</option>
+                    <option {% if fetch[name]=='杨晟' %}selected{% endif %}>杨晟</option>
+                    <option {% if fetch[name]=='胡冬冬' %}selected{% endif %}>胡冬冬</option>
+                    <option {% if fetch[name]=='吕志武' %}selected{% endif %}>吕志武</option>
+                    <option {% if fetch[name]=='吴帅' %}selected{% endif %}>吴帅</option>
+                    <option {% if fetch[name]=='宋基元' %}selected{% endif %}>宋基元</option>
+                    <option {% if fetch[name]=='海南津杭' %}selected{% endif %}>海南津杭</option>
+                    <option {% if fetch[name]=='湖北恒创' %}selected{% endif %}>湖北恒创</option>
+                    <option {% if fetch[name]=='湖北佳境' %}selected{% endif %}>湖北佳境</option>
+                {% endmacro %}
                 <div class="row">
                     <div class="col-12 col-md-4">
                         <div class="form-group">
                             <label for="first_hand">经手人</label>
                             <select class="form-control" id="first_hand" name="first_hand">
-                                <option>伍岳斌</option>
-                                <option>杨晟</option>
-                                <option>胡冬冬</option>
-                                <option>吕志武</option>
-                                <option>吴帅</option>
-                                <option>宋基元</option>
+                                {{ select_options('first_hand') }}
                             </select>
                         </div>
                     </div>
@@ -63,12 +77,7 @@
                         <div class="form-group">
                             <label for="cashier">出(进)账人</label>
                             <select class="form-control" id="cashier" name="cashier">
-                                <option>伍岳斌</option>
-                                <option>杨晟</option>
-                                <option>胡冬冬</option>
-                                <option>吕志武</option>
-                                <option>吴帅</option>
-                                <option>宋基元</option>
+                                {{ select_options('cashier') }}
                             </select>
                         </div>
                     </div>
@@ -76,12 +85,7 @@
                         <div class="form-group">
                             <label for="auditor">审核人</label>
                             <select class="form-control" id="auditor" name="auditor">
-                                <option>伍岳斌</option>
-                                <option>杨晟</option>
-                                <option>胡冬冬</option>
-                                <option>吕志武</option>
-                                <option>吴帅</option>
-                                <option>宋基元</option>
+                                {{ select_options('auditor') }}
                             </select>
                         </div>
                     </div>
@@ -90,8 +94,41 @@
                     <label for="remark">备注</label>
                     <textarea class="form-control" id="remark" name="remark" rows="4"></textarea>
                 </div>
+                {% if fetch['remark'] %}
+                    <script>
+                        $("[name='remark']").val({{ fetch['remark'] }})
+                    </script>
+                {% endif %}
                 <input type="submit" value="提交" class="form-control btn btn-primary">
+                <input type="hidden" value="{{ fetch['id'] }}" name="change_id">
             </form>
+            <script>
+                let validation = function () {
+                    const month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                    const year = $("[name='year']").val();
+                    const month = $("[name='month']").val();
+                    const day = $("[name='day']").val();
+                    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+                        month_days[1] = 29;
+                    }
+                    if (year == '' || month == '' || day == '') {
+                        $("[name='year']").addClass('is-invalid');
+                        $("[name='month']").addClass('is-invalid');
+                        $("[name='day']").addClass('is-invalid');
+                        $('#year_invalid').text('日期不得为空');
+                        $('#month_invalid').text('日期不得为空')
+                        $('#day_invalid').text('日期不得为空')
+                        return false;
+                    }
+                    if (month_days[month - 1] < day) {
+                        $("[name='year']").removeClass('is-invalid');
+                        $("[name='month']").removeClass('is-invalid');
+                        $("[name='day']").addClass('is-invalid');
+                        $('#day_invalid').text('这个月没有这么多天')
+                        return false;
+                    }
+                }
+            </script>
         </div>
     </div>
 </body>

@@ -103,7 +103,7 @@ def ledger_father_initial():
             amount DEC(5),
             sort varchar(2),
             item varchar(400),
-            time timestamp,
+            insert_time timestamp,
             first_hand varchar(10),
             cashier varchar(10),
             auditor varchar(10),
