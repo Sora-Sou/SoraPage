@@ -1,0 +1,32 @@
+<div id="main_Toefl" class="main_page">
+    <div class="container">
+        <form method="post" action="/toefl/speaking/modify">
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <div class="form-group">
+                        <label for="origin">出处:</label>
+                        <input type="text" name="origin" id="origin" class="form-control">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <div class="form-group">
+                        <label for="sort">类别</label>
+                        <select class="form-control" id="sort" name="sort">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="question">题目</label>
+                <textarea class="form-control" id="question" name="question" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="answer">答案</label>
+                <textarea class="form-control" id="answer" name="answer" rows="7"></textarea>
+            </div>
+            <input type="submit" value="提交" class="form-control btn btn-primary">
+        </form>
+    </div>
+</div>

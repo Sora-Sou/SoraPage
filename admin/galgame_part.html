@@ -1,0 +1,66 @@
+<div id="main_Galgame" class="main_page">
+    <div class="container">
+        <form method="post" action="/acgn/galgame/ajax/add">
+            <div class="form-row">
+                <div class="col-10 form-group">
+                    <label for="name">Galgame名</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+                <div class="col-2 form-group">
+                    <label for="imgLen">CG数</label>
+                    <input type="text" name="imgLen" id="imgLen" class="form-control">
+                </div>
+            </div>
+            {% set render_list=['综评','剧情','人设','音乐','画风'] %}
+            {% set list_english={'综评':'overall','剧情':'plot','人设':'characterRank','音乐':'music','画风':'CG'} %}
+            {% macro gal_select(name='') %}
+                <select class="custom-select" name="{{ name }}">
+                    <option>S</option>
+                    <option>S-</option>
+                    <option>A+</option>
+                    <option>A</option>
+                    <option>A-</option>
+                    <option>B</option>
+                </select>
+            {% endmacro %}
+
+            {% for i in range(render_list|length) %}
+                <div class="form-row mb-3">
+                    <div class="col-2 col-md-1 col-form-label gal_label">{{ render_list[i] }}</div>
+                    <div class="col-4 col-md-2 gal_select">{{ gal_select(list_english[render_list[i]]) }}</div>
+                    <button class="ml-4 btn btn-primary detail_btn" type="button">detail</button>
+                </div>
+                <div class="row mb-3">
+                    <input class="col-2 form-control" type="text">
+                    <div class="col-1 gal_select">{{ gal_select() }}</div>
+                    <input class="col-8 form-control" type="text">
+                    <div class="col-1">
+                        <button type="button" class="btn btn-secondary">add</button>
+                    </div>
+                </div>
+                <input type="text" class="form-control mb-3">
+            {% endfor %}
+
+            <div class="form-row mb-3">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="年" name="year">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="月" name="month">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="日" name="day">
+                </div>
+            </div>
+            <input type="submit" value="添加" class="btn btn-primary btn-block">
+        </form>
+    </div>
+</div>
+{#<script>#}
+{#    $('.detail_btn').click(function () {#}
+{#        let root=$(this).parent()#}
+{#        let rank_div=$('<div class="form-row mb-2"></div>')#}
+{#        let rank_character=$('<input class="form-control">')#}
+{#        let comment=$('<input class="form-control">')#}
+{#    })#}
+{#</script>#}

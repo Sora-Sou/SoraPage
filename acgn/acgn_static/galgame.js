@@ -20,7 +20,6 @@ const galgame_detail = [{
 
 //avoid character '+' in CSS selector
 const overall_class = {
-    'S+': 'S_plus',
     'S': 'S',
     'S-': 'S_minus',
     'A+': 'A_plus',

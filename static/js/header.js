@@ -1,9 +1,9 @@
 $(document).ready(function () {
-    $(".nav-link").mouseover(function () {
+    $(".nav-link").mouseenter(function () {
         $(this).css('color', '#fd7e14');
         $(this).children(".nav_header_svg").css('fill', '#fd7e14');
     })
-    $(".nav-link").mouseout(function () {
+    $(".nav-link").mouseleave(function () {
         $(this).css('color', 'rgb(0, 191, 255)');
         $(this).children(".nav_header_svg").css('fill', 'rgb(0, 191, 255)');
     })

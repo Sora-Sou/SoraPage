@@ -48,6 +48,7 @@ def comment_initial():
     sql_connect.commit()
     sql_cursor.close()
     sql_connect.close()
+    print("comment table created")
 
 
 def galgame_initial():
@@ -67,16 +68,17 @@ def galgame_initial():
     )
     sql_connect.commit()
     sql_cursor.execute(
-        '''create table galgame_detail(
+        '''create table if not exists galgame_detail(
             id int not null AUTO_INCREMENT primary key,
             name varchar(20),
-            target varchar(10),
+            target varchar(20),
             content json
         )'''
     )
     sql_connect.commit()
     sql_cursor.close()
     sql_connect.close()
+    print("galgame table created")
 
 
 def toefl_speaking_initial():

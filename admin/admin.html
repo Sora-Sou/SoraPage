@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/libs/bootstrap-4.5.0/bootstrap.min.css">
+    <script src="/static/libs/jquery-3.5.1.min.js"></script>
+    <script src="/static/libs/bootstrap-4.5.0/bootstrap.bundle.min.js"></script>
+    <title>SoraPage Admin</title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #navbar_header {
+            background-color: rgb(40, 40, 40) !important;
+        }
+
+        #container {
+            display: flex;
+            height: 100%;
+        }
+
+        #sidebar {
+            position: fixed;
+            height: 100%;
+            width: 170px;
+            background-color: rgb(40, 40, 40);
+            color: rgb(0, 191, 255);
+        }
+
+        #sidebar_ul {
+            padding: 0;
+        }
+
+        #sidebar_ul li {
+            padding: 10px 15px 10px 30px;
+            list-style-type: none;
+            cursor: pointer;
+        }
+
+        .sidebar_hover_effect {
+            position: absolute;
+            z-index: -1;
+            width: 0%;
+            background-color: #5a6268;
+        }
+
+        .enter_effect {
+            width: 100%;
+            transition: width 0.5s;
+        }
+
+        .leave_effect {
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        main {
+            width: 100%;
+            padding-top: 2rem;
+        }
+
+        #main_welcome {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 2rem;
+        }
+
+        .main_page {
+            display: none;
+        }
+    </style>
+    <script>
+        //sidebar_hover_effect
+        $(function () {
+            $('#sidebar_ul li').each(function () {
+                let div = $('<div class="sidebar_hover_effect"></div>');
+                const div_height = $(this).outerHeight(true);
+                div.css('height', div_height);
+                $(div).insertBefore($(this));
+            })
+            $('#sidebar_ul li').mouseenter(function () {
+                $(this).prev('.sidebar_hover_effect').removeClass('leave_effect').addClass('enter_effect');
+            })
+            $('#sidebar_ul li').mouseleave(function () {
+                $(this).prev('.sidebar_hover_effect').removeClass('enter_effect').addClass('leave_effect');
+            })
+        })
+        //sidebar_click_handle
+        $(function () {
+            $('#sidebar_ul li').click(function () {
+                const selector = '#main_' + $(this).text();
+                $('#main_welcome').fadeOut();
+                $('.main_page').fadeOut();
+                $('.main_page').promise().done(function () {
+                    $(selector).fadeIn();
+                })
+            })
+        })
+    </script>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <script>
+        $(function () {
+            const navbar_header_height = $('#navbar_header').outerHeight(true);
+            $('#container').css({'margin-top': '0', 'padding-top': navbar_header_height});
+            const sidebar_width = $('#sidebar').outerWidth(true);
+            $('main').css('padding-left', sidebar_width);
+        })
+    </script>
+    <div id="container">
+        <nav id="sidebar" class="py-4">
+            <ul id="sidebar_ul">
+                <li>Galgame</li>
+                <li>Toefl</li>
+            </ul>
+        </nav>
+        <main>
+            <div id="main_welcome" class="text-muted">
+                SoraPage Admin Presents.
+            </div>
+            {% include 'toefl_part.html' %}
+            {% include 'galgame_part.html' %}
+        </main>
+    </div>
+</body>
+
+</html>
+
