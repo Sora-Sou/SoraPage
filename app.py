@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, abort
+from flask import Flask, redirect
 from acgn.acgn import acgn
 from user.user import user
 from comment import comment
@@ -16,11 +16,12 @@ app.register_blueprint(admin_c)
 
 app.config.from_pyfile('config.py')
 app.secret_key = app.config['SECRET_KEY']
+app.send_file_max_age_default = app.config['SEND_FILE_MAX_AGE_DEFAULT']
 
 
 @app.route('/')
 def index():
-    return redirect("/admin")
+    return redirect("/ledger")
 
 
 if __name__ == '__main__':

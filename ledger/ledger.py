@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, jsonify, flash
 from datetime import datetime
 from sql import connect_dictCursor
+from collections import OrderedDict
 
 ledger = Blueprint('ledger', __name__, template_folder='ledger_html', static_folder='ledger_static')
 
@@ -106,3 +107,87 @@ def father_leger_modify(modify_type):
         sql_cursor.close()
         sql_connect.close()
         return redirect('/ledger/father')
+
+
+@ledger.route('/ledger')
+def ledger_():
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute('select * from ledger order by time_ asc limit 1')
+    oldest_time = sql_cursor.fetchone()
+    if oldest_time is not None:
+        oldest_year = int(oldest_time['time_'].strftime('%Y'))
+        oldest_month = int(oldest_time['time_'].strftime('%m'))
+        current_year = int(datetime.now().strftime('%Y'))
+        current_month = int(datetime.now().strftime('%m'))
+        max_month_interval = (current_year - oldest_year) * 12 + current_month - oldest_month
+        # monthly_data_collection的元素为monthly_data
+        monthly_data_collection = []
+        for i in range(max_month_interval + 1):
+            query_year = current_year
+            while i > current_month:
+                i = i - 12
+                query_year = query_year - 1
+            query_month = current_month - i
+            query_next_month = query_month + 1
+            query_year = str(query_year)
+            query_month = str(query_month)
+            query_next_month = str(query_next_month)
+            sql_cursor.execute(
+                f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc")
+            month_data_fetch = sql_cursor.fetchall()
+            if len(month_data_fetch) != 0:
+                monthly_data = {
+                    'month_time': query_year + '年' + query_month + '月',
+                    # daily_data_collection_sample = {
+                    #     '9月30日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''},
+                    #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''}]},
+                    #     '9月29日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''},
+                    #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''}]},
+                    # }
+                    # 'daily_data_collection': OrderedDict()
+                }
+                daily_data_collection = OrderedDict()
+                for e in month_data_fetch:
+                    key = e['time_'].strftime('%m月%d日')
+                    if key not in daily_data_collection.keys():
+                        daily_data_collection[key] = []
+                    daily_data_collection[key].append(e)
+                monthly_data['daily_data_collection'] = daily_data_collection
+                monthly_data_collection.append(monthly_data)
+        sql_cursor.close()
+        sql_connect.close()
+        return render_template('ledger.html', monthly_data_collection=monthly_data_collection)
+    else:
+        sql_cursor.close()
+        sql_connect.close()
+        return render_template('ledger.html')
+
+
+@ledger.route('/ledger/ajax/<ajax_type>', methods=['GET', 'POST'])
+def ledger_add(ajax_type):
+    sql_connect, sql_cursor = connect_dictCursor()
+    if ajax_type == 'add':
+        f = request.form
+        time = f['year'] + '-' + f['month'] + '-' + f['date']
+        sql_cursor.execute(f'''insert into ledger(sort,sort_detail,amount,time_,note) 
+                               values('{f['sort']}','{f['sort_detail']}','{f['amount']}','{time}','{f['note']}')
+                            ''')
+        sql_connect.commit()
+        sql_cursor.close()
+        sql_connect.close()
+        return 'success'
+    if ajax_type == 'delete':
+        delete_id = request.form['delete_id']
+        sql_cursor.execute(f"delete from ledger where id='{delete_id}'")
+        sql_cursor.close()
+        sql_connect.close()
+        return 'success'
+    if ajax_type == 'modify':
+        f = request.form
+        time = f['year'] + '-' + f['month'] + '-' + f['date']
+        sql_cursor.execute(
+            f'''update ledger set sort='{f['sort']}', sort_detail='{f['sort_detail']}', amount='{f['amount']}', time_='{time}',note='{f['note']}'
+                where id='{f['data-id']}' ''')
+        sql_cursor.close()
+        sql_connect.close()
+        return 'success'

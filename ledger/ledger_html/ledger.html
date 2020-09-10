@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soraの小本本</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/ledger_icon.png') }}">
+    <link rel="stylesheet" href="/static/libs/bootstrap-4.5.0/bootstrap.min.css">
+    <script src="/static/libs/jquery-3.5.1.min.js"></script>
+    <script src="/static/libs/bootstrap-4.5.0/bootstrap.bundle.min.js"></script>
+    <style>
+        .month_title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .month_table {
+            width: auto;
+            margin: 0;
+        }
+
+        .month_table td {
+            padding: 0 0.5rem;
+        }
+
+        .day_div, .alert_first_row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .outcome, .income {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #add_icon {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: 3rem;
+            height: 3rem;
+            cursor: pointer;
+        }
+    </style>
+    <script src="{{ url_for('ledger.static',filename='ledger.js') }}"></script>
+</head>
+
+<body>
+    <div class="container mt-4">
+        {% for i in range(monthly_data_collection|length) %}
+            {% set monthly_data = monthly_data_collection[i] %}
+            <div class="card mb-4 month_card">
+                <div class="card-body">
+
+                    <div class="card-title month_title">
+                        <h2>{{ monthly_data['month_time'] }}</h2>
+                        <table class="table table-borderless month_table">
+                            <tbody>
+                            <tr class="text-success">
+                                <td>支出</td>
+                                <td class="month_out_sum"></td>
+                                <td class="month_out_num"></td>
+                            </tr>
+                            <tr class="text-danger">
+                                <td>收入</td>
+                                <td class="month_in_sum"></td>
+                                <td class="month_in_num"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% set daily_data_collection=monthly_data['daily_data_collection'] %}
+                    {% for day_time,daily_data in daily_data_collection.items() %}
+                        <div class="day_card">
+                            <hr class="mb-1">
+                            <div class="day_div text-muted mb-1">
+                                <div class="day_date">{{ day_time }}</div>
+                                <div class="day_out_sum"></div>
+                            </div>
+                            {% for e in daily_data %}
+                                {% if e['sort']=='支出' %}
+                                    <div class="outcome alert alert-success mb-1" data-id="{{ e['id'] }}">
+                                        <div class="alert_first_row">
+                                            <div class="sort_detail">{{ e['sort_detail'] }}</div>
+                                            <div class="amount">{{ e['amount'] }}</div>
+                                        </div>
+                                        <div class="note text-muted small">{{ e['note'] }}</div>
+                                    </div>
+                                {% elif e['sort']=='收入' %}
+                                    <div class="income alert alert-danger mb-1" data-id="{{ e['id'] }}">
+                                        <div class="alert_first_row">
+                                            <div class="sort_detail">{{ e['sort_detail'] }}</div>
+                                            <div class="amount">{{ e['amount'] }}</div>
+                                        </div>
+                                        <div class="note text-muted">{{ e['note'] }}</div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#707070" id="add_icon">
+        <path d="M797.1 64H226.9C136.9 64 64 136.9 64 226.9v570.2c0 90 72.9 162.9 162.9 162.9h570.2c90 0 162.9-72.9 162.9-162.9V226.9c0-90-72.9-162.9-162.9-162.9m0.1 529.5H593.5v203.7h-163V593.5H226.9v-163h203.6V226.9h162.9v203.6h203.8v163z"></path>
+    </svg>
+
+    <div class="modal fade" id="modal" tabindex="-1" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_form">
+                        <div class="form-row">
+                            <div class="col">
+                                <select class="custom-select" name="sort">
+                                    <option>支出</option>
+                                    <option>收入</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="custom-select" name="sort_detail"></select>
+                            </div>
+                        </div>
+                        <div class="form-row my-3" id="add_date">
+                            <div class="col"><input type="text" name="year" placeholder="年" class="form-control"></div>
+                            <div class="col"><input type="text" name="month" placeholder="月" class="form-control"></div>
+                            <div class="col"><input type="text" name="date" placeholder="日" class="form-control"></div>
+                        </div>
+                        <input type="text" name="amount" placeholder="金额" class="form-control my-3">
+                        <textarea name="note" class="form-control" placeholder="备注"></textarea>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

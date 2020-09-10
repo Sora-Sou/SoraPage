@@ -3,18 +3,18 @@
         <form method="post" action="/acgn/galgame/ajax/add">
             <div class="form-row">
                 <div class="col-10 form-group">
-                    <label for="name">Galgame名</label>
-                    <input type="text" name="name" class="form-control">
+                    <label for="gal_name">Galgame名</label>
+                    <input type="text" name="gal_name" id="gal_name" class="form-control">
                 </div>
                 <div class="col-2 form-group">
                     <label for="imgLen">CG数</label>
-                    <input type="text" name="imgLen" id="imgLen" class="form-control">
+                    <input type="text" name="gal_imgLen" class="form-control">
                 </div>
             </div>
             {% set render_list=['综评','剧情','人设','音乐','画风'] %}
             {% set list_english={'综评':'overall','剧情':'plot','人设':'characterRank','音乐':'music','画风':'CG'} %}
-            {% macro gal_select(name='') %}
-                <select class="custom-select" name="{{ name }}">
+            {% macro gal_select(name='',class='') %}
+                <select class="custom-select {{ class }}" name="gal_{{ name }}">
                     <option>S</option>
                     <option>S-</option>
                     <option>A+</option>
@@ -25,42 +25,99 @@
             {% endmacro %}
 
             {% for i in range(render_list|length) %}
-                <div class="form-row mb-3">
-                    <div class="col-2 col-md-1 col-form-label gal_label">{{ render_list[i] }}</div>
-                    <div class="col-4 col-md-2 gal_select">{{ gal_select(list_english[render_list[i]]) }}</div>
-                    <button class="ml-4 btn btn-primary detail_btn" type="button">detail</button>
-                </div>
-                <div class="row mb-3">
-                    <input class="col-2 form-control" type="text">
-                    <div class="col-1 gal_select">{{ gal_select() }}</div>
-                    <input class="col-8 form-control" type="text">
-                    <div class="col-1">
-                        <button type="button" class="btn btn-secondary">add</button>
+                <div class="gal_div" data-target="{{ list_english[render_list[i]] }}">
+                    <div class="form-row mb-3">
+                        <div class="col-auto col-form-label mr-4">{{ render_list[i] }}</div>
+                        <div class="col-auto gal_select">{{ gal_select(name=list_english[render_list[i]]) }}</div>
+                        <div class="col-auto">
+                            <button class="ml-4 btn btn-primary detail_btn" type="button">detail</button>
+                        </div>
                     </div>
                 </div>
-                <input type="text" class="form-control mb-3">
             {% endfor %}
 
-            <div class="form-row mb-3">
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="年" name="year">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="月" name="month">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="日" name="day">
-                </div>
+            <div class="form-row mt-2 mb-3">
+                <div class="col"><input type="text" class="form-control" placeholder="年" name="gal_year"></div>
+                <div class="col"><input type="text" class="form-control" placeholder="月" name="gal_month"></div>
+                <div class="col"><input type="text" class="form-control" placeholder="日" name="gal_day"></div>
             </div>
-            <input type="submit" value="添加" class="btn btn-primary btn-block">
+            <input id="gal_submit" type="button" value="添加" class="btn btn-primary btn-block">
         </form>
     </div>
 </div>
-{#<script>#}
-{#    $('.detail_btn').click(function () {#}
-{#        let root=$(this).parent()#}
-{#        let rank_div=$('<div class="form-row mb-2"></div>')#}
-{#        let rank_character=$('<input class="form-control">')#}
-{#        let comment=$('<input class="form-control">')#}
-{#    })#}
-{#</script>#}
+<script>
+    let detail_comment_html = '<div class="form-row"><div class="col-12"><input type="text" class="form-control mb-3 gal_detail_comment"></div></div>';
+    let detail_character_row_html = `
+        <div class="form-row mb-3 gal_detail_rank">
+            <div class="col-2"><input class="form-control gal_detail_character_name" type="text"></div>
+            <div class="col-auto">{{ gal_select(class="gal_detail_character_rank") }}</div>
+            <div class="col"><input class="form-control gal_detail_character_comment" type="text"></div>
+            <div class="col-auto">
+                <button class="detail_add_btn btn btn-primary" type="button">添加</button>
+                <button class="detail_delete_btn btn btn-secondary" type="button">删除</button>
+            </div>
+        </div>`;
+    $('.detail_btn').click(function () {
+        let root = $(this).parents('.gal_div');
+        let detail_div = $('<div class="gal_detail" style="display:none;"></div>').append(detail_character_row_html, detail_comment_html);
+        if (root.children(".gal_detail").length != 0) {
+            root.children(".gal_detail").slideUp(function () {
+                $(this).remove();
+            });
+        } else {
+            root.append(detail_div);
+            root.children(".gal_detail").slideDown();
+        }
+    })
+    $('body').on('click', '.detail_add_btn', function () {
+        let row = $(detail_character_row_html).css('display', 'none');
+        $(this).parents('.form-row').first().after(row);
+        row.slideDown();
+    });
+    $('body').on('click', '.detail_delete_btn', function () {
+        $(this).parents('.form-row').slideUp(function () {
+            $(this).remove();
+        });
+    });
+    //gather details
+    $('body').on('click', '#gal_submit', function () {
+        let gal_details = [];
+        $('.gal_detail').each(function () {
+            let gal_detail_obj = {};
+            const name = $('#gal_name').val();
+            const target = $(this).parents('.gal_div').attr('data-target');
+
+            let content = {};
+            if ($(this).find('.gal_detail_comment').val() !== '') {
+                content['comment'] = $(this).children('.gal_detail_comment').val()
+            }
+            if ($(this).find('.gal_detail_rank').length !== 0) {
+                let rank_arr = [];
+                $(this).find('.gal_detail_rank').each(function () {
+                    let rank_obj = {};
+                    rank_obj['character'] = $(this).find('.gal_detail_character_name').val();
+                    rank_obj['rank'] = $(this).find('.gal_detail_character_rank').val();
+                    const comment = $(this).find('.gal_detail_character_comment').val();
+                    if (comment != '') {
+                        rank_obj['comment'] = comment;
+                    }
+                    rank_arr.push(rank_obj);
+                });
+                content['rank'] = rank_arr;
+            }
+            gal_detail_obj['name'] = name;
+            gal_detail_obj['target'] = target;
+            gal_detail_obj['content'] = content;
+            gal_details.push(gal_detail_obj);
+        });
+
+        if (gal_details.length != 0) {
+            $.ajax({
+                url: '/acgn/galgame/ajax/add_detail',
+                data: JSON.stringify(gal_details),
+                contentType: 'application/json;charset=utf-8',
+                type: 'POST'
+            });
+        }
+    });
+</script>

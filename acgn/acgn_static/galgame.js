@@ -216,10 +216,11 @@ $(document).ready(function () {
         url: '/acgn/galgame/ajax/detail',
         dataType: 'json',
         success: function (data) {
+            alert(data.length);
             for (let i = 0; i < data.length; i++) {
-                //python的jsonify将原本为对象的data[0]['content']转换为了字符串
-                data[0]['content'] = JSON.parse(data[0]['content'])
-                render_detail(data[i])
+                //python的jsonify将原本为对象的data[i]['content']转换为了字符串
+                data[i]['content'] = JSON.parse(data[i]['content']);
+                render_detail(data[i]);
             }
             no_toggler_css()
             toggler_animation()

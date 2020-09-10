@@ -102,7 +102,7 @@ def ledger_father_initial():
     sql_cursor.execute(
         '''create table if not exists ledger_father(
             id int not null AUTO_INCREMENT primary key,
-            amount DEC(5),
+            amount DEC(10,2),
             sort varchar(2),
             item varchar(400),
             insert_time timestamp,
@@ -115,3 +115,17 @@ def ledger_father_initial():
     sql_connect.commit()
     sql_cursor.close()
     sql_connect.close()
+
+
+def ledger_initial():
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute(
+        '''create table if not exists ledger(
+            id int not null AUTO_INCREMENT primary key,
+            sort varchar(10),
+            sort_detail varchar(20),
+            amount DEC(10,2),
+            time_ timestamp,
+            note varchar(200)
+        )'''
+    )

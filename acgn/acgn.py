@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, jsonify, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify
+import json
 from sql import connect_dictCursor
 
 acgn = Blueprint('acgn', __name__, template_folder='acgn_html', static_folder='acgn_static', url_prefix='/acgn')
@@ -30,17 +31,23 @@ def galgame_ajax(ajax_type):
 
     if ajax_type == 'add':
         form = request.form
-        date = form['year'] + '-' + form['month'] + '-' + form['day']
+        date = form['gal_year'] + '-' + form['gal_month'] + '-' + form['gal_day']
         sql_cursor.execute("insert into galgame(name,imgLen,overall,plot,characterRank,music,CG,date)" +
-                           f"values('{form['name']}',{form['imgLen']},'{form['overall']}','{form['plot']}','{form['characterRank']}','{form['music']}','{form['CG']}','{date}')")
+                           f"values('{form['gal_name']}',{form['gal_imgLen']},'{form['gal_overall']}','{form['gal_plot']}',"
+                           f"'{form['gal_characterRank']}','{form['gal_music']}','{form['gal_CG']}','{date}')")
         sql_connect.commit()
-        detail_list = ['overall', 'plot', 'characterRank', 'music', 'CG']
-        for element in detail_list:
-            detail_dict = {}
-            selector = 'detail_' + element
-            if form[selector] != '':
-                detail_dict['name'] = form['name']
-                detail_dict['target'] = element
-                detail_dict['content'] = {}
-
+        sql_cursor.close()
+        sql_connect.close()
         return redirect('/acgn/galgame')
+
+    if ajax_type == 'add_detail':
+        detail_list = request.json
+        for i in range(0, len(detail_list)):
+            detail = detail_list[i]
+            content_json = json.dumps(detail['content'])
+            sql_cursor.execute(
+                f"insert into galgame_detail(name,target,content) values('{detail['name']}','{detail['target']}','{content_json}')")
+            sql_connect.commit()
+            sql_cursor.close()
+            sql_connect.close()
+        return 'accepted'
