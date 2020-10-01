@@ -179,6 +179,7 @@ def ledger_add(ajax_type):
     if ajax_type == 'delete':
         delete_id = request.form['delete_id']
         sql_cursor.execute(f"delete from ledger where id='{delete_id}'")
+        sql_connect.commit()
         sql_cursor.close()
         sql_connect.close()
         return 'success'
@@ -187,7 +188,8 @@ def ledger_add(ajax_type):
         time = f['year'] + '-' + f['month'] + '-' + f['date']
         sql_cursor.execute(
             f'''update ledger set sort='{f['sort']}', sort_detail='{f['sort_detail']}', amount='{f['amount']}', time_='{time}',note='{f['note']}'
-                where id='{f['data-id']}' ''')
+                where id={f['data-id']} ''')
+        sql_connect.commit()
         sql_cursor.close()
         sql_connect.close()
         return 'success'

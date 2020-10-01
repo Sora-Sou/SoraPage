@@ -7,7 +7,7 @@ function fill_date(mode, thisObj) {
         month = now.getMonth() + 1;
         date = now.getDate();
     } else if (mode == 'modify') {
-        year = $(thisObj).parent('.card_day').prevAll('.month_title').children('h2').text().split('年', 1);
+        year = $(thisObj).parent('.day_card').prevAll('.month_title').children('h2').text().split('年', 1);
         const day_date = $(thisObj).prevAll('.day_div').find('.day_date').text();
         month = day_date.split('月', 1);
         date = day_date.split('月', 2)[1].split('日', 1);
@@ -18,7 +18,7 @@ function fill_date(mode, thisObj) {
 }
 
 function fill_sort_detail(sort) {
-    const outcome_sort = ['食堂', '零食', '饮料', '聚餐', '网购', '氪金'];
+    const outcome_sort = ['早餐', '午餐', '晚餐', '夜宵', '零食', '饮料', '聚餐', '网购', '氪金', '其他'];
     const income_sort = ['生活费', '其他'];
     let type_arr;
     if (sort == "收入") {
@@ -52,6 +52,17 @@ $(function () {
         const form_btn = `<button type="button" class="form-control btn btn-primary form_btn" id="add_btn">添加</button>`
         $('.form_btn').remove();
         $('#modal_form').append(form_btn);
+        //智能填充支出类别
+        const current_hour = new Date().getHours();
+        if (current_hour > 7 && current_hour < 11) {
+            $('[name=sort_detail]').val('早餐');
+        } else if (current_hour >= 11 && current_hour < 16) {
+            $('[name=sort_detail]').val('午餐');
+        } else if (current_hour >= 16 && current_hour <= 20) {
+            $('[name=sort_detail]').val('晚餐');
+        } else if (current_hour > 20 || current_hour <= 6) {
+            $('[name=sort_detail]').val('夜宵');
+        }
         $('#modal').modal('show');
     })
 
