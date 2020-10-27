@@ -216,7 +216,6 @@ $(document).ready(function () {
         url: '/acgn/galgame/ajax/detail',
         dataType: 'json',
         success: function (data) {
-            alert(data.length);
             for (let i = 0; i < data.length; i++) {
                 //python的jsonify将原本为对象的data[i]['content']转换为了字符串
                 data[i]['content'] = JSON.parse(data[i]['content']);

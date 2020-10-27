@@ -137,34 +137,3 @@ $(function () {
         })
     })
 })
-
-//统计
-$(function () {
-    $('.month_card').each(function () {
-        let month_out_sum = 0, month_out_num = 0, month_in_sum = 0, month_in_num = 0;
-
-        $(this).find('.day_card').each(function () {
-            let day_out_sum = 0, day_out_num = 0, day_in_sum = 0, day_in_num = 0;
-            $(this).find('.outcome').each(function () {
-                day_out_num++;
-                day_out_sum += parseFloat($(this).find('.amount').text())
-            })
-            $(this).find('.income').each(function () {
-                day_in_num++;
-                day_in_sum += parseFloat($(this).find('.amount').text())
-            })
-            $(this).find('.day_out_sum').text(day_out_sum);
-            $(this).find('.day_out_num').text(day_out_num);
-            $(this).find('.day_in_sum').text(day_in_sum);
-            $(this).find('.day_in_num').text(day_in_num);
-            month_out_num += day_out_num;
-            month_out_sum += day_out_sum;
-            month_in_num += day_in_num;
-            month_in_sum += day_in_sum;
-        })
-        $(this).find('.month_out_sum').text(month_out_sum);
-        $(this).find('.month_out_num').text(month_out_num);
-        $(this).find('.month_in_sum').text(month_in_sum);
-        $(this).find('.month_in_num').text(month_in_num);
-    })
-})

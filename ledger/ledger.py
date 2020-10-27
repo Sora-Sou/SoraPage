@@ -138,21 +138,53 @@ def ledger_():
             if len(month_data_fetch) != 0:
                 monthly_data = {
                     'month_time': query_year + '年' + query_month + '月',
-                    # daily_data_collection_sample = {
+                    'month_sta': {
+                        'out_sum': 0,
+                        'out_num': 0,
+                        'in_sum': 0,
+                        'in_num': 0,
+                    }
+                    # 'daily_data_collection_sample' : {
                     #     '9月30日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''},
                     #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''}]},
                     #     '9月29日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''},
                     #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''}]},
                     # }
                     # 'daily_data_collection': OrderedDict()
+                    #
+                    # 'daily_sta_collection_sample': {
+                    #     '10月27日': {'out_sum': 27.12, 'out_num': 3, 'in_sum': 15.42, 'in_num': 5, },
+                    #     '10月26日': {'out_sum': 0, 'out_num': 0, 'in_sum': 0, 'in_num': 0, },
+                    # }
+                    # 'daily_sta_collection': OrderedDict()
                 }
                 daily_data_collection = OrderedDict()
+                daily_sta_collection = OrderedDict()
                 for e in month_data_fetch:
                     key = e['time_'].strftime('%m月%d日')
                     if key not in daily_data_collection.keys():
                         daily_data_collection[key] = []
+                        daily_sta_collection[key] = {'out_sum': 0,
+                                                     'out_num': 0,
+                                                     'in_sum': 0,
+                                                     'in_num': 0, }
                     daily_data_collection[key].append(e)
+                    # append daily_sta_collection
+                    daily_sta_e = daily_sta_collection[key]
+                    if e['sort'] == '支出':
+                        daily_sta_e['out_sum'] += e['amount']
+                        daily_sta_e['out_num'] += 1
+                        monthly_data['month_sta']['out_sum'] += e['amount']
+                        monthly_data['month_sta']['out_num'] += 1
+                    elif e['sort'] == '收入':
+                        daily_sta_e['in_sum'] += e['amount']
+                        daily_sta_e['in_num'] += 1
+                        monthly_data['month_sta']['in_sum'] += e['amount']
+                        monthly_data['month_sta']['in_num'] += 1
+                    daily_sta_collection[key] = daily_sta_e
+
                 monthly_data['daily_data_collection'] = daily_data_collection
+                monthly_data['daily_sta_collection'] = daily_sta_collection
                 monthly_data_collection.append(monthly_data)
         sql_cursor.close()
         sql_connect.close()

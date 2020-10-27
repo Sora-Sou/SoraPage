@@ -1,3 +1,5 @@
 Flask>=1.1.2
 Werkzeug>=1.0.1
 PyMySQL>=0.10.0
+numpy>=1.19.2
+matplotlib>=3.3.2

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'libs.html' %}
+    <title>Document</title>
+    <style>
+        table td {
+            position: relative;
+        }
+
+        table td input {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            border: none;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+        $(function () {
+            $('#process_btn').click(function () {
+                const Q_S1 = [];
+                const Q_S2 = [];
+                const CV_S1 = [];
+                const CV_S2 = [];
+                $('#Q_S1').find('input').each(function () {
+                    if ($(this).val() != '') {
+                        Q_S1.push($(this).val());
+                    }
+                });
+                $('#Q_S2').find('input').each(function () {
+                    if ($(this).val() != '') {
+                        Q_S2.push($(this).val());
+                    }
+                });
+                $('#CV_S1').find('input').each(function () {
+                    if ($(this).val() != '') {
+                        CV_S1.push($(this).val());
+                    }
+                });
+                $('#CV_S2').find('input').each(function () {
+                    if ($(this).val() != '') {
+                        CV_S2.push($(this).val());
+                    }
+                });
+                const data = {
+                    'Q_S1': Q_S1,
+                    'Q_S2': Q_S2,
+                    'CV_S1': Q_S1,
+                    'CV_S2': Q_S2,
+                };
+                $.ajax({
+                    url: '/experiment/idsel',
+                    type: 'post',
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        alert(result);
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">集成电路专业实验5</h2>
+        <h2 class="text-center">C-V法测硅外延层纵向杂质分布</h2>
+        <p class="text-center">Impurity Distribution of Si Epitaxial Layer</p>
+        <form>
+            <table class="table table-bordered mt-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th colspan="10" class="text-center">高频Q表样品1</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>外加电压(V)</th>
+                    <td>10</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>40</td>
+                    <td>50</td>
+                    <td>60</td>
+                    <td>70</td>
+                    <td>80</td>
+                    <td>85</td>
+                </tr>
+                <tr id="Q_S1">
+                    <th>Q表显示电容(PF)</th>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered mt-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th colspan="10" class="text-center">高频Q表样品2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>外加电压(V)</th>
+                    <td>10</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>40</td>
+                    <td>50</td>
+                    <td>60</td>
+                    <td>70</td>
+                    <td>80</td>
+                    <td>85</td>
+                </tr>
+                <tr id="Q_S2">
+                    <th>Q表显示电容(PF)</th>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered mt-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th colspan="10" class="text-center">高频C-V测试仪</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>外加电压(V)</th>
+                    <td>10</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>40</td>
+                    <td>50</td>
+                    <td>60</td>
+                    <td>70</td>
+                    <td>80</td>
+                    <td>85</td>
+                </tr>
+                <tr id="CV_S1">
+                    <th>样品1电容(PF)</th>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr id="CV_S2">
+                    <th>样品2电容(PF)</th>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary btn-block mt-4" id="process_btn">数据处理</button>
+        </form>
+    </div>
+    {% include 'comment.html' %}
+    <footer class="text-center text-muted">
+        <p>
+            Powered by <a href="https://github.com/Sora-Sou/SoraPage">SoraPage Project</a>
+            <br>
+            当前页面访问<span id="visit_count">1</span>次 数据处理<span id="process_count">7</span>次
+        </p>
+    </footer>
+</body>
+
+</html>

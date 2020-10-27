@@ -60,13 +60,13 @@
                             <tbody>
                             <tr class="text-success">
                                 <td>支出</td>
-                                <td class="month_out_sum"></td>
-                                <td class="month_out_num"></td>
+                                <td class="month_out_sum">{{ monthly_data['month_sta']['out_sum'] }}</td>
+                                <td class="month_out_num">{{ monthly_data['month_sta']['out_num'] }}</td>
                             </tr>
                             <tr class="text-danger">
                                 <td>收入</td>
-                                <td class="month_in_sum"></td>
-                                <td class="month_in_num"></td>
+                                <td class="month_in_sum">{{ monthly_data['month_sta']['in_sum'] }}</td>
+                                <td class="month_in_num">{{ monthly_data['month_sta']['in_num'] }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -78,7 +78,7 @@
                             <hr class="mb-1">
                             <div class="day_div text-muted mb-1">
                                 <div class="day_date">{{ day_time }}</div>
-                                <div class="day_out_sum"></div>
+                                <div class="day_out_sum">{{ monthly_data['daily_sta_collection'][day_time]['out_sum'] }}</div>
                             </div>
                             {% for e in daily_data %}
                                 {% if e['sort']=='支出' %}
