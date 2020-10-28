@@ -7,7 +7,7 @@ function fill_date(mode, thisObj) {
         month = now.getMonth() + 1;
         date = now.getDate();
     } else if (mode == 'modify') {
-        year = $(thisObj).parent('.day_card').prevAll('.month_title').children('h2').text().split('年', 1);
+        year = $(thisObj).parents('.day_card_collection').prevAll('.month_title').children('h3').text().split('年', 1);
         const day_date = $(thisObj).prevAll('.day_div').find('.day_date').text();
         month = day_date.split('月', 1);
         date = day_date.split('月', 2)[1].split('日', 1);
