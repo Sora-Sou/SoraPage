@@ -129,3 +129,15 @@ def ledger_initial():
             note varchar(200)
         )'''
     )
+
+
+def user_initial():
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute(
+        '''create table if not exists user(
+            id int not null AUTO_INCREMENT primary key,
+            name_ varchar(20),
+            email varchar(20),
+            password varchar(),
+        )'''
+    )

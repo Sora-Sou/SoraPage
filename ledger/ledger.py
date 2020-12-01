@@ -129,11 +129,16 @@ def ledger_():
                 query_year = query_year - 1
             query_month = current_month - i
             query_next_month = query_month + 1
+            query_next_month_int = query_next_month
             query_year = str(query_year)
             query_month = str(query_month)
             query_next_month = str(query_next_month)
-            sql_cursor.execute(
-                f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc")
+            if query_next_month_int > 12:
+                sql_cursor.execute(
+                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_month + '-31'}' order by time_ desc")
+            else:
+                sql_cursor.execute(
+                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc")
             month_data_fetch = sql_cursor.fetchall()
             if len(month_data_fetch) != 0:
                 monthly_data = {

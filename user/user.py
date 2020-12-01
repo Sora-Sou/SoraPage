@@ -54,7 +54,7 @@ def register():
                 fail.append('blank')
         # 用户名和邮箱是否重复
         sql_connect, sql_cursor = connect_dictCursor()
-        sql_cursor.execute(f'''SELECT * FROM users WHERE name='{request.form['name']}' ''')
+        sql_cursor.execute(f'''SELECT * FROM users WHERE name_='{request.form['name']}' ''')
         sql_fetch_name = sql_cursor.fetchone()
         sql_cursor.execute(f'''SELECT * FROM users WHERE email='{request.form['email']}' ''')
         sql_fetch_email = sql_cursor.fetchone()
