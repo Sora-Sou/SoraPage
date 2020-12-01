@@ -44,15 +44,21 @@ def father_ledger_ajax(ajax_type):
         year = str(year_int)
         month = str(month_int)
         next_month = str(next_month_int)
-        sql_cursor.execute(
-            f"select * from ledger_father where insert_time>='{year + '-' + month + '-1'}' and insert_time<'{year + '-' + next_month + '-1'}' order by insert_time desc ,id desc")
-        fetch = sql_cursor.fetchall()
-        for i in range(0, len(fetch)):
-            fetch[i]['amount'] = str(fetch[i]['amount'])
-            fetch[i]['insert_time'] = fetch[i]['insert_time'].strftime("%Y-%m-%d")
-        sql_cursor.close()
-        sql_connect.close()
-        return jsonify(fetch)
+        if month == 12:
+            sql_cursor.execute(
+                f"select * from ledger_father where insert_time>='{year + '-' + month + '-1'}' and insert_time<'{year + '-' + month + '-31'}' order by insert_time desc ,id desc"
+            )
+        else:
+            sql_cursor.execute(
+                f"select * from ledger_father where insert_time>='{year + '-' + month + '-1'}' and insert_time<'{year + '-' + next_month + '-1'}' order by insert_time desc ,id desc"
+            )
+    fetch = sql_cursor.fetchall()
+    for i in range(0, len(fetch)):
+        fetch[i]['amount'] = str(fetch[i]['amount'])
+        fetch[i]['insert_time'] = fetch[i]['insert_time'].strftime("%Y-%m-%d")
+    sql_cursor.close()
+    sql_connect.close()
+    return jsonify(fetch)
 
 
 @ledger.route('/ledger/father/modify/<modify_type>', methods=['POST', 'GET'])
@@ -128,17 +134,19 @@ def ledger_():
                 i = i - 12
                 query_year = query_year - 1
             query_month = current_month - i
+            query_month_int = query_month
             query_next_month = query_month + 1
-            query_next_month_int = query_next_month
             query_year = str(query_year)
             query_month = str(query_month)
             query_next_month = str(query_next_month)
-            if query_next_month_int > 12:
+            if query_month_int == 12:
                 sql_cursor.execute(
-                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_month + '-31'}' order by time_ desc")
+                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_month + '-31'}' order by time_ desc"
+                )
             else:
                 sql_cursor.execute(
-                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc")
+                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc"
+                )
             month_data_fetch = sql_cursor.fetchall()
             if len(month_data_fetch) != 0:
                 monthly_data = {
