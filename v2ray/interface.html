@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface</title>
+    {% include 'libs.html' %}
+    <script>
+        $(function () {
+            $(".relay_enable").change(function () {
+                if ($(this).prop('checked')) {
+                    $(".relay_address").removeAttr('disabled');
+                    $(".relay_port").removeAttr('disabled');
+                } else {
+                    $(".relay_address").val('').attr('disabled', 'disabled');
+                    $(".relay_port").val('').attr('disabled', 'disabled');
+                }
+            })
+        })
+
+        function node_modify(node_str) {
+            const node_json = node_str.replace(/None/g, 'null').replace(/'/g, '"');
+            const node = JSON.parse(node_json);
+            $('#node_modify_modal_title').text('修改节点 id=' + node['id']);
+            $('[name="node_id"]').val(node['id']);
+            $('#node_name_m').val(node['node_name']);
+            $('#node_address_m').val(node['address']);
+            $('#node_port_m').val(node['port']);
+            $('#node_level_m').val(node['node_level']);
+            if (node['relay_address'] != null) {
+                $('#relay_enable_m').prop('checked', true);
+                $('#relay_address_m').prop('disabled', false);
+                $('#relay_port_m').prop('disabled', false);
+                $('#relay_address_m').val(node['relay_address']);
+                $('#relay_port_m').val(node['relay_port']);
+            }
+            $('#node_modify_modal').modal('show');
+        }
+    </script>
+    <style>
+        table {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mt-3">
+            <div class="card-header">账户信息</div>
+            <div class="card-body">
+                <div class="card-text">
+                    <p>名称：{{ user_info['name'] }}</p>
+                    <p>邮箱：{{ user_info['email'] }}</p>
+                    <p>余额：{{ user_info['balance'] }}</p>
+                    <p>等级：{{ user_info['user_level'] }}</p>
+                    <p>等级过期日期：{{ user_info['level_expire'] }}</p>
+                    <p>上传流量：{{ user_info['uplink'] }}</p>
+                    <p>下载流量：{{ user_info['downlink'] }}</p>
+                    <p>
+                        订阅链接：
+                        <a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uid'] }}">
+                            http://sorapage.com/v2ray/subscribe/{{ user_info['uid'] }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">用户列表</div>
+            <div class="card-body">
+                <table class="table table-responsive-sm">
+                    <thead>
+                    <tr>
+                        <td>用户名</td>
+                        <td>邮箱</td>
+                        <td>上传流量</td>
+                        <td>下载流量</td>
+                        <td>余额</td>
+                        <td>用户等级</td>
+                        <td>等级过期日期</td>
+                    </tr>
+                    </thead>
+                    {% for user in all_user_list %}
+                        <tr>
+                            <td>{{ user['name_'] }}</td>
+                            <td>{{ user['email'] }}</td>
+                            <td>{{ user['uplink'] }}</td>
+                            <td>{{ user['downlink'] }}</td>
+                            <td>{{ user['balance'] }}</td>
+                            <td>{{ user['user_level'] }}</td>
+                            <td>{{ user['level_expire'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">节点列表</div>
+            <div class="card-body">
+                <table class="table table-hover table-responsive-sm">
+                    <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>id</td>
+                        <td>名称</td>
+                        <td>地址</td>
+                        <td>端口</td>
+                        <td>中转地址</td>
+                        <td>中转端口</td>
+                        <td>等级</td>
+                        <td>出站上传</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    {% for i in range(node_info|length) %}
+                        {% set e = node_info[i] %}
+                        <tr>
+                            <td>
+                                {{ e['order_'] }}
+                                {% if i==0 %}
+                                    <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
+                                {% elif i==node_info|length-1 %}
+                                    <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
+                                {% else %}
+                                    <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
+                                    <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
+                                {% endif %}
+                            </td>
+                            <td>{{ e['id'] }}</td>
+                            <td>{{ e['node_name'] }}</td>
+                            <td>{{ e['address'] }}</td>
+                            <td>{{ e['port'] }}</td>
+                            <td>{{ e['relay_address'] }}</td>
+                            <td>{{ e['relay_port'] }}</td>
+                            <td>{{ e['node_level'] }}</td>
+                            <td>{{ e['outbound_uplink'] }}</td>
+                            <td>
+                                <a href="javascript:node_modify(&quot;{{ e }}&quot;)" class="mr-1">修改</a>
+                                <a href="/v2ray/node/delete?id={{ e['id'] }}">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">添加节点</div>
+            <div class="card-body">
+                <form action="/v2ray/node/add" method="post">
+                    <div class="form-group">
+                        <input type="text" name="node_name" id="node_name" class="form-control" placeholder="节点名称">
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col">
+                            <input type="text" name="node_address" id="node_address" class="form-control"
+                                   placeholder="地址">
+                        </div>
+                        <div class="col">
+                            <input type="text" name="node_port" id="node_port" class="form-control" placeholder="端口">
+                        </div>
+                    </div>
+                    <div class="form-row form-group align-items-center">
+                        <div class="col-auto">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input relay_enable" id="relay_enable"
+                                       name="relay_enable">
+                                <label class="form-check-label" for="relay_enable">启用中转</label>
+                            </div>
+                        </div>
+                        <div class="col ml-4">
+                            <input type="text" name="relay_address" id="relay_address"
+                                   class="form-control relay_address" placeholder="中转地址" disabled>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="relay_port" id="relay_port"
+                                   class="form-control relay_port" placeholder="中转端口" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="node_level" id="node_level" class="form-control" placeholder="节点等级">
+                    </div>
+                    <input type="submit" value="添加" class="form-control btn btn-primary">
+                </form>
+            </div>
+        </div>
+
+        <div class="modal fade" id="node_modify_modal" tabindex="-1" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span id="node_modify_modal_title"></span>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form action="/v2ray/node/modify" method="post">
+                                <div class="form-group">
+                                    <input type="text" name="node_name_m" id="node_name_m" class="form-control"
+                                           placeholder="节点名称">
+                                </div>
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <input type="text" name="node_address_m" id="node_address_m"
+                                               class="form-control"
+                                               placeholder="地址">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" name="node_port_m" id="node_port_m" class="form-control"
+                                               placeholder="端口">
+                                    </div>
+                                </div>
+                                <div class="form-row form-group align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input relay_enable"
+                                                   id="relay_enable_m" name="relay_enable_m">
+                                            <label class="form-check-label" for="relay_enable_m">启用中转</label>
+                                        </div>
+                                    </div>
+                                    <div class="col ml-4">
+                                        <input type="text" name="relay_address_m" id="relay_address_m"
+                                               class="form-control relay_address" placeholder="中转地址" disabled>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" name="relay_port_m" id="relay_port_m"
+                                               class="form-control relay_port" placeholder="中转端口" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="node_level_m" id="node_level_m" class="form-control"
+                                           placeholder="节点等级">
+                                </div>
+                                <input type="hidden" name="node_id">
+                                <input type="submit" value="修改" class="form-control btn btn-primary">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

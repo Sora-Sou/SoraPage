@@ -2,6 +2,9 @@ import pymysql
 from config import sql
 
 
+# from sql import connect_dictCursor
+# sql_connect, sql_cursor = connect_dictCursor()
+
 def connect_dictCursor():
     sql_connect = pymysql.connect(host=sql['host'], port=sql['port'], database=sql['database'],
                                   user=sql['user'], password=sql['password'])
@@ -48,7 +51,6 @@ def comment_initial():
     sql_connect.commit()
     sql_cursor.close()
     sql_connect.close()
-    print("comment table created")
 
 
 def galgame_initial():
@@ -73,23 +75,6 @@ def galgame_initial():
             name varchar(20),
             target varchar(20),
             content json
-        )'''
-    )
-    sql_connect.commit()
-    sql_cursor.close()
-    sql_connect.close()
-    print("galgame table created")
-
-
-def toefl_speaking_initial():
-    sql_connect, sql_cursor = connect_dictCursor()
-    sql_cursor.execute(
-        '''create table if not exists toefl_speaking(
-            id int not null AUTO_INCREMENT primary key,
-            sort int,
-            origin varchar(10),
-            question varchar(1000),
-            answer varchar(1500)
         )'''
     )
     sql_connect.commit()
@@ -129,15 +114,58 @@ def ledger_initial():
             note varchar(200)
         )'''
     )
+    sql_connect.commit()
+    sql_cursor.close()
+    sql_connect.close()
 
 
-def user_initial():
+def users_initial():
     sql_connect, sql_cursor = connect_dictCursor()
     sql_cursor.execute(
-        '''create table if not exists user(
-            id int not null AUTO_INCREMENT primary key,
+        '''create table if not exists users(
+            id int not null auto_increment primary key,
             name_ varchar(20),
             email varchar(20),
-            password varchar(),
+            password varchar(128),
+            register_date timestamp
         )'''
     )
+    sql_connect.commit()
+    sql_cursor.close()
+    sql_connect.close()
+
+
+def v2ray_initial():
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute(
+        '''create table if not exists v2ray_node(
+            id int not null auto_increment primary key,
+            node_name varchar(30),
+            address varchar(30),
+            port int,
+            relay_address varchar(30),
+            relay_port int,
+            order_ int,
+            node_level int,
+            inbound_uplink bigint,
+            inbound_downlink bigint,
+            outbound_uplink bigint,
+            outbound_downlink bigint
+        )'''
+    )
+    sql_connect.commit()
+    sql_cursor.execute(
+        '''create table if not exists v2ray_user(
+            id int not null primary key,
+            uid varchar(40),
+            balance decimal(7,2),
+            user_level int,
+            level_expire timestamp,
+            uplink bigint,
+            downlink bigint
+        )
+        '''
+    )
+    sql_connect.commit()
+    sql_cursor.close()
+    sql_connect.close()

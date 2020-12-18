@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soraの小本本</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/ledger_icon.png') }}">
-    <link rel="stylesheet" href="/static/libs/bootstrap-4.5.0/bootstrap.min.css">
-    <script src="/static/libs/jquery-3.5.1.min.js"></script>
-    <script src="/static/libs/bootstrap-4.5.0/bootstrap.bundle.min.js"></script>
+    {% include 'libs.html' %}
     <style>
         .month_title {
             display: flex;

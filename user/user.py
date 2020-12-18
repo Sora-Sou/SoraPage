@@ -1,6 +1,7 @@
 from flask import Blueprint, make_response, redirect, request, session, current_app, render_template, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from sql import connect_dictCursor
+from datetime import datetime
 
 user = Blueprint('user', __name__, template_folder='user_html', static_folder='user_static')
 
@@ -9,7 +10,12 @@ user = Blueprint('user', __name__, template_folder='user_html', static_folder='u
 def login():
     if request.method == 'GET':
         response = make_response(render_template('login.html'))
-        response.set_cookie('referrer', request.referrer)
+        if request.referrer is not None:
+            response.set_cookie('referrer', request.referrer)
+        elif request.args['success'] is not None:
+            response.set_cookie('referrer', request.args['success'])
+        else:
+            response.set_cookie('referrer', '/')
         return response
     elif request.method == 'POST':
         sql_connect, sql_cursor = connect_dictCursor()
@@ -23,8 +29,8 @@ def login():
             if check_password_hash(sql_fetch['password'], request.form['password']):
                 response = make_response(redirect(request.cookies.get('referrer')))
                 response.delete_cookie('referrer')
-                session['uid'] = str(sql_fetch['id'])
-                session['name'] = sql_fetch['name']
+                session['id'] = str(sql_fetch['id'])
+                session['name'] = sql_fetch['name_']
                 session['email'] = sql_fetch['email']
                 if request.form.get('keep_login_switch'):
                     current_app.permanent_session_lifetime = current_app.config['SESSION_LIFETIME']
@@ -72,13 +78,16 @@ def register():
             return render_template('register.html', fail=fail, blank=blank, form=request.form)
         else:
             password_hash = generate_password_hash(request.form['password'])
+            current_date = datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
             sql_cursor.execute(
-                f'''INSERT INTO users(name,email,password) VALUES('{request.form['name']}','{request.form['email']}','{password_hash}')'''
+                f'''INSERT INTO users(name_,email,password,register_date) 
+                    VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}')'''
             )
             sql_connect.commit()
-            sql_cursor.execute(f'''SELECT id FROM users WHERE name='{request.form['name']}' ''')
-            session['uid'] = sql_cursor.fetchone()[0]
-            session['user_name'] = request.form['name']
+            sql_cursor.execute(f'''SELECT id FROM users WHERE name_='{request.form['name']}' ''')
+            session['id'] = sql_cursor.fetchone()['id']
+            session['name'] = request.form['name']
+            session['email'] = request.form['email']
             sql_cursor.close()
             sql_connect.close()
             if request.cookies.get('referrer'):

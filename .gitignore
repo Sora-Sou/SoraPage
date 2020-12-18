@@ -1,4 +1,6 @@
 config.py
+v2ray/config.json
+v2ray/v2ray_backend.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
