@@ -1,13 +1,13 @@
 import pymysql
-from config import sql
+from config import SQL
 
 
 # from sql import connect_dictCursor
 # sql_connect, sql_cursor = connect_dictCursor()
 
 def connect_dictCursor():
-    sql_connect = pymysql.connect(host=sql['host'], port=sql['port'], database=sql['database'],
-                                  user=sql['user'], password=sql['password'])
+    sql_connect = pymysql.connect(host=SQL['host'], port=SQL['port'], database=SQL['database'],
+                                  user=SQL['user'], password=SQL['password'])
     sql_cursor = sql_connect.cursor(cursor=pymysql.cursors.DictCursor)
     return sql_connect, sql_cursor
 

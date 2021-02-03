@@ -6,20 +6,19 @@ import os
 import base64
 
 from sql import connect_dictCursor
-from config import v2ray_config, TOKEN
+from config import V2RAY_CONFIG, SQL
 
 v2ray = Blueprint('v2ray', __name__, template_folder='', static_folder='', url_prefix='/v2ray')
 
 
 @v2ray.route('/')
 def interface():
-    def traffic_unit_convert(t_sum_str):
-        if t_sum_str is None:
+    def traffic_unit_convert(t_sum):
+        if t_sum is None:
             return "0"
         else:
-            t_sum = int(t_sum_str)
             if t_sum < 1e3:
-                return t_sum_str + "B"
+                return str(t_sum) + "B"
             elif 1e3 <= t_sum < 1e6:
                 return str(round(t_sum / 1e3)) + "KB"
             elif 1e6 <= t_sum < 1e9:
@@ -35,7 +34,7 @@ def interface():
         sql_cursor.execute(f'select * from v2ray_user where id ="{sql_id}"')
         fetch = sql_cursor.fetchone()
         # first login
-        trail_expire = (datetime.now() + timedelta(days=v2ray_config['trail_duration'])).strftime('%Y-%m-%d')
+        trail_expire = (datetime.now() + timedelta(days=V2RAY_CONFIG['trail_duration'])).strftime('%Y-%m-%d')
         if fetch is None:
             v2ray_id = urlopen("https://www.uuidgenerator.net/api/version4").read().decode()
             sql_cursor.execute(
@@ -77,6 +76,8 @@ def interface():
         for user in all_user_list:
             user['uplink'] = traffic_unit_convert(user['uplink'])
             user['downlink'] = traffic_unit_convert(user['downlink'])
+        sql_cursor.close()
+        sql_connect.close()
     return render_template('interface.html', user_info=user_info, node_info=node_info, all_user_list=all_user_list)
 
 
@@ -87,6 +88,8 @@ def subscribe(uid):
     user_level = sql_cursor.fetchone()['user_level']
     sql_cursor.execute(f"select * from v2ray_node where node_level<='{user_level}' order by order_ asc")
     node_list = sql_cursor.fetchall()
+    sql_cursor.close()
+    sql_connect.close()
     vmess_collection = ""
     subscribe_content = ""
 
@@ -222,6 +225,8 @@ def node_api(node_id):
     )
     sql_connect.commit()
     user_info = sql_cursor.fetchall()
+    sql_cursor.close()
+    sql_connect.close()
     with open(os.path.join(current_app.root_path, 'v2ray/template.json')) as template_json_file:
         config_json = json.load(template_json_file)
         config_json['inbounds'][0]['port'] = node_info['port']
@@ -241,6 +246,15 @@ def node_api(node_id):
 @v2ray.route('/backend/<file_name>')
 def send_backend_file(file_name):
     if file_name == "python":
+        file_content = ""
+        with open(os.path.join(current_app.root_path, 'v2ray/backend_template.py'), 'r') as backend:
+            for line in backend:
+                if "sql_connect = pymysql.connect()" in line:
+                    line = line.replace("sql_connect = pymysql.connect()",
+                                        f"sql_connect = pymysql.connect(host='{SQL['host']}', port={SQL['port']}, database='{SQL['database']}', user='{SQL['user']}', password='{SQL['password']}') ")
+                file_content += line
+        with open(os.path.join(current_app.root_path, 'v2ray/backend.py'), 'w') as backend:
+            backend.write(file_content)
         return send_file(os.path.join(current_app.root_path, 'v2ray/backend.py'))
     elif file_name == "requirements":
         return send_file(os.path.join(current_app.root_path, 'v2ray/requirements.txt'))

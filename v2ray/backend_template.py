@@ -39,6 +39,13 @@ def print_info(info):
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\t' + info)
 
 
+def int_covert(param):
+    if param is None:
+        return 0
+    else:
+        return int(param)
+
+
 def update_traffic():
     sql_connect, sql_cursor = connect_dictCursor()
     # user traffic query
@@ -54,37 +61,35 @@ def update_traffic():
         user_uplink_shell = f'''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "user>>>{user['email']}>>>traffic>>>uplink" reset: true' '''
         user_downlink = traffic_query(user_downlink_shell)
         user_uplink = traffic_query(user_uplink_shell)
-        # sql traffic query
+        # SQL traffic query
         user_current_traffic_query = f"select downlink,uplink from v2ray_user where id = '{user['id']}' "
         sql_cursor.execute(user_current_traffic_query)
         user_current_traffic = sql_cursor.fetchone()
         # sum of result
-        user_uplink_sum = int(user_uplink) + int(user_current_traffic['uplink'])
-        user_downlink_sum = int(user_downlink) + int(user_current_traffic['downlink'])
-        # update sql user traffic
+        user_uplink_sum = int_covert(user_uplink) + int_covert(user_current_traffic['uplink'])
+        user_downlink_sum = int_covert(user_downlink) + int_covert(user_current_traffic['downlink'])
+        # update SQL user traffic
         user_traffic_update_query = f"update v2ray_user set uplink={user_uplink_sum},downlink={user_downlink_sum} where id='{user['id']}' "
         sql_cursor.execute(user_traffic_update_query)
         sql_connect.commit()
-    # node outbound uplink query
-    node_outbound_uplink_shell = '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>uplink" reset: false' '''
-    node_outbound_uplink = traffic_query(node_outbound_uplink_shell)
-    sql_cursor.execute(f" update v2ray_node set outbound_uplink='{node_outbound_uplink}' where id='{node_id}' ")
-    sql_connect.commit()
-    # node outbound downlink query
-    node_outbound_downlink_shell = '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>downlink" reset: false' '''
-    node_outbound_downlink = traffic_query(node_outbound_downlink_shell)
-    sql_cursor.execute(f" update v2ray_node set outbound_downlink='{node_outbound_downlink}' where id='{node_id}' ")
-    sql_connect.commit()
-    # node inbound uplink query
-    node_inbound_uplink_shell = '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "inbound>>>tcp>>>traffic>>>uplink" reset: false' '''
-    node_inbound_uplink = traffic_query(node_inbound_uplink_shell)
-    sql_cursor.execute(f" update v2ray_node set inbound_uplink='{node_inbound_uplink}' where id='{node_id}' ")
-    sql_connect.commit()
-    # node inbound downlink query
-    node_inbound_downlink_shell = '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "inbound>>>tcp>>>traffic>>>downlink" reset: false' '''
-    node_inbound_downlink = traffic_query(node_inbound_downlink_shell)
-    sql_cursor.execute(f" update v2ray_node set inbound_downlink='{node_inbound_downlink}' where id='{node_id}' ")
-    sql_connect.commit()
+
+    def node_update(traffic_type, api_shell):
+        added_traffic = traffic_query(api_shell)
+        sql_cursor.execute(f"select {traffic_type} from v2ray_node where id='{node_id}' ")
+        pre_traffic = sql_cursor.fetchone()[traffic_type]
+        traffic_sum = int_covert(added_traffic) + int_covert(pre_traffic)
+        sql_cursor.execute(f"update v2ray_node set {traffic_type}='{traffic_sum}' where id='{node_id}' ")
+        sql_connect.commit()
+
+    traffic_type_arr = ['outbound_uplink', 'outbound_downlink', 'inbound_uplink', 'inbound_downlink']
+    api_shell_arr = [
+        '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>uplink" reset: true' ''',
+        '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>downlink" reset: true' ''',
+        '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "inbound>>>tcp>>>traffic>>>uplink" reset: true' ''',
+        '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "inbound>>>tcp>>>traffic>>>downlink" reset: true' '''
+    ]
+    for i in range(4):
+        node_update(traffic_type_arr[i], api_shell_arr[i])
     sql_cursor.close()
     sql_connect.close()
     print_info('traffic updated')
@@ -105,6 +110,6 @@ node_id = input('input the node id:')
 update_config_json()
 
 scheduler = BlockingScheduler()
-scheduler.add_job(update_traffic, 'interval', seconds=10, jitter=5)
+scheduler.add_job(update_traffic, 'interval', seconds=10)
 scheduler.add_job(update_config_json, 'cron', hour=0, minute=5, second=0, jitter=120)
 scheduler.start()
