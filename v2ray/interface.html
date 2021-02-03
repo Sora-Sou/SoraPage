@@ -111,7 +111,8 @@
                         <td>中转地址</td>
                         <td>中转端口</td>
                         <td>等级</td>
-                        <td>出站上传</td>
+                        <td>上传流量</td>
+                        <td>下载流量</td>
                         <td>操作</td>
                     </tr>
                     </thead>
@@ -137,6 +138,7 @@
                             <td>{{ e['relay_port'] }}</td>
                             <td>{{ e['node_level'] }}</td>
                             <td>{{ e['outbound_uplink'] }}</td>
+                            <td>{{ e['outbound_downlink'] }}</td>
                             <td>
                                 <a href="javascript:node_modify(&quot;{{ e }}&quot;)" class="mr-1">修改</a>
                                 <a href="/v2ray/node/delete?id={{ e['id'] }}">删除</a>

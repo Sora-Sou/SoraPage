@@ -6,13 +6,27 @@ import os
 import base64
 
 from sql import connect_dictCursor
-from config import v2ray_config
+from config import v2ray_config, TOKEN
 
 v2ray = Blueprint('v2ray', __name__, template_folder='', static_folder='', url_prefix='/v2ray')
 
 
 @v2ray.route('/')
 def interface():
+    def traffic_unit_convert(t_sum_str):
+        if t_sum_str is None:
+            return "0"
+        else:
+            t_sum = int(t_sum_str)
+            if t_sum < 1e3:
+                return t_sum_str + "B"
+            elif 1e3 <= t_sum < 1e6:
+                return str(round(t_sum / 1e3)) + "KB"
+            elif 1e6 <= t_sum < 1e9:
+                return str(round(t_sum / 1e6)) + "MB"
+            elif t_sum >= 1e9:
+                return str(round(t_sum / 1e9, 2)) + "GB"
+
     if session.get('id') is None:
         return redirect('/login?success=v2ray')
     else:
@@ -48,13 +62,21 @@ def interface():
                 'balance': fetch['balance'],
                 'user_level': fetch['user_level'],
                 'level_expire': fetch['level_expire'],
-                'uplink': fetch['uplink'],
-                'downlink': fetch['downlink']
+                'uplink': traffic_unit_convert(fetch['uplink']),
+                'downlink': traffic_unit_convert(fetch['downlink'])
             }
         sql_cursor.execute('select * from v2ray_node order by order_ asc')
         node_info = sql_cursor.fetchall()
+        for node in node_info:
+            node['inbound_uplink'] = traffic_unit_convert(node['inbound_uplink'])
+            node['inbound_downlink'] = traffic_unit_convert(node['inbound_downlink'])
+            node['outbound_uplink'] = traffic_unit_convert(node['outbound_uplink'])
+            node['outbound_downlink'] = traffic_unit_convert(node['outbound_downlink'])
         sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.id = users.id')
         all_user_list = sql_cursor.fetchall()
+        for user in all_user_list:
+            user['uplink'] = traffic_unit_convert(user['uplink'])
+            user['downlink'] = traffic_unit_convert(user['downlink'])
     return render_template('interface.html', user_info=user_info, node_info=node_info, all_user_list=all_user_list)
 
 
@@ -219,6 +241,6 @@ def node_api(node_id):
 @v2ray.route('/backend/<file_name>')
 def send_backend_file(file_name):
     if file_name == "python":
-        return send_file(os.path.join(current_app.root_path, 'v2ray/v2ray_backend.py'))
+        return send_file(os.path.join(current_app.root_path, 'v2ray/backend.py'))
     elif file_name == "requirements":
         return send_file(os.path.join(current_app.root_path, 'v2ray/requirements.txt'))
