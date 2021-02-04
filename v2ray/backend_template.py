@@ -27,12 +27,13 @@ def traffic_query(cmd):
     if len(stdout_str) == 0:
         return "0"
     else:
-        pattern = re.compile(r'\d+')
-        traffic_str_tuple = pattern.findall(stdout_str)
+        value_reg = re.compile(r'value: \d+')
+        num_in_value_reg = re.compile(r"\d+")
+        traffic_str_tuple = value_reg.findall(stdout_str)
         if len(traffic_str_tuple) == 0:
             return "0"
         else:
-            return traffic_str_tuple[0]
+            return num_in_value_reg.findall(traffic_str_tuple[0])[0]
 
 
 def print_info(info):

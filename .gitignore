@@ -11,3 +11,6 @@ instance/
 .webassets-cache
 #pycharm
 .idea
+#logs
+gunicorn_acess.log
+gunicorn_error.log
