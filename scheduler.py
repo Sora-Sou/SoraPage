@@ -10,7 +10,7 @@ def print_info(info):
 def v2ray_database_update():
     sql_connect, sql_cursor = connect_dictCursor()
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    user_level_update = f"update v2ray_user set user_level = '0' where level_expire >= '{now}' "
+    user_level_update = f"update v2ray_user set user_level = '0' where level_expire<='{now}' "
     sql_cursor.execute(user_level_update)
     sql_connect.commit()
     print_info("user level updated")

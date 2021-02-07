@@ -1,4 +1,3 @@
-# version 1.1
 from apscheduler.schedulers.blocking import BlockingScheduler
 import subprocess
 import re
@@ -96,21 +95,33 @@ def update_traffic():
     print_info('traffic updated')
 
 
+last_update_user_num = 0
+
+
 def update_config_json():
-    config_json = urlopen(f"http://sorapage.com/v2ray/node/config/{node_id}").read().decode('utf-8')
-    v2ray_config_json_path = "/usr/local/etc/v2ray/config.json"
-    with open(v2ray_config_json_path, 'w') as file_obj:
-        file_obj.write(config_json)
-    print_info('config updated')
-    shell("systemctl stop v2ray")
-    shell("systemctl start v2ray")
-    print_info("v2ray started")
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute(f"select node_level from v2ray_node where id='{node_id}' ")
+    node_level = sql_cursor.fetchone()['node_level']
+    sql_cursor.execute(f"select id from v2ray_user where user_level>='{node_level}' ")
+    this_update_user_num = len(sql_cursor.fetchall())
+    global last_update_user_num
+    if this_update_user_num != last_update_user_num:
+        config_json = urlopen(f"http://sorapage.com/v2ray/node/config/{node_id}").read().decode('utf-8')
+        v2ray_config_json_path = "/usr/local/etc/v2ray/config.json"
+        with open(v2ray_config_json_path, 'w') as file_obj:
+            file_obj.write(config_json)
+        print_info('config updated')
+        shell("systemctl stop v2ray")
+        shell("systemctl start v2ray")
+        print_info("v2ray started")
+    last_update_user_num = this_update_user_num
+    sql_cursor.close()
+    sql_connect.close()
 
 
 node_id = input('input the node id:')
-update_config_json()
 
 scheduler = BlockingScheduler()
 scheduler.add_job(update_traffic, 'interval', seconds=10)
-scheduler.add_job(update_config_json, 'cron', hour=0, minute=5, second=0, jitter=120)
+scheduler.add_job(update_config_json, 'interval', seconds=10)
 scheduler.start()
