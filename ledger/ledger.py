@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, jsonify, flash
+from flask import Blueprint, render_template, request, redirect, jsonify, flash, session
 from datetime import datetime
 from sql import connect_dictCursor
 from collections import OrderedDict
@@ -64,7 +64,6 @@ def father_ledger_ajax(ajax_type):
 @ledger.route('/ledger/father/modify/<modify_type>', methods=['POST', 'GET'])
 def father_leger_modify(modify_type):
     sql_connect, sql_cursor = connect_dictCursor()
-
     if modify_type == 'add' and request.method == 'GET':
         return render_template('f_ledger_form.html')
     elif modify_type == 'add' and request.method == 'POST':
@@ -117,95 +116,98 @@ def father_leger_modify(modify_type):
 
 @ledger.route('/ledger')
 def ledger_():
-    sql_connect, sql_cursor = connect_dictCursor()
-    sql_cursor.execute('select * from ledger order by time_ asc limit 1')
-    oldest_time = sql_cursor.fetchone()
-    if oldest_time is not None:
-        oldest_year = int(oldest_time['time_'].strftime('%Y'))
-        oldest_month = int(oldest_time['time_'].strftime('%m'))
-        current_year = int(datetime.now().strftime('%Y'))
-        current_month = int(datetime.now().strftime('%m'))
-        max_month_interval = (current_year - oldest_year) * 12 + current_month - oldest_month
-        # monthly_data_collection的元素为monthly_data
-        monthly_data_collection = []
-        for i in range(max_month_interval + 1):
-            query_year = current_year
-            while i > current_month:
-                i = i - 12
-                query_year = query_year - 1
-            query_month = current_month - i
-            query_month_int = query_month
-            query_next_month = query_month + 1
-            query_year = str(query_year)
-            query_month = str(query_month)
-            query_next_month = str(query_next_month)
-            if query_month_int == 12:
-                sql_cursor.execute(
-                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_month + '-31'}' order by time_ desc"
-                )
-            else:
-                sql_cursor.execute(
-                    f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc"
-                )
-            month_data_fetch = sql_cursor.fetchall()
-            if len(month_data_fetch) != 0:
-                monthly_data = {
-                    'month_time': query_year + '年' + query_month + '月',
-                    'month_sta': {
-                        'out_sum': 0,
-                        'out_num': 0,
-                        'in_sum': 0,
-                        'in_num': 0,
-                    }
-                    # 'daily_data_collection_sample' : {
-                    #     '9月30日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''},
-                    #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''}]},
-                    #     '9月29日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''},
-                    #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''}]},
-                    # }
-                    # 'daily_data_collection': OrderedDict()
-                    #
-                    # 'daily_sta_collection_sample': {
-                    #     '10月27日': {'out_sum': 27.12, 'out_num': 3, 'in_sum': 15.42, 'in_num': 5, },
-                    #     '10月26日': {'out_sum': 0, 'out_num': 0, 'in_sum': 0, 'in_num': 0, },
-                    # }
-                    # 'daily_sta_collection': OrderedDict()
-                }
-                daily_data_collection = OrderedDict()
-                daily_sta_collection = OrderedDict()
-                for e in month_data_fetch:
-                    key = e['time_'].strftime('%m月%d日')
-                    if key not in daily_data_collection.keys():
-                        daily_data_collection[key] = []
-                        daily_sta_collection[key] = {'out_sum': 0,
-                                                     'out_num': 0,
-                                                     'in_sum': 0,
-                                                     'in_num': 0, }
-                    daily_data_collection[key].append(e)
-                    # append daily_sta_collection
-                    daily_sta_e = daily_sta_collection[key]
-                    if e['sort'] == '支出':
-                        daily_sta_e['out_sum'] += e['amount']
-                        daily_sta_e['out_num'] += 1
-                        monthly_data['month_sta']['out_sum'] += e['amount']
-                        monthly_data['month_sta']['out_num'] += 1
-                    elif e['sort'] == '收入':
-                        daily_sta_e['in_sum'] += e['amount']
-                        daily_sta_e['in_num'] += 1
-                        monthly_data['month_sta']['in_sum'] += e['amount']
-                        monthly_data['month_sta']['in_num'] += 1
-                    daily_sta_collection[key] = daily_sta_e
-
-                monthly_data['daily_data_collection'] = daily_data_collection
-                monthly_data['daily_sta_collection'] = daily_sta_collection
-                monthly_data_collection.append(monthly_data)
-        sql_cursor.close()
-        sql_connect.close()
-        return render_template('ledger.html', monthly_data_collection=monthly_data_collection)
+    if session.get('id') is None:
+        return redirect('/login?success=ledger')
     else:
-        sql_cursor.close()
-        sql_connect.close()
-        return render_template('ledger.html')
+        sql_connect, sql_cursor = connect_dictCursor()
+        sql_cursor.execute('select * from ledger order by time_ asc limit 1')
+        oldest_time = sql_cursor.fetchone()
+        if oldest_time is not None:
+            oldest_year = int(oldest_time['time_'].strftime('%Y'))
+            oldest_month = int(oldest_time['time_'].strftime('%m'))
+            current_year = int(datetime.now().strftime('%Y'))
+            current_month = int(datetime.now().strftime('%m'))
+            max_month_interval = (current_year - oldest_year) * 12 + current_month - oldest_month
+            # monthly_data_collection的元素为monthly_data
+            monthly_data_collection = []
+            for i in range(max_month_interval + 1):
+                query_year = current_year
+                while i > current_month:
+                    i = i - 12
+                    query_year = query_year - 1
+                query_month = current_month - i
+                query_month_int = query_month
+                query_next_month = query_month + 1
+                query_year = str(query_year)
+                query_month = str(query_month)
+                query_next_month = str(query_next_month)
+                if query_month_int == 12:
+                    sql_cursor.execute(
+                        f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_month + '-31'}' order by time_ desc"
+                    )
+                else:
+                    sql_cursor.execute(
+                        f"select * from ledger where time_ >='{query_year + '-' + query_month + '-1'}' and time_ < '{query_year + '-' + query_next_month + '-1'}' order by time_ desc"
+                    )
+                month_data_fetch = sql_cursor.fetchall()
+                if len(month_data_fetch) != 0:
+                    monthly_data = {
+                        'month_time': query_year + '年' + query_month + '月',
+                        'month_sta': {
+                            'out_sum': 0,
+                            'out_num': 0,
+                            'in_sum': 0,
+                            'in_num': 0,
+                        }
+                        # 'daily_data_collection_sample' : {
+                        #     '9月30日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''},
+                        #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0),'note': ''}]},
+                        #     '9月29日': [{'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''},
+                        #                 {'id': 1, 'sort': '支出', 'sort_detail': '食堂', 'amount': 233,'time_': datetime.datetime(2020, 9, 29, 0, 0), 'note': ''}]},
+                        # }
+                        # 'daily_data_collection': OrderedDict()
+                        #
+                        # 'daily_sta_collection_sample': {
+                        #     '10月27日': {'out_sum': 27.12, 'out_num': 3, 'in_sum': 15.42, 'in_num': 5, },
+                        #     '10月26日': {'out_sum': 0, 'out_num': 0, 'in_sum': 0, 'in_num': 0, },
+                        # }
+                        # 'daily_sta_collection': OrderedDict()
+                    }
+                    daily_data_collection = OrderedDict()
+                    daily_sta_collection = OrderedDict()
+                    for e in month_data_fetch:
+                        key = e['time_'].strftime('%m月%d日')
+                        if key not in daily_data_collection.keys():
+                            daily_data_collection[key] = []
+                            daily_sta_collection[key] = {'out_sum': 0,
+                                                         'out_num': 0,
+                                                         'in_sum': 0,
+                                                         'in_num': 0, }
+                        daily_data_collection[key].append(e)
+                        # append daily_sta_collection
+                        daily_sta_e = daily_sta_collection[key]
+                        if e['sort'] == '支出':
+                            daily_sta_e['out_sum'] += e['amount']
+                            daily_sta_e['out_num'] += 1
+                            monthly_data['month_sta']['out_sum'] += e['amount']
+                            monthly_data['month_sta']['out_num'] += 1
+                        elif e['sort'] == '收入':
+                            daily_sta_e['in_sum'] += e['amount']
+                            daily_sta_e['in_num'] += 1
+                            monthly_data['month_sta']['in_sum'] += e['amount']
+                            monthly_data['month_sta']['in_num'] += 1
+                        daily_sta_collection[key] = daily_sta_e
+
+                    monthly_data['daily_data_collection'] = daily_data_collection
+                    monthly_data['daily_sta_collection'] = daily_sta_collection
+                    monthly_data_collection.append(monthly_data)
+            sql_cursor.close()
+            sql_connect.close()
+            return render_template('ledger.html', monthly_data_collection=monthly_data_collection)
+        else:
+            sql_cursor.close()
+            sql_connect.close()
+            return render_template('ledger.html')
 
 
 @ledger.route('/ledger/ajax/<ajax_type>', methods=['GET', 'POST'])
