@@ -80,8 +80,8 @@ def register():
             password_hash = generate_password_hash(request.form['password'])
             current_date = datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
             sql_cursor.execute(
-                f'''INSERT INTO users(name_,email,password,register_date) 
-                    VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}')'''
+                f'''INSERT INTO users(name_,email,password,register_date,balance) 
+                    VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}','0')'''
             )
             sql_connect.commit()
             sql_cursor.execute(f'''SELECT uid FROM users WHERE name_='{request.form['name']}' ''')

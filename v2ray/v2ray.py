@@ -50,7 +50,9 @@ def interface():
                 'user_level': 1,
                 'level_expire': trail_expire,
                 'uplink': 0,
-                'downlink': 0
+                'downlink': 0,
+                'today_up': 0,
+                'today_down': 0
             }
         else:
             sql_cursor.execute(f"select balance from users where uid='{uid}' ")
@@ -64,20 +66,23 @@ def interface():
                 'user_level': fetch['user_level'],
                 'level_expire': fetch['level_expire'],
                 'uplink': traffic_unit_convert(fetch['uplink']),
-                'downlink': traffic_unit_convert(fetch['downlink'])
+                'downlink': traffic_unit_convert(fetch['downlink']),
+                'today_up': traffic_unit_convert(fetch['today_up']),
+                'today_down': traffic_unit_convert(fetch['today_down'])
             }
         sql_cursor.execute('select * from v2ray_node order by order_ asc')
         node_info = sql_cursor.fetchall()
+        node_traffic_unit_convert = ['inbound_uplink', 'inbound_downlink', 'outbound_uplink', 'outbound_downlink',
+                                     'today_in_up', 'today_in_down', 'today_out_up', 'today_out_down']
         for node in node_info:
-            node['inbound_uplink'] = traffic_unit_convert(node['inbound_uplink'])
-            node['inbound_downlink'] = traffic_unit_convert(node['inbound_downlink'])
-            node['outbound_uplink'] = traffic_unit_convert(node['outbound_uplink'])
-            node['outbound_downlink'] = traffic_unit_convert(node['outbound_downlink'])
+            for nt in node_traffic_unit_convert:
+                node[nt] = traffic_unit_convert(node[nt])
         sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.uid = users.uid')
         all_user_list = sql_cursor.fetchall()
+        user_traffic_unit_convert = ['uplink', 'downlink', 'today_up', 'today_down']
         for user in all_user_list:
-            user['uplink'] = traffic_unit_convert(user['uplink'])
-            user['downlink'] = traffic_unit_convert(user['downlink'])
+            for ut in user_traffic_unit_convert:
+                user[ut] = traffic_unit_convert(user[ut])
         sql_cursor.close()
         sql_connect.close()
     return render_template('interface.html', user_info=user_info, node_info=node_info, all_user_list=all_user_list)

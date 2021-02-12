@@ -43,6 +43,9 @@
                 const amount = parseFloat($('#top_up_amount').val());
                 if (typeof amount == "number" && !isNaN(amount)) {
                     $('#top_up_amount').removeClass('is-invalid');
+                    $('#f2fpay_modal_body').empty();
+                    $('#f2fpay_modal_body').append("<p class='d-flex align-items-center'><span class='spinner-border mr-3'></span>正在呼叫Sora来收钱请稍候</p>")
+                    $('#f2fpay_modal').modal('show');
                     let trade = {
                         'uid':{{ user_info['uid'] }},
                         'subject': "充值",
@@ -53,13 +56,18 @@
                         type: 'POST',
                         data: trade,
                         success: function (qrcode_base64) {
-                            $('#f2fpay_qrcode').attr('src', 'data:image/png;base64,' + qrcode_base64);
-                            $('#f2fpay_modal').modal('show');
+                            $('#f2fpay_modal_body').empty();
+                            $('#f2fpay_modal_body').append('<img src="data:image/png;base64,' + qrcode_base64 + '">');
+                            $('#f2fpay_modal_body').append('<hr>');
+                            $('#f2fpay_modal_body').append('<button class="btn btn-block btn-primary" id="top_up_finish_btn">已支付点此刷新</button>')
                         }
                     });
                 } else {
                     $('#top_up_amount').addClass('is-invalid');
                 }
+            })
+            $('#top_up_finish_btn').click(function () {
+                location.reload();
             })
         })
     </script>
@@ -72,7 +80,15 @@
 
 <body>
     {% set admin_level=2 %}
-    <div class="container">
+    <div class="container" style="max-width: 1500px">
+
+        {% for message in get_flashed_messages(category_filter=["success"]) %}
+            <p class="alert alert-success mt-3">{{ message }}</p>
+        {% endfor %}
+        {% for message in get_flashed_messages(category_filter=["fail"]) %}
+            <p class="alert alert-danger mt-3">{{ message }}</p>
+        {% endfor %}
+
         <div class="card mt-3">
             <div class="card-header">账户信息</div>
             <div class="card-body">
@@ -84,6 +100,8 @@
                     <p>等级过期日期：{{ user_info['level_expire'] }}</p>
                     <p>上传流量：{{ user_info['uplink'] }}</p>
                     <p>下载流量：{{ user_info['downlink'] }}</p>
+                    <p>今日上传：{{ user_info['today_up'] }}</p>
+                    <p>今日下载：{{ user_info['today_down'] }}</p>
                     <p>
                         订阅链接：
                         <a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}">
@@ -102,9 +120,11 @@
                         <thead>
                         <tr>
                             <td>用户名</td>
-                            <td>邮箱</td>
+                            <td>真名</td>
                             <td>上传流量</td>
                             <td>下载流量</td>
+                            <td>今日上传</td>
+                            <td>今日下载</td>
                             <td>余额</td>
                             <td>用户等级</td>
                             <td>等级过期日期</td>
@@ -113,9 +133,11 @@
                         {% for user in all_user_list %}
                             <tr>
                                 <td>{{ user['name_'] }}</td>
-                                <td>{{ user['email'] }}</td>
+                                <td>{{ user['real_name'] }}</td>
                                 <td>{{ user['uplink'] }}</td>
                                 <td>{{ user['downlink'] }}</td>
+                                <td>{{ user['today_up'] }}</td>
+                                <td>{{ user['today_down'] }}</td>
                                 <td>{{ user['balance'] }}</td>
                                 <td>{{ user['user_level'] }}</td>
                                 <td>{{ user['level_expire'] }}</td>
@@ -142,6 +164,8 @@
                         <td>等级</td>
                         <td>上传流量</td>
                         <td>下载流量</td>
+                        <td>今日上传</td>
+                        <td>今日下载</td>
                         {% if user_info['user_level']==admin_level %}
                             <td>操作</td>
                         {% endif %}
@@ -172,6 +196,8 @@
                             <td>{{ e['node_level'] }}</td>
                             <td>{{ e['outbound_uplink'] }}</td>
                             <td>{{ e['outbound_downlink'] }}</td>
+                            <td>{{ e['today_out_up'] }}</td>
+                            <td>{{ e['today_out_down'] }}</td>
                             {% if user_info['user_level']==admin_level %}
                                 <td>
                                     <a href="javascript:node_modify(&quot;{{ e }}&quot;)" class="mr-1">修改</a>
@@ -194,9 +220,45 @@
                         <input class="form-control" type="text" id="top_up_amount">
                     </div>
                     <div class="col-auto justify-content-end">
-                        <button class="btn btn-primary btn-block" id="top_up_btn">发射&hearts;</button>
+                        <button class="btn btn-primary btn-block" id="top_up_btn">充值</button>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg mt-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">月付包</h5>
+                                <h4>￥8.88</h4>
+                                <a class="btn btn-block btn-primary mt-4" id="purchase_monthly"
+                                   href="/trade/v2ray?purchase=monthly&uid={{ user_info['uid'] }}">购买</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg mt-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">季度包</h5>
+                                <h4>￥23.33</h4>
+                                <a class="btn btn-block btn-primary mt-4" id="purchase_quarterly"
+                                   href="/trade/v2ray?purchase=quarterly&uid={{ user_info['uid'] }}">购买</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg mt-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">半年包</h5>
+                                <h4>￥45.00</h4>
+                                <a class="btn btn-block btn-primary mt-4" id="purchase_semiannually"
+                                   href="/trade/v2ray?purchase=semiannually&uid={{ user_info['uid'] }}">购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -209,9 +271,7 @@
                             <span>&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <img id="f2fpay_qrcode">
-                    </div>
+                    <div class="modal-body" id="f2fpay_modal_body"></div>
                 </div>
             </div>
         </div>

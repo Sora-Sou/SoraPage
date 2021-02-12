@@ -62,26 +62,33 @@ def update_traffic():
         user_downlink = traffic_query(user_downlink_shell)
         user_uplink = traffic_query(user_uplink_shell)
         # SQL traffic query
-        user_current_traffic_query = f"select downlink,uplink from v2ray_user where uid = '{user['uid']}' "
+        user_current_traffic_query = f"select downlink,uplink,today_down,today_up from v2ray_user where uid = '{user['uid']}' "
         sql_cursor.execute(user_current_traffic_query)
         user_current_traffic = sql_cursor.fetchone()
         # sum of result
         user_uplink_sum = int_covert(user_uplink) + int_covert(user_current_traffic['uplink'])
         user_downlink_sum = int_covert(user_downlink) + int_covert(user_current_traffic['downlink'])
+        user_today_up_sum = int_covert(user_uplink) + int_covert(user_current_traffic['today_up'])
+        user_today_down_sum = int_covert(user_downlink) + int_covert(user_current_traffic['today_down'])
         # update SQL user traffic
-        user_traffic_update_query = f"update v2ray_user set uplink={user_uplink_sum},downlink={user_downlink_sum} where uid='{user['uid']}' "
+        user_traffic_update_query = f"update v2ray_user set uplink={user_uplink_sum},downlink={user_downlink_sum}," \
+                                    f"today_up={user_today_up_sum},today_down={user_today_down_sum} where uid='{user['uid']}' "
         sql_cursor.execute(user_traffic_update_query)
         sql_connect.commit()
 
-    def node_update(traffic_type, api_shell):
+    def node_update(traffic_type1, traffic_type2, api_shell):
         added_traffic = traffic_query(api_shell)
-        sql_cursor.execute(f"select {traffic_type} from v2ray_node where id='{node_id}' ")
-        pre_traffic = sql_cursor.fetchone()[traffic_type]
-        traffic_sum = int_covert(added_traffic) + int_covert(pre_traffic)
-        sql_cursor.execute(f"update v2ray_node set {traffic_type}='{traffic_sum}' where id='{node_id}' ")
+        sql_cursor.execute(f"select {traffic_type1},{traffic_type2} from v2ray_node where id='{node_id}' ")
+        pre_traffic = sql_cursor.fetchone()
+        traffic_sum1 = int_covert(added_traffic) + int_covert(pre_traffic[traffic_type1])
+        traffic_sum2 = int_covert(added_traffic) + int_covert(pre_traffic[traffic_type2])
+        sql_cursor.execute(
+            f"update v2ray_node set {traffic_type1}='{traffic_sum1}',{traffic_type2}='{traffic_sum2}' where id='{node_id}' "
+        )
         sql_connect.commit()
 
-    traffic_type_arr = ['outbound_uplink', 'outbound_downlink', 'inbound_uplink', 'inbound_downlink']
+    traffic_type_arr = ['outbound_uplink', 'outbound_downlink', 'inbound_uplink', 'inbound_downlink',
+                        'today_out_up', 'today_out_down', 'today_in_up', 'today_in_down']
     api_shell_arr = [
         '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>uplink" reset: true' ''',
         '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "outbound>>>direct>>>traffic>>>downlink" reset: true' ''',
@@ -89,7 +96,7 @@ def update_traffic():
         '''v2ctl api --server=127.0.0.1:20000 StatsService.GetStats 'name: "inbound>>>tcp>>>traffic>>>downlink" reset: true' '''
     ]
     for i in range(4):
-        node_update(traffic_type_arr[i], api_shell_arr[i])
+        node_update(traffic_type_arr[i], traffic_type_arr[i + 4], api_shell_arr[i])
     sql_cursor.close()
     sql_connect.close()
     print_info('traffic updated')

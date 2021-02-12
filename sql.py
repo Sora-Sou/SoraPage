@@ -162,7 +162,9 @@ def v2ray_initial():
             user_level int,
             level_expire timestamp,
             uplink bigint,
-            downlink bigint
+            downlink bigint,
+            today_up bigint,
+            today_down bigint
         )
         '''
     )

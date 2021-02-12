@@ -1,21 +1,14 @@
 import os
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timedelta
 import base64
 
-from flask import Blueprint, request, current_app
+from flask import Blueprint, request, current_app, redirect, flash
 from alipay import AliPay
 from alipay.utils import AliPayConfig
 import qrcode
 
 from sql import connect_dictCursor
-
-
-def to_decimal(param):
-    if param is None:
-        return 0
-    else:
-        return float(param)
 
 
 def alipay_ini():
@@ -34,6 +27,21 @@ def alipay_ini():
         config=AliPayConfig(timeout=15)  # 可选, 请求超时时间
     )
     return alipay
+
+
+def to_decimal(param):
+    if param is None:
+        return 0
+    else:
+        return float(param)
+
+
+def generate_tid(datetime_now, uid, amount):
+    if datetime_now is None:
+        tid_now = datetime.now().strftime("%Y%m%d%H%M%S")
+    else:
+        tid_now = datetime_now.strftime("%Y%m%d%H%M%S")
+    return "time" + tid_now + "_uid" + str(uid) + "_amount" + str(amount)
 
 
 trade = Blueprint('trade', __name__, template_folder='', static_folder='', url_prefix='/trade')
@@ -71,11 +79,11 @@ def f2fpay():
     alipay = alipay_ini()
     dt_now = datetime.now()
     sql_now = dt_now.strftime("%Y-%m-%d %H:%M:%S")
-    tid_now = dt_now.strftime("%Y%m%d%H%M%S")
     f = request.form
+    tid = generate_tid(dt_now, f['uid'], f['amount'])
     t = {
         'uid': f['uid'],
-        'tid': "time" + tid_now + "_uid" + f['uid'] + "_amount" + f['amount'],  # <=64chars only alphabet & num & _
+        'tid': tid,  # <=64chars only alphabet & num & _
         'subject': f['subject'],  # no / =
         'amount': f['amount'],  # two decimal places eg:10.00
     }
@@ -102,3 +110,49 @@ def f2fpay():
     buffer = BytesIO()
     qr_img.save(buffer, 'png')
     return base64.b64encode(buffer.getvalue())
+
+
+@trade.route('/v2ray')
+def v2ray_trade():
+    purchase = request.args.get("purchase")
+    uid = request.args.get("uid")
+    if purchase is not None and uid is not None:
+        sql_connect, sql_cursor = connect_dictCursor()
+        sql_cursor.execute(f"select level_expire from v2ray_user where uid='{uid}' ")
+        expire_time = sql_cursor.fetchone()['level_expire']
+        sql_cursor.execute(f"select balance from users where uid='{uid}' ")
+        balance = to_decimal(sql_cursor.fetchone()['balance'])
+        if purchase == "monthly":
+            expire_time += timedelta(days=30)
+            trade_subject = "v2ray monthly"
+            cost = 8.88
+        elif purchase == "quarterly":
+            expire_time += timedelta(days=90)
+            trade_subject = "v2ray quarterly"
+            cost = 23.33
+        elif purchase == "semiannually":
+            expire_time += timedelta(days=180)
+            trade_subject = "v2ray semiannually"
+            cost = 45.00
+        balance = balance - cost
+        if balance >= 0:
+            expire_time = expire_time.strftime("%Y-%m-%d %H:%M:%S")
+            dt_now = datetime.now()
+            sql_now = dt_now.strftime("%Y-%m-%d %H:%M:%S")
+            tid = generate_tid(dt_now, uid, cost)
+            sql_cursor.execute(f"update v2ray_user set level_expire='{expire_time}' where uid='{uid}' ")
+            sql_cursor.execute(f"update users set balance='{balance}' where uid='{uid}' ")
+            sql_cursor.execute(
+                f"insert into trade(tid,uid,trade_subject,trade_sort,trade_amount,trade_time,trade_succeed)"
+                f"values('{tid}','{uid}','{trade_subject}','outcome','{cost}','{sql_now}','1')"
+            )
+            sql_connect.commit()
+            sql_cursor.close()
+            sql_connect.close()
+            flash("购买成功", "success")
+            return redirect('/v2ray')
+        else:
+            sql_cursor.close()
+            sql_connect.close()
+            flash("余额不足", "fail")
+            return redirect('/v2ray')
