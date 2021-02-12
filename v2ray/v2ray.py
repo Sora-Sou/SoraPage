@@ -26,26 +26,26 @@ def interface():
             elif t_sum >= 1e9:
                 return str(round(t_sum / 1e9, 2)) + "GB"
 
-    if session.get('id') is None:
+    if session.get('uid') is None:
         return redirect('/login?success=v2ray')
     else:
         sql_connect, sql_cursor = connect_dictCursor()
-        sql_id = session['id']
-        sql_cursor.execute(f'select * from v2ray_user where id ="{sql_id}"')
+        uid = session['uid']
+        sql_cursor.execute(f'select * from v2ray_user where uid ="{uid}"')
         fetch = sql_cursor.fetchone()
         # first login
         trail_expire = (datetime.now() + timedelta(days=V2RAY_CONFIG['trail_duration'])).strftime('%Y-%m-%d')
         if fetch is None:
-            v2ray_id = urlopen("https://www.uuidgenerator.net/api/version4").read().decode()
+            uuid = urlopen("https://www.uuidgenerator.net/api/version4").read().decode()
             sql_cursor.execute(
-                f'''insert into v2ray_user values('{sql_id}','{v2ray_id}','0','1','{trail_expire}','0','0')'''
+                f'''insert into v2ray_user values('{uid}','{uuid}','0','1','{trail_expire}','0','0')'''
             )
             sql_connect.commit()
             user_info = {
-                'id': sql_id,
-                'uid': v2ray_id,
-                'name': session['name'],
-                'email': session['email'],
+                'uid': uid,
+                'uuid': uuid,
+                'name': session['user_name'],
+                'email': session['user_email'],
                 'balance': 0,
                 'user_level': 1,
                 'level_expire': trail_expire,
@@ -53,12 +53,14 @@ def interface():
                 'downlink': 0
             }
         else:
+            sql_cursor.execute(f"select balance from users where uid='{uid}' ")
+            balance = sql_cursor.fetchone()['balance']
             user_info = {
-                'id': sql_id,
-                'uid': fetch['uid'],
-                'name': session['name'],
-                'email': session['email'],
-                'balance': fetch['balance'],
+                'uid': uid,
+                'uuid': fetch['uuid'],
+                'name': session['user_name'],
+                'email': session['user_email'],
+                'balance': balance,
                 'user_level': fetch['user_level'],
                 'level_expire': fetch['level_expire'],
                 'uplink': traffic_unit_convert(fetch['uplink']),
@@ -71,7 +73,7 @@ def interface():
             node['inbound_downlink'] = traffic_unit_convert(node['inbound_downlink'])
             node['outbound_uplink'] = traffic_unit_convert(node['outbound_uplink'])
             node['outbound_downlink'] = traffic_unit_convert(node['outbound_downlink'])
-        sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.id = users.id')
+        sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.uid = users.uid')
         all_user_list = sql_cursor.fetchall()
         for user in all_user_list:
             user['uplink'] = traffic_unit_convert(user['uplink'])
@@ -81,10 +83,10 @@ def interface():
     return render_template('interface.html', user_info=user_info, node_info=node_info, all_user_list=all_user_list)
 
 
-@v2ray.route('/subscribe/<uid>')
-def subscribe(uid):
+@v2ray.route('/subscribe/<uuid>')
+def subscribe(uuid):
     sql_connect, sql_cursor = connect_dictCursor()
-    sql_cursor.execute(f"select user_level from v2ray_user where uid='{uid}' ")
+    sql_cursor.execute(f"select user_level from v2ray_user where uuid='{uuid}' ")
     user_level = sql_cursor.fetchone()['user_level']
     sql_cursor.execute(f"select * from v2ray_node where node_level<='{user_level}' order by order_ asc")
     node_list = sql_cursor.fetchall()
@@ -94,8 +96,7 @@ def subscribe(uid):
     subscribe_content = ""
 
     def base64encode(string):
-        bytes_str = base64.b64encode(string.encode('utf-8'))
-        return str(bytes_str)[2:-1]
+        return base64.b64encode(string.encode('utf-8')).decode('utf-8')
 
     for i in range(len(node_list)):
         node = node_list[i]
@@ -110,7 +111,7 @@ def subscribe(uid):
             "ps": node['node_name'],
             "add": address,
             "port": port,
-            "id": uid,
+            "id": uuid,
             "aid": "64",
             "net": "tcp",
             "type": "none",
@@ -220,7 +221,7 @@ def node_api(node_id):
     sql_connect.commit()
     node_info = sql_cursor.fetchone()
     sql_cursor.execute(
-        f"select * from v2ray_user inner join users on v2ray_user.id = users.id "
+        f"select * from v2ray_user inner join users on v2ray_user.uid = users.uid "
         f"where user_level >= '{node_info['node_level']}' "
     )
     sql_connect.commit()
@@ -234,7 +235,7 @@ def node_api(node_id):
         for user in user_info:
             client_array.append({
                 "email": user['email'],
-                "id": user['uid'],
+                "id": user['uuid'],
                 "level": 0,
                 "alterId": 64
             })

@@ -1,6 +1,8 @@
 config.py
 v2ray/config.json
 v2ray/backend.py
+trade/alipay_public_key.pem
+trade/app_private_key.pem
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

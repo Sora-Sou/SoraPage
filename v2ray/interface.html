@@ -37,6 +37,31 @@
             }
             $('#node_modify_modal').modal('show');
         }
+
+        $(function () {
+            $("#top_up_btn").click(function () {
+                const amount = parseFloat($('#top_up_amount').val());
+                if (typeof amount == "number" && !isNaN(amount)) {
+                    $('#top_up_amount').removeClass('is-invalid');
+                    let trade = {
+                        'uid':{{ user_info['uid'] }},
+                        'subject': "充值",
+                        'amount': amount
+                    };
+                    $.ajax({
+                        url: '/trade/f2fpay/create',
+                        type: 'POST',
+                        data: trade,
+                        success: function (qrcode_base64) {
+                            $('#f2fpay_qrcode').attr('src', 'data:image/png;base64,' + qrcode_base64);
+                            $('#f2fpay_modal').modal('show');
+                        }
+                    });
+                } else {
+                    $('#top_up_amount').addClass('is-invalid');
+                }
+            })
+        })
     </script>
     <style>
         table {
@@ -61,8 +86,9 @@
                     <p>下载流量：{{ user_info['downlink'] }}</p>
                     <p>
                         订阅链接：
-                        <a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uid'] }}">
-                            http://sorapage.com/v2ray/subscribe/{{ user_info['uid'] }}</a>
+                        <a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}">
+                            http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}
+                        </a>
                     </p>
                 </div>
             </div>
@@ -155,6 +181,38 @@
                         </tr>
                     {% endfor %}
                 </table>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">氪金</div>
+            <div class="card-body">
+                <p>当前余额：<span class="text-primary">{{ user_info['balance'] }}</span></p>
+                <div class="form-row form-group">
+                    <label class="col-auto col-form-label" for="top_up_amount">充值金额</label>
+                    <div class="col mx-2">
+                        <input class="form-control" type="text" id="top_up_amount">
+                    </div>
+                    <div class="col-auto justify-content-end">
+                        <button class="btn btn-primary btn-block" id="top_up_btn">发射&hearts;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="f2fpay_modal" tabindex="-1" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">支付宝二维码</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="f2fpay_qrcode">
+                    </div>
+                </div>
             </div>
         </div>
 

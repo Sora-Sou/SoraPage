@@ -1,0 +1,2 @@
+class AliPay(object):
+    pass

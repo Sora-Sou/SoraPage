@@ -29,9 +29,9 @@ def login():
             if check_password_hash(sql_fetch['password'], request.form['password']):
                 response = make_response(redirect(request.cookies.get('referrer')))
                 response.delete_cookie('referrer')
-                session['id'] = str(sql_fetch['id'])
-                session['name'] = sql_fetch['name_']
-                session['email'] = sql_fetch['email']
+                session['uid'] = str(sql_fetch['uid'])
+                session['user_name'] = sql_fetch['name_']
+                session['user_email'] = sql_fetch['email']
                 if request.form.get('keep_login_switch'):
                     current_app.permanent_session_lifetime = current_app.config['SESSION_LIFETIME']
                     session.permanent = True
@@ -84,10 +84,10 @@ def register():
                     VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}')'''
             )
             sql_connect.commit()
-            sql_cursor.execute(f'''SELECT id FROM users WHERE name_='{request.form['name']}' ''')
-            session['id'] = sql_cursor.fetchone()['id']
-            session['name'] = request.form['name']
-            session['email'] = request.form['email']
+            sql_cursor.execute(f'''SELECT uid FROM users WHERE name_='{request.form['name']}' ''')
+            session['uid'] = sql_cursor.fetchone()['uid']
+            session['user_name'] = request.form['name']
+            session['user_email'] = request.form['email']
             sql_cursor.close()
             sql_connect.close()
             if request.cookies.get('referrer'):

@@ -52,7 +52,7 @@ def update_traffic():
     node_level_query = f"select node_level from v2ray_node where id = '{node_id}'"
     sql_cursor.execute(node_level_query)
     node_level = sql_cursor.fetchone()['node_level']
-    user_list_query = f"select v.id, u.email from v2ray_user v inner join users u on v.id=u.id where v.user_level >= '{node_level}' "
+    user_list_query = f"select v.uid, u.email from v2ray_user v inner join users u on v.uid=u.uid where v.user_level >= '{node_level}' "
     sql_cursor.execute(user_list_query)
     user_list = sql_cursor.fetchall()
     for user in user_list:
@@ -62,14 +62,14 @@ def update_traffic():
         user_downlink = traffic_query(user_downlink_shell)
         user_uplink = traffic_query(user_uplink_shell)
         # SQL traffic query
-        user_current_traffic_query = f"select downlink,uplink from v2ray_user where id = '{user['id']}' "
+        user_current_traffic_query = f"select downlink,uplink from v2ray_user where uid = '{user['uid']}' "
         sql_cursor.execute(user_current_traffic_query)
         user_current_traffic = sql_cursor.fetchone()
         # sum of result
         user_uplink_sum = int_covert(user_uplink) + int_covert(user_current_traffic['uplink'])
         user_downlink_sum = int_covert(user_downlink) + int_covert(user_current_traffic['downlink'])
         # update SQL user traffic
-        user_traffic_update_query = f"update v2ray_user set uplink={user_uplink_sum},downlink={user_downlink_sum} where id='{user['id']}' "
+        user_traffic_update_query = f"update v2ray_user set uplink={user_uplink_sum},downlink={user_downlink_sum} where uid='{user['uid']}' "
         sql_cursor.execute(user_traffic_update_query)
         sql_connect.commit()
 
@@ -102,7 +102,7 @@ def update_config_json():
     sql_connect, sql_cursor = connect_dictCursor()
     sql_cursor.execute(f"select node_level from v2ray_node where id='{node_id}' ")
     node_level = sql_cursor.fetchone()['node_level']
-    sql_cursor.execute(f"select id from v2ray_user where user_level>='{node_level}' ")
+    sql_cursor.execute(f"select uid from v2ray_user where user_level>='{node_level}' ")
     this_update_user_num = len(sql_cursor.fetchall())
     global last_update_user_num
     if this_update_user_num != last_update_user_num:

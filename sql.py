@@ -127,7 +127,8 @@ def users_initial():
             name_ varchar(20),
             email varchar(20),
             password varchar(128),
-            register_date timestamp
+            register_date timestamp,
+            balance decimal(7,2)
         )'''
     )
     sql_connect.commit()
@@ -156,13 +157,31 @@ def v2ray_initial():
     sql_connect.commit()
     sql_cursor.execute(
         '''create table if not exists v2ray_user(
-            id int not null primary key,
-            uid varchar(40),
-            balance decimal(7,2),
+            uid int not null primary key,
+            uuid varchar(40),
             user_level int,
             level_expire timestamp,
             uplink bigint,
             downlink bigint
+        )
+        '''
+    )
+    sql_connect.commit()
+    sql_cursor.close()
+    sql_connect.close()
+
+
+def trade_initial():
+    sql_connect, sql_cursor = connect_dictCursor()
+    sql_cursor.execute(
+        '''create table if not exists trade(
+            tid varchar(64) not null primary key,
+            uid int,
+            trade_subject varchar(64),
+            trade_sort varchar(10),
+            trade_amount decimal (7,2),
+            trade_time timestamp,
+            trade_succeed int
         )
         '''
     )
