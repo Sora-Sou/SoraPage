@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, session, render_template, request, send_file, jsonify, current_app
+from flask import Blueprint, redirect, session, render_template, request, send_file, jsonify, current_app, abort
 from urllib.request import urlopen
 from datetime import datetime, timedelta
 import json
@@ -89,6 +89,19 @@ def interface():
         sql_cursor.close()
         sql_connect.close()
     return render_template('interface.html', user_info=user_info, node_info=node_info, all_user_list=all_user_list)
+
+
+@v2ray.route('/tutorial')
+def tutorial():
+    return render_template('v2ray_tutorial.html')
+
+
+@v2ray.route('/clients/<file_name>')
+def get_clients(file_name):
+    if file_name == "v2rayN-Core.zip":
+        return send_file(os.path.join(current_app.root_path, 'v2ray/clients/v2rayN-Core.zip'))
+    else:
+        return abort(404)
 
 
 @v2ray.route('/subscribe/<uuid>')

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/soraport.ico') }}">
+    {% include 'libs.html' %}
+    <title>v2ray起飞指南</title>
+    <style>
+        p {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <article>
+            <section>
+                <h1 class="d-flex justify-content-center">v2ray简易起飞指南</h1>
+                <p>由于当前时间和精力有限，只能先写个简易版的教程，不过根据以往的经验你们都是太长不看的类型，简易版说不定更适合</p>
+                <p>PS: header部分实在没时间做，所以预留的都是空链接，你们点不动是很正常的</p>
+            </section>
+            <section class="my-4">
+                <h2>PC端</h2>
+                <section>
+                    <h5>Step-1 下载并解压v2rayN客户端</h5>
+                    <p>
+                        老规矩，先放github项目<a href="https://github.com/2dust/v2rayN" target="_blank">链接</a>,会用github的自己去release里下载
+                    </p>
+                    <p>
+                        也可以从我的服务器上获取，<a href="/v2ray/clients/v2rayN-Core.zip">点此下载</a>3.29版本
+                    </p>
+                </section>
+                <section>
+                    <h5>Step-2 订阅</h5>
+                    <p>启动v2rayN.exe</p>
+                    <p>订阅-->订阅设置-->备注随便填&订阅链接粘贴过去-->确定</p>
+                    <p>订阅-->更新订阅</p>
+                </section>
+                <section>
+                    <h5>Step-3 路由</h5>
+                    <p>参数设置-->Core:路由设置-->预定义规则-->绕过局域网及大陆地址-->一键设置自定义路由规则-->确定</p>
+                </section>
+                <section>
+                    <h5>Step-4 Http代理</h5>
+                    <p>参数设置-->Core:路由设置-->Http代理-->开启Http代理，并自动配置系统代理(全局模式)-->确定</p>
+                </section>
+                <section>
+                    <h5>Step-5 切换节点</h5>
+                    <p>主界面-->鼠标单击选中某行节点-->按回车Enter</p>
+                </section>
+                <section>
+                    <h5>Step-6 测试</h5>
+                    <p>访问<a href="https://google.com" target="_blank"> Google </a>或
+                        <a href="https://youtube.com" target="_blank">Youtube </a>以测试是否配置正确</p>
+                    <p>正确-->Enjoy Yourself Outside the GFW</p>
+                    <p>错误-->切换节点重试</p>
+                </section>
+            </section>
+            <section class="my-4">
+                <h2>IOS端</h2>
+                <p>Shadowrocket主页面-->右上角+号-->类型-->Subscribe-->URL直接粘贴订阅链接&备注随便填-->完成</p>
+                <p>单击某行节点进行切换-->测试Google或Youtube-->Enjoy</p>
+            </section>
+        </article>
+    </div>
+</body>
+
+</html>

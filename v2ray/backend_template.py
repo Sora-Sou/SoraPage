@@ -33,7 +33,6 @@ def traffic_query(cmd):
             return 0
         else:
             return num_in_value_reg.findall(traffic_str_tuple[0])[0]
-            # return data type is int
 
 
 def print_info(info):

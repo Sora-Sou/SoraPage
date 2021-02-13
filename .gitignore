@@ -1,6 +1,7 @@
 config.py
 v2ray/config.json
 v2ray/backend.py
+v2ray/clients
 trade/alipay_public_key.pem
 trade/app_private_key.pem
 

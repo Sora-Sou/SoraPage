@@ -77,7 +77,7 @@
                     关于
                 </a>
             </li>
-            {% if session['id'] %}
+            {% if session['uid'] %}
                 <li class="nav-item">
                     <div class="nav-link nav_header_link">
                         <div class="dropdown">
@@ -85,11 +85,11 @@
                             <div class="dropdown-menu dropdown-menu-left dropdown-menu-md-right" id="nav_header_user">
                                 <div class="dropdown-header" style="font-size: 1rem">
                                     <span class="text-dark">Hello,</span>
-                                    <span class="text-primary">{{ session['name'] }}</span>
+                                    <span class="text-primary">{{ session['user_name'] }}</span>
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">用户中心</a>
-                                <a class="dropdown-item" href="logout">注销</a>
+                                <a class="dropdown-item" href="/logout">注销</a>
                             </div>
                         </div>
                     </div>
