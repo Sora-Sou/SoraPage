@@ -148,10 +148,14 @@ def v2ray_initial():
             relay_port int,
             order_ int,
             node_level int,
-            inbound_uplink bigint,
-            inbound_downlink bigint,
-            outbound_uplink bigint,
-            outbound_downlink bigint
+            in_up bigint,
+            in_down bigint,
+            out_up bigint,
+            out_down bigint,
+            today_in_up bigint,
+            today_in_down bigint,
+            today_out_up bigint,
+            today_out_down bigint
         )'''
     )
     sql_connect.commit()
@@ -161,8 +165,8 @@ def v2ray_initial():
             uuid varchar(40),
             user_level int,
             level_expire timestamp,
-            uplink bigint,
-            downlink bigint,
+            up bigint,
+            down bigint,
             today_up bigint,
             today_down bigint
         )

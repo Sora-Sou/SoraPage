@@ -98,8 +98,8 @@
                     <p>余额：{{ user_info['balance'] }}</p>
                     <p>等级：{{ user_info['user_level'] }}</p>
                     <p>等级过期日期：{{ user_info['level_expire'] }}</p>
-                    <p>上传流量：{{ user_info['uplink'] }}</p>
-                    <p>下载流量：{{ user_info['downlink'] }}</p>
+                    <p>上传流量：{{ user_info['up'] }}</p>
+                    <p>下载流量：{{ user_info['down'] }}</p>
                     <p>今日上传：{{ user_info['today_up'] }}</p>
                     <p>今日下载：{{ user_info['today_down'] }}</p>
                     <p>
@@ -134,8 +134,8 @@
                             <tr>
                                 <td>{{ user['name_'] }}</td>
                                 <td>{{ user['real_name'] }}</td>
-                                <td>{{ user['uplink'] }}</td>
-                                <td>{{ user['downlink'] }}</td>
+                                <td>{{ user['up'] }}</td>
+                                <td>{{ user['down'] }}</td>
                                 <td>{{ user['today_up'] }}</td>
                                 <td>{{ user['today_down'] }}</td>
                                 <td>{{ user['balance'] }}</td>
@@ -194,8 +194,8 @@
                             <td>{{ e['relay_address'] }}</td>
                             <td>{{ e['relay_port'] }}</td>
                             <td>{{ e['node_level'] }}</td>
-                            <td>{{ e['outbound_uplink'] }}</td>
-                            <td>{{ e['outbound_downlink'] }}</td>
+                            <td>{{ e['out_up'] }}</td>
+                            <td>{{ e['out_down'] }}</td>
                             <td>{{ e['today_out_up'] }}</td>
                             <td>{{ e['today_out_down'] }}</td>
                             {% if user_info['user_level']==admin_level %}

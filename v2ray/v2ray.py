@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, session, render_template, request, send_file, url_for, current_app
+from flask import Blueprint, redirect, session, render_template, request, send_file, jsonify, current_app
 from urllib.request import urlopen
 from datetime import datetime, timedelta
 import json
@@ -31,7 +31,7 @@ def interface():
     else:
         sql_connect, sql_cursor = connect_dictCursor()
         uid = session['uid']
-        sql_cursor.execute(f'select * from v2ray_user where uid ="{uid}"')
+        sql_cursor.execute(f"select * from v2ray_user where uid ='{uid}'")
         fetch = sql_cursor.fetchone()
         # first login
         trail_expire = (datetime.now() + timedelta(days=V2RAY_CONFIG['trail_duration'])).strftime('%Y-%m-%d')
@@ -49,8 +49,8 @@ def interface():
                 'balance': 0,
                 'user_level': 1,
                 'level_expire': trail_expire,
-                'uplink': 0,
-                'downlink': 0,
+                'up': 0,
+                'down': 0,
                 'today_up': 0,
                 'today_down': 0
             }
@@ -65,21 +65,21 @@ def interface():
                 'balance': balance,
                 'user_level': fetch['user_level'],
                 'level_expire': fetch['level_expire'],
-                'uplink': traffic_unit_convert(fetch['uplink']),
-                'downlink': traffic_unit_convert(fetch['downlink']),
+                'up': traffic_unit_convert(fetch['up']),
+                'down': traffic_unit_convert(fetch['down']),
                 'today_up': traffic_unit_convert(fetch['today_up']),
                 'today_down': traffic_unit_convert(fetch['today_down'])
             }
         sql_cursor.execute('select * from v2ray_node order by order_ asc')
         node_info = sql_cursor.fetchall()
-        node_traffic_unit_convert = ['inbound_uplink', 'inbound_downlink', 'outbound_uplink', 'outbound_downlink',
+        node_traffic_unit_convert = ['in_up', 'in_down', 'out_up', 'out_down',
                                      'today_in_up', 'today_in_down', 'today_out_up', 'today_out_down']
         for node in node_info:
             for nt in node_traffic_unit_convert:
                 node[nt] = traffic_unit_convert(node[nt])
         sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.uid = users.uid')
         all_user_list = sql_cursor.fetchall()
-        user_traffic_unit_convert = ['uplink', 'downlink', 'today_up', 'today_down']
+        user_traffic_unit_convert = ['up', 'down', 'today_up', 'today_down']
         for user in all_user_list:
             for ut in user_traffic_unit_convert:
                 user[ut] = traffic_unit_convert(user[ut])
@@ -222,31 +222,100 @@ def reorder_node():
 @v2ray.route('/node/config/<node_id>')
 def node_api(node_id):
     sql_connect, sql_cursor = connect_dictCursor()
-    sql_cursor.execute(f"select * from v2ray_node where id = {node_id}")
-    sql_connect.commit()
-    node_info = sql_cursor.fetchone()
-    sql_cursor.execute(
-        f"select * from v2ray_user inner join users on v2ray_user.uid = users.uid "
-        f"where user_level >= '{node_info['node_level']}' "
-    )
-    sql_connect.commit()
-    user_info = sql_cursor.fetchall()
-    sql_cursor.close()
-    sql_connect.close()
-    with open(os.path.join(current_app.root_path, 'v2ray/template.json')) as template_json_file:
-        config_json = json.load(template_json_file)
-        config_json['inbounds'][0]['port'] = node_info['port']
-        client_array = config_json['inbounds'][0]['settings']['clients']
-        for user in user_info:
-            client_array.append({
-                "email": user['email'],
-                "id": user['uuid'],
-                "level": 0,
-                "alterId": 64
+    sql_cursor.execute(f"select address from v2ray_node where id ='{node_id}'")
+    node_address = sql_cursor.fetchone()['address']
+    sql_cursor.execute(f"select * from v2ray_node where address='{node_address}'")
+    node_list = sql_cursor.fetchall()
+    inbounds = []
+    outbounds = []
+    rules = []
+    for i in range(len(node_list)):
+        node = node_list[i]
+        inbound_tag = "in" + str(node['port'])
+        outbound_tag = "out" + str(node['port'])
+        sql_cursor.execute(
+            f"select u.email,v.uuid from users u inner join v2ray_user v on u.uid=v.uid where v.user_level>='{node['node_level']}' "
+        )
+        user_list = sql_cursor.fetchall()
+        clients = []
+        for user in user_list:
+            clients.append({
+                'email': user['email'],
+                'id': user['uuid'],
+                'level': 0,
+                'alterId': 64
             })
-        with open(os.path.join(current_app.root_path, 'v2ray/config.json'), 'w') as config_json_file:
-            json.dump(config_json, config_json_file)
-    return send_file(os.path.join(current_app.root_path, 'v2ray/config.json'))
+        inbound_e = {
+            "tag": inbound_tag,
+            "port": node['port'],
+            "protocol": "vmess",
+            "settings": {
+                "clients": clients
+            }
+        }
+        inbounds.append(inbound_e)
+        outbound_e = {
+            "tag": outbound_tag,
+            "protocol": "freedom",
+            "settings": {}
+        }
+        outbounds.append(outbound_e)
+        rule_e = {
+            "inboundTag": [inbound_tag],
+            "outboundTag": outbound_tag,
+            "type": "field"
+        }
+        rules.append(rule_e)
+    inbounds.append({
+        "listen": "127.0.0.1",
+        "port": 20000,
+        "protocol": "dokodemo-door",
+        "settings": {
+            "address": "127.0.0.1"
+        },
+        "tag": "api"
+    })
+    rules.append({
+        "inboundTag": ["api"],
+        "outboundTag": "api",
+        "type": "field"
+    })
+    # other config settings
+    config_json = {
+        "log": {
+            "loglevel": "warning",
+            "access": "/var/log/v2ray/access.log",
+            "error": "/var/log/v2ray/error.log"
+        },
+        "stats": {},
+        "api": {
+            "tag": "api",
+            "services": [
+                "StatsService"
+            ]
+        },
+        "policy": {
+            "levels": {
+                "0": {
+                    "statsUserUplink": True,
+                    "statsUserDownlink": True
+                }
+            },
+            "system": {
+                "statsInboundUplink": True,
+                "statsInboundDownlink": True,
+                "statsOutboundUplink": True,
+                "statsOutboundDownlink": True
+            }
+        },
+        "inbounds": inbounds,
+        "outbounds": outbounds,
+        "routing": {
+            "rules": rules,
+            "domainStrategy": "AsIs"
+        }
+    }
+    return jsonify(config_json)
 
 
 @v2ray.route('/backend/<file_name>')

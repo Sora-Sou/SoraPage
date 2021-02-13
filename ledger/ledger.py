@@ -116,7 +116,7 @@ def father_leger_modify(modify_type):
 
 @ledger.route('/ledger')
 def ledger_():
-    if session.get('id') is None:
+    if session.get('uid') is None:
         return redirect('/login?success=ledger')
     else:
         sql_connect, sql_cursor = connect_dictCursor()
