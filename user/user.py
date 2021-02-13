@@ -55,7 +55,7 @@ def register():
         blank = []
         # 是否有未填项
         for element, value in request.form.items():
-            if value == '':
+            if element != "real_name" and value == '':
                 blank.append(element)
                 fail.append('blank')
         # 用户名和邮箱是否重复
@@ -79,10 +79,16 @@ def register():
         else:
             password_hash = generate_password_hash(request.form['password'])
             current_date = datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
-            sql_cursor.execute(
-                f'''INSERT INTO users(name_,email,password,register_date,balance) 
-                    VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}','0')'''
-            )
+            if request.form['real_name'] == "":
+                sql_cursor.execute(
+                    f'''INSERT INTO users(name_,email,password,register_date,balance) 
+                        VALUES('{request.form['name']}','{request.form['email']}','{password_hash}','{current_date}','0')'''
+                )
+            else:
+                sql_cursor.execute(
+                    f'''INSERT INTO users(name_,real_name,email,password,register_date,balance) 
+                        VALUES('{request.form['name']}','{request.form['real_name']}','{request.form['email']}','{password_hash}','{current_date}','0')'''
+                )
             sql_connect.commit()
             sql_cursor.execute(f'''SELECT uid FROM users WHERE name_='{request.form['name']}' ''')
             session['uid'] = sql_cursor.fetchone()['uid']

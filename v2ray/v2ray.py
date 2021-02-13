@@ -38,7 +38,8 @@ def interface():
         if fetch is None:
             uuid = urlopen("https://www.uuidgenerator.net/api/version4").read().decode()
             sql_cursor.execute(
-                f'''insert into v2ray_user values('{uid}','{uuid}','0','1','{trail_expire}','0','0')'''
+                f'''insert into v2ray_user (uid,uuid,user_level,level_expire,up,down,today_up,today_down) 
+                    values('{uid}','{uuid}','1','{trail_expire}','0','0','0','0')'''
             )
             sql_connect.commit()
             user_info = {
