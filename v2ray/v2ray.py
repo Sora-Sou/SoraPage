@@ -71,6 +71,7 @@ def interface():
                 'today_up': traffic_unit_convert(fetch['today_up']),
                 'today_down': traffic_unit_convert(fetch['today_down'])
             }
+        # node list
         sql_cursor.execute('select * from v2ray_node order by order_ asc')
         node_info = sql_cursor.fetchall()
         node_traffic_unit_convert = ['in_up', 'in_down', 'out_up', 'out_down',
@@ -78,6 +79,7 @@ def interface():
         for node in node_info:
             for nt in node_traffic_unit_convert:
                 node[nt] = traffic_unit_convert(node[nt])
+        # user list
         sql_cursor.execute('select * from v2ray_user inner join users on v2ray_user.uid = users.uid')
         all_user_list = sql_cursor.fetchall()
         user_traffic_unit_convert = ['up', 'down', 'today_up', 'today_down']
@@ -181,14 +183,14 @@ def modify_node():
     sql_connect, sql_cursor = connect_dictCursor()
     if f.get('relay_address_m') is None:
         sql_cursor.execute(
-            f"update v2ray_node set node_name='{f['node_name_m']}', address='{f['node_address_m']}', "
+            f"update v2ray_node set node_name='{f['node_name_m']}', node_status='{f['node_status_m']}', address='{f['node_address_m']}', "
             f"port='{f['node_port_m']}', node_level='{f['node_level_m']}',"
             f"relay_address=null, relay_port=null "
             f"where id='{f['node_id']}' "
         )
     else:
         sql_cursor.execute(
-            f"update v2ray_node set node_name='{f['node_name_m']}', address='{f['node_address_m']}', "
+            f"update v2ray_node set node_name='{f['node_name_m']}', node_status='{f['node_status_m']}', address='{f['node_address_m']}', "
             f"port='{f['node_port_m']}', node_level='{f['node_level_m']}',"
             f"relay_address='{f['relay_address_m']}', relay_port='{f['relay_port_m']}'"
             f"where id='{f['node_id']}' "

@@ -142,6 +142,7 @@ def v2ray_initial():
         '''create table if not exists v2ray_node(
             id int not null auto_increment primary key,
             node_name varchar(30),
+            node_status int default 0,
             address varchar(30),
             port int,
             relay_address varchar(30),
