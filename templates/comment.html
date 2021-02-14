@@ -1,6 +1,6 @@
 <script src="{{ url_for('static',filename='js/comment.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static',filename='css/comment.css') }}">
-<div class="container">
+<div class="container-fluid">
     <hr>
     <div class="bg-primary p-4 text-light rounded" id="reply_inform">
         <p>你即将回复 <span id="comment_sequence"></span> 的 <span id="comment_author"></span> 的评论：</p>
@@ -13,10 +13,12 @@
         <form id="comment_form">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <input type="text" name="name" placeholder="昵称" class="comment_input" id="comment_name">
+                    <input type="text" name="name" placeholder="昵称" class="comment_input" id="comment_name"
+                           value="{{ session['user_name'] }}">
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="email" name="email" placeholder="邮箱" class="comment_input" id="comment_email">
+                    <input type="email" name="email" placeholder="邮箱" class="comment_input" id="comment_email"
+                           value="{{ session['user_email'] }}">
                 </div>
             </div>
             <textarea name="comment" placeholder="Comment Here~" id="comment_textarea"></textarea>
