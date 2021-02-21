@@ -29,5 +29,5 @@ def v2ray_database_update():
 v2ray_database_update()
 
 scheduler = BlockingScheduler()
-scheduler.add_job(v2ray_database_update, 'cron', hour=0, minute=5, second=0, jitter=120)
+scheduler.add_job(v2ray_database_update, 'cron', hour=0, minute=0, second=0)
 scheduler.start()
