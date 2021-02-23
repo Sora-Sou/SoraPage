@@ -140,7 +140,7 @@ def v2ray_trade():
             dt_now = datetime.now()
             sql_now = dt_now.strftime("%Y-%m-%d %H:%M:%S")
             tid = generate_tid(dt_now, uid, cost)
-            sql_cursor.execute(f"update v2ray_user set level_expire='{expire_time}' where uid='{uid}' ")
+            sql_cursor.execute(f"update v2ray_user set level_expire='{expire_time}', user_level='1' where uid='{uid}' ")
             sql_cursor.execute(f"update users set balance='{balance}' where uid='{uid}' ")
             sql_cursor.execute(
                 f"insert into trade(tid,uid,trade_subject,trade_sort,trade_amount,trade_time,trade_succeed)"
