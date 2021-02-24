@@ -40,7 +40,7 @@ def load(url):
             comment_parent.append(item)
         else:
             comment_child.append(item)
-    comment_parent.sort(key=lambda x: x['time'])
+    comment_parent.sort(key=lambda x: x['time'], reverse=True)
     comment_child.sort(key=lambda x: (x['parent'], x['time']))
     for i in range(len(comment_parent)):
         comment_parent[i]['time'] = format_time(comment_parent[i]['time'])
