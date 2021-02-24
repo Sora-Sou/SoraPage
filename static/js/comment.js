@@ -58,7 +58,8 @@ function load() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            render(data)
+            render(data);
+            comment_scroll();
         }
     })
 }
@@ -67,6 +68,7 @@ function load() {
 function reload(comment_json) {
     $('#comment_container').empty().removeAttr('style')
     render(comment_json)
+    comment_scroll();
 }
 
 
@@ -131,4 +133,21 @@ window.onload = function () {
             })
         }
     })
+}
+
+//评论跳转功能
+function comment_scroll() {
+    const hash = window.location.hash;
+    const comment_reg = /comment(\d*)/;
+    if (comment_reg.test(hash)) {
+        const comment_reg_matches = comment_reg.exec(hash);
+        const comment_id = comment_reg_matches[1]
+        let offset = 0;
+        $('.media-body').each(function () {
+            if ($(this).attr('data-comment-id') === comment_id) {
+                offset = $(this).offset().top - 20;
+            }
+        })
+        $('html, body').animate({scrollTop: offset}, 700);
+    }
 }
