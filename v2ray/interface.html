@@ -119,34 +119,36 @@
             <div class="card mt-3">
                 <div class="card-header">用户列表</div>
                 <div class="card-body">
-                    <table class="table table-responsive-sm">
-                        <thead>
-                        <tr>
-                            <td>用户名</td>
-                            <td>真名</td>
-                            <td>上传流量</td>
-                            <td>下载流量</td>
-                            <td>今日上传</td>
-                            <td>今日下载</td>
-                            <td>余额</td>
-                            <td>用户等级</td>
-                            <td>等级过期日期</td>
-                        </tr>
-                        </thead>
-                        {% for user in all_user_list %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                             <tr>
-                                <td>{{ user['name_'] }}</td>
-                                <td>{{ user['real_name'] }}</td>
-                                <td>{{ user['up'] }}</td>
-                                <td>{{ user['down'] }}</td>
-                                <td>{{ user['today_up'] }}</td>
-                                <td>{{ user['today_down'] }}</td>
-                                <td>{{ user['balance'] }}</td>
-                                <td>{{ user['user_level'] }}</td>
-                                <td>{{ user['level_expire'] }}</td>
+                                <td>用户名</td>
+                                <td>真名</td>
+                                <td>上传流量</td>
+                                <td>下载流量</td>
+                                <td>今日上传</td>
+                                <td>今日下载</td>
+                                <td>余额</td>
+                                <td>用户等级</td>
+                                <td>等级过期日期</td>
                             </tr>
-                        {% endfor %}
-                    </table>
+                            </thead>
+                            {% for user in all_user_list %}
+                                <tr>
+                                    <td>{{ user['name_'] }}</td>
+                                    <td>{{ user['real_name'] }}</td>
+                                    <td>{{ user['up'] }}</td>
+                                    <td>{{ user['down'] }}</td>
+                                    <td>{{ user['today_up'] }}</td>
+                                    <td>{{ user['today_down'] }}</td>
+                                    <td>{{ user['balance'] }}</td>
+                                    <td>{{ user['user_level'] }}</td>
+                                    <td>{{ user['level_expire'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
         {% endif %}
@@ -155,67 +157,69 @@
             <div class="card-header">节点列表</div>
             <div class="card-body">
                 <p>可用节点为绿色，不可用节点为红色。由于节点状态目前为Sora手动更新，所以可能存在滞后和不准确，具体节点可用状态还是以自己测试使用为准。</p>
-                <table class="table table-hover table-responsive-sm">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>id</td>
-                        <td>名称</td>
-                        <td>地址</td>
-                        <td>端口</td>
-                        <td>中转地址</td>
-                        <td>中转端口</td>
-                        <td>等级</td>
-                        <td>上传流量</td>
-                        <td>下载流量</td>
-                        <td>今日上传</td>
-                        <td>今日下载</td>
-                        {% if user_info['user_level']==admin_level %}
-                            <td>操作</td>
-                        {% endif %}
-                    </tr>
-                    </thead>
-                    {% for i in range(node_info|length) %}
-                        {% set e = node_info[i] %}
-                        {% if e['node_status']==0 %}
-                            {% set node_status_class="table-danger" %}
-                        {% else %}
-                            {% set node_status_class="table-success" %}
-                        {% endif %}
-                        <tr class="{{ node_status_class }}">
-                            <td>
-                                {{ e['order_'] }}
-                                {% if user_info['user_level']==admin_level %}
-                                    {% if i==0 %}
-                                        <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
-                                    {% elif i==node_info|length-1 %}
-                                        <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
-                                    {% else %}
-                                        <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
-                                        <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                            <td>{{ e['id'] }}</td>
-                            <td>{{ e['node_name'] }}</td>
-                            <td>{{ e['address'] }}</td>
-                            <td>{{ e['port'] }}</td>
-                            <td>{{ e['relay_address'] }}</td>
-                            <td>{{ e['relay_port'] }}</td>
-                            <td>{{ e['node_level'] }}</td>
-                            <td>{{ e['out_up'] }}</td>
-                            <td>{{ e['out_down'] }}</td>
-                            <td>{{ e['today_out_up'] }}</td>
-                            <td>{{ e['today_out_down'] }}</td>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>id</td>
+                            <td>名称</td>
+                            <td>地址</td>
+                            <td>端口</td>
+                            <td>中转地址</td>
+                            <td>中转端口</td>
+                            <td>等级</td>
+                            <td>上传流量</td>
+                            <td>下载流量</td>
+                            <td>今日上传</td>
+                            <td>今日下载</td>
                             {% if user_info['user_level']==admin_level %}
-                                <td>
-                                    <a href="javascript:node_modify(&quot;{{ e }}&quot;)" class="mr-1">修改</a>
-                                    <a href="/v2ray/node/delete?id={{ e['id'] }}">删除</a>
-                                </td>
+                                <td>操作</td>
                             {% endif %}
                         </tr>
-                    {% endfor %}
-                </table>
+                        </thead>
+                        {% for i in range(node_info|length) %}
+                            {% set e = node_info[i] %}
+                            {% if e['node_status']==0 %}
+                                {% set node_status_class="table-danger" %}
+                            {% else %}
+                                {% set node_status_class="table-success" %}
+                            {% endif %}
+                            <tr class="{{ node_status_class }}">
+                                <td>
+                                    {{ e['order_'] }}
+                                    {% if user_info['user_level']==admin_level %}
+                                        {% if i==0 %}
+                                            <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
+                                        {% elif i==node_info|length-1 %}
+                                            <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
+                                        {% else %}
+                                            <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=up">&uarr;</a>
+                                            <a href="/v2ray/node/reorder?id={{ e['id'] }}&order={{ e['order_'] }}&action=down">&darr;</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ e['id'] }}</td>
+                                <td>{{ e['node_name'] }}</td>
+                                <td>{{ e['address'] }}</td>
+                                <td>{{ e['port'] }}</td>
+                                <td>{{ e['relay_address'] }}</td>
+                                <td>{{ e['relay_port'] }}</td>
+                                <td>{{ e['node_level'] }}</td>
+                                <td>{{ e['out_up'] }}</td>
+                                <td>{{ e['out_down'] }}</td>
+                                <td>{{ e['today_out_up'] }}</td>
+                                <td>{{ e['today_out_down'] }}</td>
+                                {% if user_info['user_level']==admin_level %}
+                                    <td>
+                                        <a href="javascript:node_modify(&quot;{{ e }}&quot;)" class="mr-1">修改</a>
+                                        <a href="/v2ray/node/delete?id={{ e['id'] }}">删除</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
 

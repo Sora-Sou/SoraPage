@@ -82,7 +82,7 @@ body {
     font-size: 1.5rem;
 }
 
-#fail_comment .modal-content {
+#fail_comment_modal .modal-content {
     border: none;
 }
 

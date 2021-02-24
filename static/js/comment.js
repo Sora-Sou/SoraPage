@@ -109,26 +109,29 @@ window.onload = function () {
             }
             if (!validation) {
                 $('#fail_comment_cause').text('昵称和邮箱是不是忘填了？')
-                $('#fail_comment').modal('show')
+                $('#fail_comment_modal').modal('show')
             }
         })
         if ($('#comment_textarea').val() == '') {
             validation = false
-            $('#fail_comment_cause').text('空空的评论区，认真的嘛？')
-            $('#fail_comment').modal('show')
+            $('#fail_comment_cause').text('评论框好歹敲几个字吧')
+            $('#fail_comment_modal').modal('show')
         }
         //AJAX
         if (validation) {
             $('.comment_input').each(function () {
-                $(this).removeClass('valid_input invalid_input')
+                $(this).removeClass('valid_input invalid_input');
             })
+            $('#submit_comment_modal').modal('show');
             $.ajax({
                 url: '/comment',
                 data: $('#comment_form').serialize(),
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
-                    reload(data)
+                    reload(data);
+                    $('#comment_textarea').val("");
+                    $('#submit_comment_modal').modal('hide');
                 }
             })
         }

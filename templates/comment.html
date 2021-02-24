@@ -34,7 +34,7 @@
     <div id="comment_container" class="border rounded p-4 my-2"></div>
 </div>
 
-<div class="modal fade" id="fail_comment" tabindex="-1">
+<div class="modal fade" id="fail_comment_modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body" id="fail_comment_cause"></div>
@@ -42,6 +42,16 @@
                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#fail_comment">
                     明白
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="submit_comment_modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class='d-flex align-items-center'><span class='spinner-border mr-3'></span>评论提交中...</p>
             </div>
         </div>
     </div>
