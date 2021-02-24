@@ -84,8 +84,9 @@ def comment_ajax():
             sequence = f"{sql_cursor.fetchone()['sequence']}-"
             sql_cursor.execute(f"SELECT * FROM comment WHERE url='{url}' AND parent={form['parent']}")
             sequence += str(len(sql_cursor.fetchall()) + 1)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         sql_cursor.execute(
-            f"INSERT INTO comment (url,name,email,comment,time,parent,replyTo,sequence,replyToSeq) VALUES ('{url}','{form['name']}','{form['email']}','{form['comment']}','{form['time']}',{form['parent']},{form['replyTo']},'{sequence}','{form['replyToSeq']}')")
+            f"INSERT INTO comment (url,name,email,comment,time,parent,replyTo,sequence,replyToSeq) VALUES ('{url}','{form['name']}','{form['email']}','{form['comment']}','{now}',{form['parent']},{form['replyTo']},'{sequence}','{form['replyToSeq']}')")
         sql_connect.commit()
         sql_cursor.close()
         sql_connect.close()

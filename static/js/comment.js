@@ -69,13 +69,6 @@ function reload(comment_json) {
     render(comment_json)
 }
 
-function now() {
-    var time = new Date();
-    var now = new String();
-    now += time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate() + " ";
-    now += time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
-    return now
-}
 
 window.onload = function () {
     load()
@@ -104,7 +97,7 @@ window.onload = function () {
     })
     //评论验证与AJAX
     $('#submit_comment').click(function () {
-        var validation = true
+        let validation = true
         $('.comment_input').each(function () {
             if ($(this).val() == '') {
                 validation = false
@@ -127,7 +120,6 @@ window.onload = function () {
             $('.comment_input').each(function () {
                 $(this).removeClass('valid_input invalid_input')
             })
-            $('#comment_time').val(now())
             $.ajax({
                 url: '/comment',
                 data: $('#comment_form').serialize(),
