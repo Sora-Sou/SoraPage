@@ -37,6 +37,21 @@ body {
     align-items: center;
 }
 
+.media_comment {
+    display: flex;
+    align-items: flex-start;
+}
+
+.comment_replyTo {
+    flex: none;
+    margin-right: 0.5rem;
+}
+
+.comment_main {
+    flex: auto;
+    white-space: pre-wrap;
+}
+
 .comment_sequence {
     margin: 0;
     padding-right: 12px;

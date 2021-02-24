@@ -12,12 +12,13 @@ function media(comment_obj) {
     media_bar_2.append($('<small></small>').addClass('text-muted').text(comment_obj['time']))
     media_bar_2.append($('<button></button>').addClass(['btn', 'btn-link', 'btn_reply']).text('回复'))
 
-    media_body.append(media_bar_1, media_bar_2)
+    let media_bar_3 = $('<div></div>').addClass('media_bar media_comment')
     if (comment_obj['replyTo']) {
-        media_body.append($('<span></span>').text('回复#' + comment_obj['replyToSeq'] + ": ").addClass('text-success'))
+        media_bar_3.append($('<div></div>').text('回复#' + comment_obj['replyToSeq'] + ": ").addClass('text-success comment_replyTo'))
     }
-    media_body.append($('<span></span>').text(comment_obj['comment']).addClass('comment_content'))
+    media_bar_3.append($('<div></div>').text(comment_obj['comment']).addClass('comment_content comment_main'))
 
+    media_body.append(media_bar_1, media_bar_2, media_bar_3)
     media.append(avatar, media_body)
     return media
 }
