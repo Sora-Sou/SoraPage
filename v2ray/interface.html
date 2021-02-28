@@ -105,53 +105,58 @@
                     <p>今日上传：{{ user_info['today_up'] }}</p>
                     <p>今日下载：{{ user_info['today_down'] }}</p>
                     <p>
-                        订阅链接：
-                        <a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}">
-                            http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}
-                        </a>
+                        订阅链接：<a href="http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}">http://sorapage.com/v2ray/subscribe/{{ user_info['uuid'] }}</a>
                     </p>
                     <p>简易教程：<a href="/v2ray/tutorial" target="_blank">Link</a></p>
                 </div>
             </div>
         </div>
 
-        {% if user_info['user_level']==admin_level %}
-            <div class="card mt-3">
-                <div class="card-header">用户列表</div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <td>用户名</td>
+        <div class="card mt-3">
+            <div class="card-header">用户列表</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>用户名</td>
+                            {% if user_info['user_level']==admin_level %}
                                 <td>真名</td>
-                                <td>上传流量</td>
-                                <td>下载流量</td>
-                                <td>今日上传</td>
-                                <td>今日下载</td>
+                            {% endif %}
+                            <td>最后登录</td>
+                            <td>上传流量</td>
+                            <td>下载流量</td>
+                            <td>今日上传</td>
+                            <td>今日下载</td>
+                            {% if user_info['user_level']==admin_level %}
                                 <td>余额</td>
                                 <td>用户等级</td>
                                 <td>等级过期日期</td>
-                            </tr>
-                            </thead>
-                            {% for user in all_user_list %}
-                                <tr>
-                                    <td>{{ user['name_'] }}</td>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        {% for user in all_user_list %}
+                            <tr>
+                                <td>{{ user['name_'] }}</td>
+                                {% if user_info['user_level']==admin_level %}
                                     <td>{{ user['real_name'] }}</td>
-                                    <td>{{ user['up'] }}</td>
-                                    <td>{{ user['down'] }}</td>
-                                    <td>{{ user['today_up'] }}</td>
-                                    <td>{{ user['today_down'] }}</td>
+                                {% endif %}
+                                <td>{{ user['last_v2ray_login'] }}</td>
+                                <td>{{ user['up'] }}</td>
+                                <td>{{ user['down'] }}</td>
+                                <td>{{ user['today_up'] }}</td>
+                                <td>{{ user['today_down'] }}</td>
+                                {% if user_info['user_level']==admin_level %}
                                     <td>{{ user['balance'] }}</td>
                                     <td>{{ user['user_level'] }}</td>
                                     <td>{{ user['level_expire'] }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
-        {% endif %}
+        </div>
 
         <div class="card mt-3">
             <div class="card-header">节点列表</div>

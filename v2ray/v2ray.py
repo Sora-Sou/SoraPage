@@ -5,7 +5,7 @@ import json
 import os
 import base64
 
-from sql import connect_dictCursor
+from sql import connect_dictCursor, sql_now
 from config import V2RAY_CONFIG, SQL
 
 v2ray = Blueprint('v2ray', __name__, template_folder='', static_folder='', url_prefix='/v2ray')
@@ -29,6 +29,7 @@ def interface():
     if session.get('uid') is None:
         return redirect('/login?success=v2ray')
     else:
+        now = sql_now()
         sql_connect, sql_cursor = connect_dictCursor()
         uid = session['uid']
         sql_cursor.execute(f"select * from v2ray_user where uid ='{uid}'")
@@ -38,13 +39,14 @@ def interface():
         if fetch is None:
             uuid = urlopen("https://www.uuidgenerator.net/api/version4").read().decode()
             sql_cursor.execute(
-                f'''insert into v2ray_user (uid,uuid,user_level,level_expire,up,down,today_up,today_down) 
-                    values('{uid}','{uuid}','1','{trail_expire}','0','0','0','0')'''
+                f'''insert into v2ray_user (uid,uuid,last_v2ray_login,user_level,level_expire,up,down,today_up,today_down) 
+                    values('{uid}','{uuid}','{now}','1','{trail_expire}','0','0','0','0')'''
             )
             sql_connect.commit()
             user_info = {
                 'uid': uid,
                 'uuid': uuid,
+                'last_v2ray_login': now,
                 'name': session['user_name'],
                 'email': session['user_email'],
                 'balance': 0,
@@ -56,11 +58,14 @@ def interface():
                 'today_down': 0
             }
         else:
+            sql_cursor.execute(f"update v2ray_user set last_v2ray_login='{now}' where uid='{uid}' ")
+            sql_connect.commit()
             sql_cursor.execute(f"select balance from users where uid='{uid}' ")
             balance = sql_cursor.fetchone()['balance']
             user_info = {
                 'uid': uid,
                 'uuid': fetch['uuid'],
+                'last_v2ray_login': now,
                 'name': session['user_name'],
                 'email': session['user_email'],
                 'balance': balance,

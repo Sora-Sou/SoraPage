@@ -1,5 +1,6 @@
 import pymysql
 from config import SQL
+from datetime import datetime
 
 
 # from sql import connect_dictCursor
@@ -10,6 +11,13 @@ def connect_dictCursor():
                                   user=SQL['user'], password=SQL['password'])
     sql_cursor = sql_connect.cursor(cursor=pymysql.cursors.DictCursor)
     return sql_connect, sql_cursor
+
+
+def sql_now(precision=""):
+    if precision == "" or precision == "seconds":
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    elif precision == "days":
+        return datetime.now().strftime("%Y-%m-%d")
 
 
 def page_initial():
@@ -164,6 +172,7 @@ def v2ray_initial():
         '''create table if not exists v2ray_user(
             uid int not null primary key,
             uuid varchar(40),
+            last_v2ray_login timestamp,
             user_level int,
             level_expire timestamp,
             up bigint,
