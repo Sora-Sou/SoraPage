@@ -120,6 +120,10 @@ def v2ray_trade():
         sql_connect, sql_cursor = connect_dictCursor()
         sql_cursor.execute(f"select level_expire from v2ray_user where uid='{uid}' ")
         expire_time = sql_cursor.fetchone()['level_expire']
+        if expire_time < datetime.now():
+            today_str = datetime.now().strftime("%Y-%m-%d")
+            today_dt = datetime.strptime(today_str, "%Y-%m-%d")
+            expire_time = today_dt
         sql_cursor.execute(f"select balance from users where uid='{uid}' ")
         balance = to_decimal(sql_cursor.fetchone()['balance'])
         if purchase == "monthly":
