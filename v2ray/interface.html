@@ -59,7 +59,8 @@
                         data: trade,
                         success: function (qrcode_base64) {
                             $('#f2fpay_modal_body').empty();
-                            $('#f2fpay_modal_body').append('<img src="data:image/png;base64,' + qrcode_base64 + '">');
+                            $('#f2fpay_modal_body').append('<img src="data:image/png;base64,' + qrcode_base64 + '" width="100%">');
+                            $('#f2fpay_modal_body').append('<div class="text-center my-2"><small class="text-muted">如果无法保存图片可以截屏后在支付宝中打开</small></div>')
                             $('#f2fpay_modal_body').append('<hr>');
                             $('#f2fpay_modal_body').append('<button class="btn btn-block btn-primary" id="top_up_finish_btn">已支付点此刷新</button>')
                         }
@@ -68,7 +69,7 @@
                     $('#top_up_amount').addClass('is-invalid');
                 }
             })
-            $('#top_up_finish_btn').click(function () {
+            $('#f2fpay_modal_body').on("click", '#top_up_finish_btn', function () {
                 location.reload();
             })
         })
