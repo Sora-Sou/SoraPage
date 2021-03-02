@@ -105,6 +105,8 @@ def tutorial():
 def get_clients(file_name):
     if file_name == "v2rayN-Core.zip":
         return send_file(os.path.join(current_app.root_path, 'v2ray/clients/v2rayN-Core.zip'))
+    elif file_name == "v2rayNG.apk":
+        return send_file(os.path.join(current_app.root_path, 'v2ray/clients/v2rayNG.apk'))
     else:
         return abort(404)
 
